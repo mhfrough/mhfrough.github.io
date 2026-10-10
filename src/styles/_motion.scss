@@ -1,0 +1,62 @@
+// Motion primitives. Rule: motion on content, never on chrome (no custom cursor, no magnetic buttons).
+// Every animation is gated by prefers-reduced-motion and only touches transform/opacity.
+// [mhReveal] adds .reveal only to elements that start below the fold (so prerendered HTML never flashes),
+// then .is-in when they enter the viewport (IntersectionObserver, no scroll listeners).
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--t-slow) var(--ease),
+      transform var(--t-slow) var(--ease);
+    transition-delay: calc(var(--i, 0) * 70ms);
+
+    &.is-in {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  // Masked line rise for display headlines: wrap each line in .rise > span
+  .rise {
+    display: block;
+    overflow: hidden;
+    padding-block-end: 0.08em;
+
+    > span {
+      display: inline-block;
+      transform: translateY(105%);
+      animation: rise var(--t-slow) var(--ease) forwards;
+      animation-delay: calc(120ms + var(--i, 0) * 90ms);
+    }
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fade-in var(--t-slow) var(--ease) forwards;
+    animation-delay: calc(200ms + var(--i, 0) * 90ms);
+  }
+}
+
+@keyframes rise {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

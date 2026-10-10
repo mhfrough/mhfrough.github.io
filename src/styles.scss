@@ -1,0 +1,8 @@
+// Fonts are self-hosted from @fontsource (OFL) via angular.json "styles":
+//   Geist Variable (sans), JetBrains Mono Variable (mono), Noto Nastaliq Urdu 400/700.
+// Nastaliq ships with unicode-range = Arabic script, so English pages never download it.
+
+@use 'tokens';
+@use 'base';
+@use 'components';
+@use 'motion';

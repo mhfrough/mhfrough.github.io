@@ -1,0 +1,95 @@
+// mhfrough design tokens. Single source of truth: every value below is documented live on /brand.
+// Dark only, by brief. Monochrome: no accent hue. Hierarchy comes from ink weight, not color.
+// Project themes (case studies) override the same custom properties under :root[data-theme="<slug>"].
+
+:root {
+  // Surfaces (off-black, never #000)
+  --bg: #0a0a0b;
+  --bg-raise: #101012;
+  --surface: #141416;
+  --surface-2: #1a1a1d;
+  --line: #26262a;
+  --line-strong: #3a3a40;
+
+  // Ink (off-white, never #fff)
+  --ink: #ededef;
+  --ink-2: #b9b9c0; // 10.4:1 on --bg
+  --muted: #8d8d96; // 6.3:1 on --bg, AA for body
+  --faint: #55555c; // decorative only, never for text
+
+  // The "accent" is ink itself. CTAs invert: ink fill, bg text.
+  --accent: var(--ink);
+  --accent-ink: var(--bg);
+  --focus: var(--ink);
+
+  // Shape: small radius system. Documented exception: avatars are circles.
+  --r-1: 2px; // tags, inputs, small controls
+  --r-2: 4px; // buttons, cards, nav, media
+  --r-pill: var(--r-2); // project themes may swap this to 999px
+
+  // Spacing (4px base)
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --section-y: clamp(72px, 10vw, 128px);
+  --gutter: clamp(16px, 4vw, 32px);
+  --max: 1200px;
+  --max-text: 65ch;
+
+  // Type
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+
+  --fs-12: 0.75rem;
+  --fs-13: 0.8125rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-20: 1.25rem;
+  --fs-24: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-32: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --fs-48: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+  --fs-64: clamp(2.4rem, 1.6rem + 3.6vw, 4rem);
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.25;
+  --lh-body: 1.6;
+  --track-tight: -0.035em;
+  --track-mono: 0.02em;
+
+  // Motion
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 160ms;
+  --t-base: 280ms;
+  --t-slow: 640ms;
+
+  // Layers (the only z-index values allowed)
+  --z-base: 1;
+  --z-nav: 50;
+  --z-overlay: 80;
+  --z-skip: 100;
+
+  // Nav
+  --nav-h: 56px;
+  --nav-top: 12px;
+
+  color-scheme: dark;
+}
+
+// Urdu: Nastaliq needs far more vertical room than Latin.
+:root[lang='ur'] {
+  --lh-tight: 1.7;
+  --lh-snug: 1.9;
+  --lh-body: 2.2;
+  --track-tight: 0;
+  --track-mono: 0;
+}
