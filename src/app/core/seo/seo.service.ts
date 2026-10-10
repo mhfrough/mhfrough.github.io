@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { SITE } from '../site.config';
-import { I18n, LANGS, Lang, localize } from '../i18n/i18n.service';
 
 export interface PageMeta {
   /** Page title without the site suffix. Omit on the home page. */
@@ -23,7 +22,6 @@ export interface PageMeta {
   modifiedTime?: string;
 }
 
-const OG_LOCALE: Record<Lang, string> = { en: 'en_US', ur: 'ur_PK' };
 export const PERSON_ID = `${SITE.origin}/#person`;
 export const WEBSITE_ID = `${SITE.origin}/#website`;
 
@@ -31,7 +29,7 @@ export const abs = (pathOrUrl: string) =>
   /^https?:\/\//.test(pathOrUrl) ? pathOrUrl : SITE.origin + (pathOrUrl.startsWith('/') ? '' : '/') + pathOrUrl;
 
 /**
- * One call per page sets: <title>, description, robots, canonical, hreflang alternates,
+ * One call per page sets: <title>, description, robots, canonical,
  * Open Graph, Twitter card and a single JSON-LD @graph. Runs during prerender, so crawlers
  * get it without JavaScript.
  */
@@ -40,11 +38,9 @@ export class Seo {
   private readonly doc = inject(DOCUMENT);
   private readonly meta = inject(Meta);
   private readonly titleSvc = inject(Title);
-  private readonly i18n = inject(I18n);
 
   set(page: PageMeta): void {
-    const lang = this.i18n.lang();
-    const url = abs(localize(page.path, lang));
+    const url = abs(page.path);
     const fullTitle = page.title ? `${page.title} | ${SITE.name}` : `${SITE.name} (${SITE.at}) | ${SITE.role}`;
     const image = abs(page.image ?? SITE.defaultOgImage);
     const imageAlt = page.imageAlt ?? `${SITE.name}, ${SITE.role}`;
@@ -63,8 +59,7 @@ export class Seo {
     this.tag('property', 'og:image:alt', imageAlt);
     this.tag('property', 'og:image:width', '1200');
     this.tag('property', 'og:image:height', '630');
-    this.tag('property', 'og:locale', OG_LOCALE[lang]);
-    this.tag('property', 'og:locale:alternate', OG_LOCALE[lang === 'en' ? 'ur' : 'en']);
+    this.tag('property', 'og:locale', 'en_US');
     if (page.publishedTime) this.tag('property', 'article:published_time', page.publishedTime);
     if (page.modifiedTime) this.tag('property', 'article:modified_time', page.modifiedTime);
 
@@ -74,30 +69,25 @@ export class Seo {
     this.tag('name', 'twitter:image', image);
     this.tag('name', 'twitter:image:alt', imageAlt);
 
-    this.links(page.path, url, page.noindex);
-    this.jsonLd(page, url, fullTitle, lang);
+    this.canonical(url);
+    this.jsonLd(page, url, fullTitle);
   }
 
   private tag(attr: 'name' | 'property', key: string, content: string): void {
     this.meta.updateTag({ [attr]: key, content }, `${attr}="${key}"`);
   }
 
-  private links(path: string, canonical: string, noindex?: boolean): void {
+  private canonical(href: string): void {
     const head = this.doc.head;
-    head.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang]').forEach((n) => n.remove());
-    const add = (attrs: Record<string, string>) => {
-      const l = this.doc.createElement('link');
-      Object.entries(attrs).forEach(([k, v]) => l.setAttribute(k, v));
-      head.appendChild(l);
-    };
-    add({ rel: 'canonical', href: canonical });
-    if (noindex) return;
-    for (const l of LANGS) add({ rel: 'alternate', hreflang: l, href: abs(localize(path, l)) });
-    add({ rel: 'alternate', hreflang: 'x-default', href: abs(localize(path, 'en')) });
+    head.querySelectorAll('link[rel="canonical"]').forEach((n) => n.remove());
+    const l = this.doc.createElement('link');
+    l.setAttribute('rel', 'canonical');
+    l.setAttribute('href', href);
+    head.appendChild(l);
   }
 
-  private jsonLd(page: PageMeta, url: string, title: string, lang: Lang): void {
-    const crumbs = [{ name: lang === 'ur' ? 'ہوم' : 'Home', path: '/' }, ...(page.breadcrumbs ?? [])];
+  private jsonLd(page: PageMeta, url: string, title: string): void {
+    const crumbs = [{ name: 'Home', path: '/' }, ...(page.breadcrumbs ?? [])];
     const graph: Record<string, unknown>[] = [
       personNode(),
       {
@@ -106,7 +96,7 @@ export class Seo {
         url: SITE.origin + '/',
         name: SITE.name,
         alternateName: [SITE.at, SITE.domain],
-        inLanguage: ['en', 'ur'],
+        inLanguage: 'en',
         publisher: { '@id': PERSON_ID },
       },
       {
@@ -115,7 +105,7 @@ export class Seo {
         url,
         name: title,
         description: page.description,
-        inLanguage: lang,
+        inLanguage: 'en',
         isPartOf: { '@id': WEBSITE_ID },
         about: { '@id': PERSON_ID },
         primaryImageOfPage: abs(page.image ?? SITE.defaultOgImage),
@@ -128,7 +118,7 @@ export class Seo {
                 '@type': 'ListItem',
                 position: i + 1,
                 name: c.name,
-                item: abs(localize(c.path, lang)),
+                item: abs(c.path),
               })),
             },
           ]
@@ -160,7 +150,7 @@ export function personNode(): Record<string, unknown> {
     image: abs(SITE.avatar ?? '/icons/icon-512.png'),
     address: { '@type': 'PostalAddress', addressLocality: SITE.locality, addressCountry: SITE.countryCode },
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'Karachi Institute of Economics and Technology (KIET)' },
-    knowsLanguage: ['en', 'ur'],
+    knowsLanguage: ['en', 'ur'], // Urdu is a spoken language here, not a site language
     knowsAbout: [
       'Angular',
       'TypeScript',

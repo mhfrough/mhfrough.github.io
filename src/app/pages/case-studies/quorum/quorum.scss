@@ -1,0 +1,887 @@
+// Quorum case study. Built in Quorum's visual language: pills for anything pressable, 20px cards,
+// 14px inner blocks, one coffee accent (--q-accent) for small highlights, ink-filled CTAs.
+// Colours come only from tokens (theme overrides live in src/styles/themes/_quorum.scss).
+// Every --q-* token has a monochrome fallback, so the page still reads if the theme is absent.
+
+:host {
+  display: block;
+  --q-max: 1200px;
+}
+
+// ---------- Shared section rhythm ----------
+.block {
+  padding-block: clamp(80px, 10vw, 120px);
+}
+
+.block--tight {
+  padding-block-start: clamp(24px, 4vw, 40px);
+}
+
+.block--end {
+  padding-block-end: 0;
+}
+
+.title {
+  font-size: clamp(2rem, 1.3rem + 2.6vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  max-inline-size: 18ch;
+  margin-block-end: 16px;
+}
+
+.sub {
+  color: var(--ink-2);
+  font-size: 1.075rem;
+  max-inline-size: 56ch;
+}
+
+.head {
+  margin-block-end: 44px;
+}
+
+.head--center {
+  text-align: center;
+
+  .title,
+  .sub {
+    margin-inline: auto;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+// ---------- Hero ----------
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-block: calc(var(--nav-h) + var(--nav-top) + clamp(40px, 6vw, 72px)) clamp(56px, 8vw, 88px);
+
+  // Quorum's warm accent glow: two soft radial washes, nothing else
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 85% 20%, color-mix(in oklab, var(--q-accent, var(--ink)) 10%, transparent), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, color-mix(in oklab, var(--q-accent, var(--ink)) 6%, transparent), transparent 70%);
+  }
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 5vw, 64px);
+  align-items: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 14px 5px 5px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-2);
+
+  b {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--cta, var(--ink));
+    color: var(--cta-ink, var(--bg));
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.hero__title {
+  margin-block: 24px 20px;
+  font-size: clamp(2.6rem, 1.4rem + 4.4vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+
+  .line {
+    display: block;
+    overflow: hidden;
+    padding-block-end: 0.06em;
+  }
+
+  .line > span {
+    display: inline-block;
+  }
+
+  .soft {
+    color: var(--muted);
+    font-size: 0.55em;
+    letter-spacing: -0.035em;
+    margin-block-start: 0.1em;
+  }
+}
+
+.lede {
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.2rem);
+  color: var(--ink-2);
+  max-inline-size: 36ch;
+  margin-block-end: 32px;
+}
+
+// The real cover, framed like Quorum's builder card (a second card peeks out behind it)
+.cover {
+  position: relative;
+  margin: 0;
+  padding-block-start: 18px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 6%;
+    block-size: 60px;
+    border-radius: var(--r-card, 20px);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+  }
+
+  img {
+    position: relative;
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: var(--r-card, 20px);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    background: var(--surface);
+  }
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: clamp(48px, 6vw, 72px) 0 0;
+  padding: 6px;
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  > div {
+    padding: 16px 20px;
+
+    + div {
+      border-inline-start: 1px solid var(--line);
+    }
+  }
+
+  dt {
+    font-size: 13px;
+    color: var(--muted);
+    margin-block-end: 4px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+}
+
+// Entry motion: the headline rises line by line, the rest fades up in reading order.
+@media (prefers-reduced-motion: no-preference) {
+  .hero__title .line > span {
+    transform: translateY(108%);
+    animation: q-rise 1s var(--ease) forwards;
+  }
+
+  .hero__title .line + .line > span {
+    animation-delay: 90ms;
+  }
+
+  .enter {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: q-enter 0.8s var(--ease) forwards;
+    animation-delay: calc(80ms + var(--i, 0) * 120ms);
+  }
+}
+
+@keyframes q-rise {
+  to {
+    transform: none;
+  }
+}
+
+@keyframes q-enter {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// ---------- Problem ----------
+.problem {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(40px, 6vw, 72px);
+  align-items: center;
+}
+
+.prose {
+  color: var(--ink-2);
+  font-size: 1.075rem;
+  max-inline-size: 58ch;
+
+  + .prose {
+    margin-block-start: 16px;
+  }
+}
+
+.definition {
+  padding: clamp(26px, 3.5vw, 40px);
+  border-radius: var(--r-card, 20px);
+  background: var(--q-solid, var(--surface-2));
+  color: var(--q-solid-ink, var(--ink));
+  border: 1px solid var(--q-solid-edge, var(--line));
+  box-shadow: var(--shadow-lg);
+}
+
+.definition__word {
+  font-size: clamp(2.2rem, 1.6rem + 2vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.definition__pos {
+  margin-block: 10px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 62%, transparent);
+}
+
+.definition__text {
+  font-size: 1.2rem;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.definition__note {
+  margin-block-start: 22px;
+  padding-block-start: 18px;
+  border-block-start: 1px solid color-mix(in oklab, var(--q-solid-ink, var(--ink)) 12%, transparent);
+  color: var(--q-accent, var(--ink-2));
+  font-size: 15px;
+}
+
+// ---------- How it works ----------
+.how {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(40px, 6vw, 72px);
+  align-items: start;
+}
+
+.how__head {
+  position: sticky;
+  inset-block-start: 120px;
+}
+
+.steps {
+  display: grid;
+  gap: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 18px;
+  padding: 24px;
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  h3 {
+    margin-block: 2px 6px;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--ink-2);
+  }
+}
+
+.step__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 52px;
+  block-size: 52px;
+  border-radius: 999px;
+  background: var(--q-accent-soft, var(--surface-2));
+  color: var(--q-accent, var(--ink));
+  font-size: 24px;
+}
+
+.step--solid {
+  background: var(--q-solid, var(--surface-2));
+  color: var(--q-solid-ink, var(--ink));
+  border-color: var(--q-solid-edge, var(--line));
+
+  p {
+    color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 74%, transparent);
+  }
+
+  .step__icon {
+    background: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 12%, transparent);
+    color: var(--q-solid-ink, var(--ink));
+  }
+}
+
+// ---------- Design bento (2+1 / 1+2) ----------
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px;
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  h3 {
+    font-size: 1.4rem;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  > p {
+    color: var(--ink-2);
+    font-size: 15px;
+    max-inline-size: 52ch;
+  }
+}
+
+.cell--wide {
+  grid-column: span 2;
+}
+
+.cell--accent {
+  background: var(--q-accent-soft, var(--surface-2));
+  border-color: color-mix(in oklab, var(--q-accent, var(--ink)) 22%, transparent);
+}
+
+.cell--solid {
+  background: var(--q-solid, var(--surface-2));
+  color: var(--q-solid-ink, var(--ink));
+  border-color: var(--q-solid-edge, var(--line));
+
+  > p {
+    color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 74%, transparent);
+  }
+}
+
+.shape {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: end;
+  padding-block-start: 22px;
+}
+
+.shape__chips {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  block-size: 32px;
+  padding-inline: 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+
+  &.is-on {
+    background: var(--cta, var(--ink));
+    border-color: var(--cta, var(--ink));
+    color: var(--cta-ink, var(--bg));
+  }
+}
+
+.shape__card {
+  position: relative;
+  align-self: stretch;
+  min-block-size: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px 14px 14px;
+  border-radius: var(--r-card, 20px);
+  border: 1px dashed var(--line-strong);
+}
+
+.shape__inner {
+  position: relative;
+  block-size: 56%;
+  min-block-size: 72px;
+  border-radius: var(--r-inner, 14px);
+  background: var(--q-solid, var(--surface-2));
+}
+
+.shape__label {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-start: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.swatches {
+  display: grid;
+  gap: 6px;
+  margin-block-start: auto;
+  padding-block-start: 14px;
+  list-style: none;
+  margin-inline: 0;
+  padding-inline: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    block-size: 36px;
+    padding-inline: 5px 14px;
+    border-radius: 999px;
+    background: var(--surface);
+  }
+
+  code {
+    font-size: 12.5px;
+    color: var(--ink-2);
+  }
+}
+
+.sw {
+  inline-size: 26px;
+  block-size: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+}
+
+.sw--bg {
+  background: var(--bg);
+}
+
+.sw--surface {
+  background: var(--surface-2);
+}
+
+.sw--ink {
+  background: var(--ink);
+}
+
+.sw--muted {
+  background: var(--muted);
+}
+
+.sw--accent {
+  background: var(--q-accent, var(--ink-2));
+}
+
+.type {
+  display: grid;
+  gap: 14px;
+  margin-block-start: auto;
+  padding-block-start: 14px;
+}
+
+.type__sans {
+  font-size: 4.5rem;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+}
+
+.type__mono {
+  font-size: 13px;
+  color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 86%, transparent);
+  overflow-wrap: anywhere;
+
+  b {
+    font-weight: 500;
+    color: var(--q-accent, var(--ink));
+  }
+}
+
+.cell mh-quorum-install {
+  margin-block-start: auto;
+  padding-block-start: 14px;
+}
+
+// ---------- Board + reels ----------
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 72px);
+  align-items: center;
+}
+
+.points {
+  display: grid;
+  gap: 14px;
+  margin-block: 28px;
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 12px;
+    color: var(--ink-2);
+    font-size: 15.5px;
+  }
+
+  ng-icon {
+    margin-block-start: 4px;
+    font-size: 18px;
+    color: var(--q-accent, var(--ink));
+  }
+}
+
+.fine {
+  font-size: 14px;
+  color: var(--muted);
+  max-inline-size: 52ch;
+}
+
+.reels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reel {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: box-shadow 0.35s var(--ease);
+
+  &:hover {
+    box-shadow: var(--shadow);
+  }
+
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 500;
+
+    span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+  }
+}
+
+.reel__media {
+  aspect-ratio: 9 / 16;
+  background: var(--surface-2);
+
+  video {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    background: var(--bg);
+  }
+
+  mh-skeleton {
+    block-size: 100%;
+  }
+
+  // the skeleton inherits the card's corners from the overflow clip
+  ::ng-deep .skeleton {
+    border-radius: 0;
+  }
+}
+
+// ---------- Quality ----------
+.quality {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fact {
+  padding: 26px;
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+
+  h3 {
+    margin-block: 16px 6px;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+}
+
+.fact__icon {
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border-radius: 999px;
+  background: var(--q-accent-soft, var(--surface-2));
+  color: var(--q-accent, var(--ink));
+  font-size: 20px;
+}
+
+.log {
+  padding: 26px;
+  border-radius: var(--r-card, 20px);
+  background: var(--q-solid, var(--surface-2));
+  color: var(--q-solid-ink, var(--ink));
+  border: 1px solid var(--q-solid-edge, var(--line));
+
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+    margin-block-end: 18px;
+    font-size: 1.15rem;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  time {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 66%, transparent);
+  }
+
+  ol {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    position: relative;
+    padding-block: 0 16px;
+    padding-inline-start: 22px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    color: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 82%, transparent);
+
+    // the commit line: a node per commit on one continuous rail
+    &::before {
+      content: '';
+      position: absolute;
+      inset-inline-start: 0;
+      inset-block-start: 0.45em;
+      inline-size: 9px;
+      block-size: 9px;
+      border-radius: 999px;
+      border: 1.5px solid var(--q-accent, var(--ink));
+      background: var(--q-solid, var(--surface-2));
+    }
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      inset-inline-start: 4px;
+      inset-block: calc(0.45em + 11px) 2px;
+      inline-size: 1px;
+      background: color-mix(in oklab, var(--q-solid-ink, var(--ink)) 16%, transparent);
+    }
+
+    &:last-child {
+      padding-block-end: 0;
+    }
+  }
+}
+
+// ---------- Outro ----------
+.outro {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: clamp(40px, 7vw, 80px) clamp(22px, 5vw, 64px);
+  border-radius: var(--r-card, 20px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(60% 80% at 50% 0%, color-mix(in oklab, var(--q-accent, var(--ink)) 9%, transparent), transparent 70%);
+  }
+
+  .title,
+  .sub {
+    margin-inline: auto;
+  }
+
+  .sub {
+    margin-block-end: 32px;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}
+
+// ---------- Responsive ----------
+@media (max-width: 1040px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    > div:nth-child(3) {
+      border-inline-start: 0;
+    }
+
+    > div:nth-child(n + 3) {
+      border-block-start: 1px solid var(--line);
+    }
+  }
+
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reels {
+    max-inline-size: 640px;
+  }
+
+  .quality {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .problem,
+  .how {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .how__head {
+    position: static;
+  }
+
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cell--wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .meta {
+    grid-template-columns: minmax(0, 1fr);
+
+    > div + div {
+      border-inline-start: 0;
+      border-block-start: 1px solid var(--line);
+    }
+  }
+
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shape {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cell,
+  .step,
+  .fact,
+  .log {
+    padding: 22px;
+  }
+
+  .step {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .step__icon {
+    inline-size: 44px;
+    block-size: 44px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .reels {
+    gap: 10px;
+  }
+
+  .actions .btn {
+    flex: 1 1 auto;
+  }
+}

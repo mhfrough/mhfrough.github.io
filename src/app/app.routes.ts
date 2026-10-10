@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
 
 /**
- * Same page tree twice: '/' (English) and '/ur' (Urdu, RTL). Language comes from the URL so both
- * are prerendered and indexable. Page components read the language from I18n, never from the route.
- * Route data `theme` switches the whole page (nav + footer included) to a case-study theme.
+ * English only. Route data `theme` switches the whole page (nav + footer included) to a case-study theme.
  */
-const pages: Routes = [
+export const routes: Routes = [
   { path: '', loadComponent: () => import('./pages/home/home').then((m) => m.Home) },
   { path: 'work', loadComponent: () => import('./pages/work/work').then((m) => m.Work) },
   {
@@ -23,9 +21,4 @@ const pages: Routes = [
   // Prerendered as /404/index.html, copied to /404.html after build for static hosts.
   { path: '404', loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound) },
   { path: '**', loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound) },
-];
-
-export const routes: Routes = [
-  { path: 'ur', data: { lang: 'ur' }, children: pages },
-  { path: '', data: { lang: 'en' }, children: pages },
 ];

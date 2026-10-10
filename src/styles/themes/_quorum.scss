@@ -1,0 +1,59 @@
+// Quorum case-study theme: the full-colour version of the site's (Quorum-based) design system.
+// Mirrors the real dark palette of https://mhfrough.github.io/quorum/ (warm off-black, warm ink, one coffee accent).
+// Applied by <html data-theme="quorum"> (route data on /work/quorum). Token overrides only, all scoped to that
+// attribute, so nav + footer + page adopt it and nothing leaks once the attribute is removed on navigation.
+//
+// Shape rule (Quorum's): interactive elements are full pills, containers use --r-card (20px),
+// blocks nested inside a card use --r-inner (14px).
+// Accent rule: one coffee accent (--q-accent) for small highlights only. CTAs stay ink-filled, as on Quorum.
+
+:root[data-theme='quorum'] {
+  // Surfaces
+  --bg: #121110;
+  --bg-raise: #171614;
+  --surface: #1b1a18;
+  --surface-2: #222120;
+  --line: #2f2c29;
+  --line-strong: #403b36;
+
+  // Ink. Contrast on --bg: ink 15.9:1, ink-2 11.6:1, muted 6.4:1 (5.5:1 on --surface-2).
+  --ink: #eeebe6;
+  --ink-2: #cfcac2;
+  --muted: #9c968e;
+  --faint: #5a554f; // decorative only
+
+  // CTA = ink fill (Quorum's --cta). Coffee accent: 7.5:1 on --bg, 6.2:1 on its soft tint, 6.0:1 on --q-solid.
+  --accent: #eeebe6;
+  --accent-ink: #161513;
+  --cta: #eeebe6;
+  --cta-ink: #161513;
+  --focus: #c99a70;
+  --q-accent: #c99a70;
+  --q-accent-ink: #1a1410;
+  --q-accent-soft: #2a221b;
+  --q-solid: #2a2622;
+  --q-solid-ink: #eeebe6;
+  --q-solid-edge: rgb(255 236 215 / 0.09);
+
+  // Glass + elevation (warm-tinted, from Quorum's dark theme)
+  --glass-edge: rgb(255 236 215 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.07);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 18px 40px -18px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 40px 80px -30px rgb(0 0 0 / 0.7);
+
+  // Shape
+  --r-1: 999px;
+  --r-2: 20px;
+  --r-pill: 999px;
+  --r-card: 20px;
+  --r-inner: 14px;
+
+  // Type: Geist + Geist Mono come from the global stylesheet (same families Quorum uses).
+
+  color-scheme: dark;
+
+  ::selection {
+    background: var(--q-accent);
+    color: var(--q-accent-ink);
+  }
+}

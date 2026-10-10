@@ -1,0 +1,280 @@
+<!-- Hero: Quorum's split. Copy left, a working component right. -->
+<section class="hero glow hero-anim" [class.ready]="ready()" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <a class="pill-link rise" routerLink="/hire">
+        <mh-avatar [size]="26" [eager]="true" />
+        <span><span class="mono handle">&#64;mhfrough</span> {{ available ? 'is taking on new projects' : 'is booked for now' }}</span>
+        <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+      </a>
+      <h1 id="hero-title" class="display">
+        <span class="line"><span>Software architect.</span></span>
+        <span class="line soft"><span>Angular at scale.</span></span>
+      </h1>
+      <p class="lede rise d2">
+        I'm Mohammad Hamza. Seven years shipping SaaS, fintech and enterprise platforms with Angular and NestJS.
+      </p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/work">View work <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/hire">Hire me</a>
+      </div>
+    </div>
+    <mh-work-explorer class="rise d2" />
+  </div>
+</section>
+
+<!-- The page's one marquee: the stack -->
+<section class="ask" aria-label="Stack">
+  <div class="ask-row">
+    <span class="ask-label">Works with</span>
+    <div class="marquee">
+      <ul class="track" role="list">
+        @for (s of stackLoop; track $index) {
+          <li class="q" [attr.aria-hidden]="$index >= stack.length ? 'true' : null">{{ s }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- How I work: sticky split -->
+<section class="section" id="how" aria-labelledby="how-title">
+  <div class="wrap how">
+    <div class="how-head" mhReveal>
+      <h2 id="how-title" class="title">From brief to production</h2>
+      <p class="sub">
+        I take a product from the first sketch to a deployed, accessible, searchable app, and set up the team and
+        conventions to keep it that way.
+      </p>
+      <div class="facts">
+        <div><b class="mono">7</b><span>years in production</span></div>
+        <div><b class="mono">14+</b><span>products shipped</span></div>
+        <div><b class="mono">6</b><span>banking apps embed one flow</span></div>
+      </div>
+    </div>
+    <ol class="how-list" role="list">
+      @for (h of how; track h.title; let i = $index) {
+        <li class="card how-item" [class.card--solid]="i === 2" mhReveal [revealIndex]="i">
+          <span class="icon-well"><ng-icon [name]="h.icon" aria-hidden="true" /></span>
+          <div>
+            <h3>{{ h.title }}</h3>
+            <p>{{ h.body }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Selected work: bento -->
+<section class="section work" id="work" aria-labelledby="work-title">
+  <div class="wrap">
+    <div class="center" mhReveal>
+      <h2 id="work-title" class="title">Products I've built</h2>
+      <p class="sub">Banking, tax, investment, fleet, commerce and my own tools. Client names stay private.</p>
+    </div>
+
+    <ul class="bento" role="list">
+      <li class="card card--hover cell wide feature" mhReveal>
+        <a routerLink="/work/quorum" class="feature-link">
+          <div class="feature-text">
+            <span class="badge"><ng-icon name="phosphorSparkle" aria-hidden="true" /> Case study</span>
+            <h3>Quorum</h3>
+            <p>A Claude Code skill where seven AI personalities argue a decision out, vote, and hand back one verdict.</p>
+            <span class="more">Read the case study <ng-icon name="phosphorArrowRight" aria-hidden="true" /></span>
+          </div>
+          <img
+            src="/images/quorum/og-cover.webp"
+            width="1200"
+            height="630"
+            alt="Quorum: one decision, seven minds"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      </li>
+      @for (p of bento; track p.id; let i = $index) {
+        <li class="card card--hover cell" [class.wide]="i === 2" [class.card--solid]="i === 1" mhReveal [revealIndex]="i + 1">
+          <div class="cell-head">
+            <span class="icon-tile"><ng-icon [name]="p.icon" aria-hidden="true" /></span>
+            <div>
+              <h3>{{ p.title }}</h3>
+              <span class="cell-sub">{{ p.sub }} &middot; {{ p.years }}</span>
+            </div>
+          </div>
+          <p>{{ p.outcome }}</p>
+          <ul class="badges" role="list">
+            @for (s of p.stack; track s) {
+              <li class="tag">{{ s }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+
+    <div class="work-more" mhReveal>
+      <a class="btn btn-ghost" routerLink="/work">View work <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+    </div>
+  </div>
+</section>
+
+<!-- Experience: Quorum's "report" card -->
+<section class="section" id="experience" aria-labelledby="exp-title">
+  <div class="wrap report-wrap">
+    <h2 id="exp-title" class="title" mhReveal>Seven years, one stack</h2>
+    <p class="sub" mhReveal>Junior to lead on the same kind of problem: big Angular products that have to keep working.</p>
+
+    <article class="card card--lift report" mhReveal>
+      <header class="report-head">
+        <mh-avatar [size]="48" />
+        <div>
+          <h3>Mohammad Hamza</h3>
+          <p class="q-line">Software architect <span aria-hidden="true">&middot;</span> Karachi, Pakistan (UTC+5)</p>
+        </div>
+      </header>
+
+      <h4><ng-icon name="phosphorBriefcase" aria-hidden="true" /> Experience</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Role</th>
+              <th scope="col">Years</th>
+              <th scope="col">Focus</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of experience; track e.role) {
+              <tr>
+                <td>{{ e.role }}</td>
+                <td class="years">{{ e.years }}</td>
+                <td>{{ e.focus }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h4><ng-icon name="phosphorStack" aria-hidden="true" /> Toolkit</h4>
+      <dl class="kit">
+        @for (k of kit; track k.group) {
+          <div>
+            <dt>{{ k.group }}</dt>
+            <dd>{{ k.items }}</dd>
+          </div>
+        }
+      </dl>
+
+      <p class="result"><b>Education</b> BSc Computer Science, KIET Karachi, 2020. Fluent in English and Urdu.</p>
+    </article>
+  </div>
+</section>
+
+<!-- Reels -->
+<section class="section" id="reels" aria-labelledby="reels-title">
+  <div class="wrap">
+    <div class="center" mhReveal>
+      <h2 id="reels-title" class="title">Motion and product reels</h2>
+      <p class="sub">Short promos I scripted, designed and animated for my own products. Sound on.</p>
+    </div>
+    <div class="reels">
+      @for (r of reels; track r.src) {
+        <figure class="reel" mhReveal>
+          @defer (on viewport) {
+            <div class="reel-media">
+              <video controls playsinline preload="none" [poster]="r.poster" width="720" height="1280">
+                <source [src]="r.src" type="video/mp4" />
+                <track kind="captions" srclang="en" label="English" [src]="r.captions" default />
+              </video>
+            </div>
+          } @placeholder (minimum 300ms) {
+            <div class="reel-media"><mh-skeleton shape="block" ratio="9/16" /></div>
+          }
+          <figcaption>{{ r.title }} <span>{{ r.meta }}</span></figcaption>
+        </figure>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Hire: Quorum's install panels -->
+<section class="section" id="hire" aria-labelledby="hire-title">
+  <div class="wrap">
+    <h2 id="hire-title" class="title" mhReveal>Work with me</h2>
+    <p class="sub" mhReveal>Freelance projects, contract work or a second pair of eyes on an Angular codebase.</p>
+
+    <div class="install">
+      <div class="card panel" mhReveal>
+        <h3>Ways to work together</h3>
+        <div class="seg" role="tablist" aria-label="Engagement type">
+          @for (o of offers; track o.id) {
+            <button
+              type="button"
+              role="tab"
+              [id]="'tab-' + o.id"
+              [attr.aria-selected]="offer().id === o.id"
+              [attr.aria-controls]="'panel-' + o.id"
+              [attr.tabindex]="offer().id === o.id ? 0 : -1"
+              (click)="offerId.set(o.id)"
+              (keydown)="onTabKey($event)"
+            >
+              {{ o.label }}
+            </button>
+          }
+        </div>
+        @for (o of offers; track o.id) {
+          <div class="code" role="tabpanel" [id]="'panel-' + o.id" [attr.aria-labelledby]="'tab-' + o.id" [hidden]="offer().id !== o.id">
+            <p class="offer-title">{{ o.title }}</p>
+            <ul role="list">
+              @for (pt of o.points; track pt) {
+                <li><ng-icon name="phosphorCheck" aria-hidden="true" /> {{ pt }}</li>
+              }
+            </ul>
+          </div>
+        }
+        <p class="after">
+          <ng-icon name="phosphorClock" aria-hidden="true" />
+          <span>Based in Karachi (UTC+5), so my day overlaps UK and EU mornings and afternoons.</span>
+        </p>
+        <a class="btn btn-solid panel-cta" routerLink="/hire">Hire me <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+      </div>
+
+      <div class="card panel" mhReveal [revealIndex]="1">
+        <h3>Good fits</h3>
+        <div class="flags">
+          @for (f of fits; track f.k) {
+            <div class="flag">
+              <code>{{ f.k }}</code>
+              <span>{{ f.v }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <div class="card card--lift contact-card center" mhReveal>
+      <h2 id="contact-title" class="title">Have a project in mind?</h2>
+      <p class="sub">Tell me what you're building. I reply to every message myself.</p>
+      <div class="cmd contact-cmd">
+        <span class="prompt" aria-hidden="true">mail</span>
+        <code>{{ email }}</code>
+        <button type="button" class="copy" (click)="copyEmail()" [attr.aria-label]="copied() ? 'Email copied' : 'Copy email address'">
+          <ng-icon [name]="copied() ? 'phosphorCheck' : 'phosphorCopy'" aria-hidden="true" />
+          {{ copied() ? 'Copied' : 'Copy' }}
+        </button>
+      </div>
+      <div class="contact-actions">
+        <a class="btn btn-solid" routerLink="/contact">Get in touch</a>
+        <a class="icon-btn" [href]="social.github" target="_blank" rel="me noopener" aria-label="GitHub"><ng-icon name="phosphorGithubLogo" aria-hidden="true" /></a>
+        <a class="icon-btn" [href]="social.linkedin" target="_blank" rel="me noopener" aria-label="LinkedIn"><ng-icon name="phosphorLinkedinLogo" aria-hidden="true" /></a>
+        <a class="icon-btn" [href]="social.dribbble" target="_blank" rel="me noopener" aria-label="Dribbble"><ng-icon name="phosphorDribbbleLogo" aria-hidden="true" /></a>
+      </div>
+      <span class="sr-only" aria-live="polite">{{ copied() ? 'Email address copied' : '' }}</span>
+    </div>
+  </div>
+</section>

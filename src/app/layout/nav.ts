@@ -1,47 +1,50 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { NavigationStart, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorList, phosphorX } from '@ng-icons/phosphor-icons/regular';
-import { I18n, LocPipe } from '../core/i18n/i18n.service';
+import { phosphorGithubLogo, phosphorList, phosphorX } from '@ng-icons/phosphor-icons/regular';
+import { SITE } from '../core/site.config';
 import { Logo } from '../shared/ui/logo';
 import { LAYOUT_COPY } from './layout.copy';
 
 /**
- * Floating nav: a 56px bar that hovers over content with a small radius and a glass fill
- * (solid fallback for no backdrop-filter / reduced transparency). One line at every width.
- * Below 760px the links fold into a disclosure panel anchored to the bar.
+ * Floating glass nav, as on Quorum: a pill that hovers over content, tinted to the page, with a
+ * 1px inner highlight. Side padding and max-width match .wrap so the pill lines up with sections.
+ * Active link gets a dot underneath. Below 820px the links fold into a dropdown card.
  */
 @Component({
   selector: 'mh-nav',
-  imports: [RouterLink, RouterLinkActive, NgIcon, Logo, LocPipe],
-  viewProviders: [provideIcons({ phosphorList, phosphorX })],
+  imports: [RouterLink, RouterLinkActive, NgIcon, Logo],
+  viewProviders: [provideIcons({ phosphorList, phosphorX, phosphorGithubLogo })],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { '(document:keydown.escape)': 'close()' },
   template: `
-    <header class="nav" role="banner">
-      <nav class="bar" [attr.aria-label]="'Primary'">
-        <a class="home" [routerLink]="'/' | loc" [attr.aria-label]="t().homeLabel">
-          <mh-logo [size]="28" [wordmark]="true" />
+    <header class="nav">
+      <nav class="nav-inner" aria-label="Primary">
+        <a class="brand" routerLink="/" [attr.aria-label]="t.homeLabel">
+          <span class="brand-mark"><mh-logo [size]="22" /></span>
+          <span class="brand-text">Mohammad Hamza</span>
         </a>
 
-        <ul class="links" role="list">
+        <ul class="nav-links" role="list">
           @for (l of links; track l.path) {
             <li>
-              <a [routerLink]="l.path | loc" routerLinkActive="is-active" ariaCurrentWhenActive="page">{{ t().nav[l.key] }}</a>
+              <a [routerLink]="l.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{ l.label }}</a>
             </li>
           }
         </ul>
 
-        <div class="end">
-          <a class="lang" [routerLink]="i18n.alternateHref()" [attr.hreflang]="i18n.other()" [attr.lang]="i18n.other()" [attr.aria-label]="t().langSwitchLabel">{{ t().langSwitch }}</a>
-          <a class="btn btn--primary btn--sm cta" [routerLink]="'/hire' | loc">{{ t().hire }}</a>
+        <div class="nav-right">
+          <a class="icon-btn" [href]="github" target="_blank" rel="me noopener" aria-label="GitHub profile">
+            <ng-icon name="phosphorGithubLogo" aria-hidden="true" />
+          </a>
+          <a class="btn btn-solid btn-sm cta" routerLink="/hire">{{ t.hire }}</a>
           <button
             #toggle
             type="button"
             class="icon-btn menu-btn"
             [attr.aria-expanded]="open()"
-            aria-controls="mobile-menu"
-            [attr.aria-label]="open() ? t().close : t().menu"
+            aria-controls="nav-menu"
+            [attr.aria-label]="open() ? t.close : t.menu"
             (click)="open.set(!open())"
           >
             <ng-icon [name]="open() ? 'phosphorX' : 'phosphorList'" aria-hidden="true" />
@@ -49,12 +52,12 @@ import { LAYOUT_COPY } from './layout.copy';
         </div>
       </nav>
 
-      <div id="mobile-menu" class="panel" [hidden]="!open()">
+      <div id="nav-menu" class="menu" [hidden]="!open()">
         <ul role="list">
           @for (l of links; track l.path) {
-            <li><a [routerLink]="l.path | loc" routerLinkActive="is-active" ariaCurrentWhenActive="page">{{ t().nav[l.key] }}</a></li>
+            <li><a [routerLink]="l.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{ l.label }}</a></li>
           }
-          <li><a [routerLink]="'/hire' | loc">{{ t().hire }}</a></li>
+          <li><a routerLink="/hire" routerLinkActive="active">{{ t.hire }}</a></li>
         </ul>
       </div>
     </header>
@@ -62,161 +65,184 @@ import { LAYOUT_COPY } from './layout.copy';
   styles: `
     :host {
       position: sticky;
-      inset-block-start: var(--nav-top);
+      top: var(--nav-top);
       z-index: var(--z-nav);
       display: block;
-      padding-inline: var(--gutter);
-      margin-block-start: var(--nav-top);
+      padding: var(--nav-top) var(--gutter) 0;
       pointer-events: none;
     }
     .nav {
       position: relative;
-      max-inline-size: 960px;
-      margin-inline: auto;
-      pointer-events: auto;
+      max-width: calc(var(--max) - 48px);
+      margin: 0 auto;
     }
-    .bar {
+    .nav-inner {
+      pointer-events: auto;
+      height: var(--nav-h);
+      padding: 0 10px 0 14px;
+      border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: var(--s-5);
-      block-size: var(--nav-h);
-      padding-inline: var(--s-4) var(--s-2);
-      border-radius: var(--r-2);
-      border: 1px solid color-mix(in oklab, var(--line-strong) 80%, transparent);
-      background: color-mix(in oklab, var(--bg-raise) 72%, transparent);
-      -webkit-backdrop-filter: blur(16px) saturate(1.4);
-      backdrop-filter: blur(16px) saturate(1.4);
+      justify-content: space-between;
+      gap: 16px;
+      background: color-mix(in oklab, var(--surface) 62%, transparent);
+      -webkit-backdrop-filter: blur(18px) saturate(1.6);
+      backdrop-filter: blur(18px) saturate(1.6);
+      border: 1px solid var(--glass-edge);
       box-shadow:
-        inset 0 1px 0 color-mix(in oklab, var(--ink) 6%, transparent),
-        0 12px 32px -16px rgb(0 0 0 / 0.7);
+        inset 0 1px 0 var(--glass-hi),
+        0 8px 24px -12px rgb(0 0 0 / 0.5);
     }
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-      .bar {
-        background: var(--bg-raise);
+      .nav-inner {
+        background: var(--surface);
       }
     }
     @media (prefers-reduced-transparency: reduce) {
-      .bar {
-        background: var(--bg-raise);
+      .nav-inner {
+        background: var(--surface);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
     }
-    .home {
-      display: inline-flex;
-      border-radius: var(--r-1);
-    }
-    .links {
-      display: flex;
-      gap: var(--s-1);
-      margin-inline-start: auto;
-    }
-    .links a {
-      display: inline-flex;
-      align-items: center;
-      block-size: 36px;
-      padding-inline: var(--s-3);
-      border-radius: var(--r-1);
-      font-size: var(--fs-14);
-      color: var(--ink-2);
-      transition:
-        color var(--t-fast) var(--ease),
-        background-color var(--t-fast) var(--ease);
-    }
-    .links a:hover {
-      color: var(--ink);
-    }
-    .links a.is-active {
-      color: var(--ink);
-      background: var(--surface-2);
-    }
-    .end {
+    .brand {
       display: flex;
       align-items: center;
-      gap: var(--s-2);
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      border-radius: 999px;
     }
-    .lang {
-      display: inline-flex;
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--cta);
+      color: var(--cta-ink);
+      display: grid;
+      place-items: center;
+    }
+    .nav-links {
+      display: flex;
       align-items: center;
-      block-size: 36px;
-      padding-inline: var(--s-3);
-      border-radius: var(--r-1);
-      font-size: var(--fs-14);
+      gap: 28px;
+      font-size: 15px;
       color: var(--ink-2);
     }
-    .lang:hover {
+    .nav-links a {
+      position: relative;
+      transition: color var(--t-fast) var(--ease);
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
       color: var(--ink);
     }
-    .lang:lang(ur) {
-      font-family: var(--font-urdu);
-      font-size: var(--fs-16);
-      line-height: 1;
-      padding-block-end: 4px;
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -9px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      transform: translateX(-50%) scale(0);
+      transition: transform var(--t-base) var(--ease);
     }
-    .lang:lang(en) {
-      font-family: var(--font-sans);
+    .nav-links a.active::after {
+      transform: translateX(-50%) scale(1);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .menu-btn {
       display: none;
     }
-    .panel {
+    .menu {
+      pointer-events: auto;
       position: absolute;
-      inset-inline: 0;
-      inset-block-start: calc(100% + var(--s-2));
-      padding: var(--s-2);
-      border-radius: var(--r-2);
-      border: 1px solid var(--line-strong);
-      background: var(--bg-raise);
-      box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.8);
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      padding: 6px;
+      border-radius: var(--r-card);
+      border: 1px solid var(--line);
+      background: var(--surface);
+      box-shadow: var(--shadow-lg);
     }
-    .panel ul {
+    @media (prefers-reduced-motion: no-preference) {
+      .menu:not([hidden]) {
+        animation: drop 0.22s var(--ease);
+      }
+    }
+    @keyframes drop {
+      from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+      }
+    }
+    .menu ul {
       display: grid;
       gap: 2px;
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    .panel a {
+    .menu a {
       display: flex;
       align-items: center;
-      block-size: 48px;
-      padding-inline: var(--s-4);
-      border-radius: var(--r-1);
-      font-size: var(--fs-18);
+      min-height: 48px;
+      padding: 0 16px;
+      border-radius: var(--r-inner);
+      font-size: 16px;
+      color: var(--ink-2);
     }
-    .panel a:hover,
-    .panel a.is-active {
+    .menu a:hover,
+    .menu a.active {
       background: var(--surface-2);
+      color: var(--ink);
     }
-    @media (max-width: 760px) {
-      .links,
-      .cta {
+    @media (max-width: 820px) {
+      .nav-links {
         display: none;
-      }
-      .end {
-        margin-inline-start: auto;
       }
       .menu-btn {
         display: inline-grid;
       }
     }
-    @media (min-width: 761px) {
-      .panel {
+    @media (min-width: 821px) {
+      .menu {
+        display: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .nav-inner {
+        padding: 0 8px 0 10px;
+      }
+      .cta {
+        display: none;
+      }
+    }
+    @media (max-width: 400px) {
+      .brand-text {
         display: none;
       }
     }
   `,
 })
 export class Nav {
-  protected readonly i18n = inject(I18n);
-  protected readonly t = this.i18n.select(LAYOUT_COPY);
+  protected readonly t = LAYOUT_COPY;
+  protected readonly github = SITE.social.github;
   protected readonly open = signal(false);
   private readonly toggle = viewChild<ElementRef<HTMLButtonElement>>('toggle');
   protected readonly links = [
-    { key: 'work', path: '/work' },
-    { key: 'brand', path: '/brand' },
-    { key: 'contact', path: '/contact' },
-  ] as const;
+    { label: LAYOUT_COPY.nav.work, path: '/work' },
+    { label: LAYOUT_COPY.nav.brand, path: '/brand' },
+    { label: LAYOUT_COPY.nav.contact, path: '/contact' },
+  ];
 
   constructor() {
     inject(Router).events.subscribe((e) => {

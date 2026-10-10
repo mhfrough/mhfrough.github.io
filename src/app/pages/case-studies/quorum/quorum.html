@@ -1,0 +1,252 @@
+<mh-quorum-theme />
+
+<!-- Hero: split, copy left, the real Quorum cover right -->
+<section class="hero" aria-labelledby="q-title">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="pill enter" style="--i: 0"><b>{{ c.hero.pillTag }}</b>{{ c.hero.pill }}</p>
+      <h1 id="q-title" class="hero__title">
+        <span class="line"><span>{{ c.hero.title }}</span></span>
+        <span class="line soft"><span>{{ c.hero.titleSoft }}</span></span>
+      </h1>
+      <p class="lede enter" style="--i: 2">{{ c.hero.lede }}</p>
+      <div class="actions enter" style="--i: 3">
+        <a class="btn btn--primary" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn--ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" />{{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+      </div>
+    </div>
+
+    <figure class="cover">
+      <img
+        src="/images/quorum/og-cover.webp"
+        width="1200"
+        height="630"
+        fetchpriority="high"
+        decoding="async"
+        [alt]="c.hero.coverAlt"
+      />
+    </figure>
+  </div>
+
+  <div class="container">
+    <dl class="meta enter" style="--i: 4">
+      @for (m of c.hero.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Problem and idea: prose + a definition card -->
+<section class="block" aria-labelledby="q-problem">
+  <div class="container problem">
+    <div class="problem__text" mhReveal>
+      <h2 id="q-problem" class="title">{{ c.problem.title }}</h2>
+      @for (p of c.problem.body; track $index) {
+        <p class="prose">{{ p }}</p>
+      }
+    </div>
+    <aside class="definition" mhReveal [revealIndex]="1" aria-label="Definition">
+      <p class="definition__word">{{ c.problem.defWord }}</p>
+      <p class="definition__pos">{{ c.problem.defPos }}</p>
+      <p class="definition__text">{{ c.problem.def }}</p>
+      <p class="definition__note">{{ c.problem.defNote }}</p>
+    </aside>
+  </div>
+</section>
+
+<!-- The council -->
+<section class="block block--tight" aria-labelledby="q-council">
+  <div class="container">
+    <header class="head" mhReveal>
+      <h2 id="q-council" class="title">{{ c.council.title }}</h2>
+      <p class="sub">{{ c.council.sub }}</p>
+    </header>
+    <mh-quorum-council mhReveal />
+  </div>
+</section>
+
+<!-- How it works: sticky head + steps -->
+<section class="block" aria-labelledby="q-how">
+  <div class="container how">
+    <header class="how__head" mhReveal>
+      <h2 id="q-how" class="title">{{ c.how.title }}</h2>
+      <p class="sub">{{ c.how.sub }}</p>
+    </header>
+    <ol class="steps" role="list">
+      @for (s of c.how.steps; track s.t; let i = $index) {
+        <li class="step" [class.step--solid]="i === 2" mhReveal [revealIndex]="i">
+          <span class="step__icon" aria-hidden="true"><ng-icon [name]="s.icon" /></span>
+          <div>
+            <h3>{{ s.t }}</h3>
+            <p>{{ s.d }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Working tally -->
+<section class="block block--tight" aria-labelledby="q-vote">
+  <div class="container">
+    <header class="head head--center" mhReveal>
+      <h2 id="q-vote" class="title">{{ c.vote.title }}</h2>
+      <p class="sub">{{ c.vote.sub }}</p>
+    </header>
+    <mh-quorum-vote mhReveal />
+  </div>
+</section>
+
+<!-- Design system: bento of live specimens -->
+<section class="block" aria-labelledby="q-design">
+  <div class="container">
+    <header class="head" mhReveal>
+      <h2 id="q-design" class="title">{{ c.design.title }}</h2>
+      <p class="sub">{{ c.design.sub }}</p>
+    </header>
+
+    <div class="bento">
+      <article class="cell cell--wide" mhReveal>
+        <h3>{{ c.design.shapeT }}</h3>
+        <p>{{ c.design.shapeD }}</p>
+        <div class="shape" aria-hidden="true">
+          <div class="shape__chips">
+            @for (chip of c.design.shapeChips; track chip; let i = $index) {
+              <span class="chip" [class.is-on]="i === 0">{{ chip }}</span>
+            }
+          </div>
+          <div class="shape__card">
+            <span class="shape__label">20px</span>
+            <div class="shape__inner"><span class="shape__label">14px</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="cell cell--accent" mhReveal [revealIndex]="1">
+        <h3>{{ c.design.paletteT }}</h3>
+        <p>{{ c.design.paletteD }}</p>
+        <ul class="swatches" role="list">
+          <li><span class="sw sw--bg" aria-hidden="true"></span><code>#121110</code></li>
+          <li><span class="sw sw--surface" aria-hidden="true"></span><code>#1B1A18</code></li>
+          <li><span class="sw sw--ink" aria-hidden="true"></span><code>#EEEBE6</code></li>
+          <li><span class="sw sw--muted" aria-hidden="true"></span><code>#9C968E</code></li>
+          <li><span class="sw sw--accent" aria-hidden="true"></span><code>#C99A70</code></li>
+        </ul>
+      </article>
+
+      <article class="cell cell--solid" mhReveal>
+        <h3>{{ c.design.typeT }}</h3>
+        <p>{{ c.design.typeD }}</p>
+        <div class="type" aria-hidden="true">
+          <span class="type__sans">Aa</span>
+          <code class="type__mono"><b>/quorum</b> "Should I take the offer?"</code>
+        </div>
+      </article>
+
+      <article class="cell cell--wide" mhReveal [revealIndex]="1">
+        <h3>{{ c.design.installT }}</h3>
+        <p>{{ c.design.installD }}</p>
+        <mh-quorum-install />
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- The board + reels -->
+<section class="block" aria-labelledby="q-board">
+  <div class="container board">
+    <div class="board__text" mhReveal>
+      <h2 id="q-board" class="title">{{ c.board.title }}</h2>
+      <p class="sub">{{ c.board.sub }}</p>
+      <ul class="points" role="list">
+        @for (p of c.board.points; track $index) {
+          <li><ng-icon name="phosphorCube" aria-hidden="true" />{{ p }}</li>
+        }
+      </ul>
+      <p class="fine">{{ c.board.reelNote }}</p>
+    </div>
+
+    <div class="reels" role="group" [attr.aria-label]="c.board.reelsLabel">
+      @for (r of c.board.reels; track r.slug; let i = $index) {
+        <figure class="reel" mhReveal [revealIndex]="i">
+          <div class="reel__media">
+            @defer (on viewport) {
+              <video
+                controls
+                playsinline
+                preload="none"
+                width="720"
+                height="1280"
+                [poster]="'/images/quorum/' + r.slug + '.webp'"
+                [attr.aria-label]="r.aria"
+                (play)="onPlay($event)"
+              >
+                <source [src]="'https://mhfrough.github.io/quorum/videos/' + r.slug + '.mp4'" type="video/mp4" />
+                <track kind="captions" srclang="en" label="English" [src]="'/media/quorum/' + r.slug + '.en.vtt'" />
+              </video>
+            } @placeholder (minimum 300ms) {
+              <mh-skeleton shape="block" ratio="9/16" />
+            }
+          </div>
+          <figcaption>{{ r.t }}<span>{{ r.d }}</span></figcaption>
+        </figure>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Engineering and quality -->
+<section class="block" aria-labelledby="q-quality">
+  <div class="container">
+    <header class="head" mhReveal>
+      <h2 id="q-quality" class="title">{{ c.quality.title }}</h2>
+      <p class="sub">{{ c.quality.sub }}</p>
+    </header>
+    <div class="quality">
+      <ul class="facts" role="list">
+        @for (f of c.quality.items; track f.t; let i = $index) {
+          <li class="fact" mhReveal [revealIndex]="i % 2">
+            <span class="fact__icon" aria-hidden="true"><ng-icon [name]="f.icon" /></span>
+            <h3>{{ f.t }}</h3>
+            <p>{{ f.d }}</p>
+          </li>
+        }
+      </ul>
+      <section class="log" mhReveal [revealIndex]="1" aria-labelledby="q-log">
+        <h3 id="q-log">{{ c.quality.logTitle }} <time datetime="2026-10-08">8 Oct 2026</time></h3>
+        <ol role="list">
+          @for (l of c.quality.log; track $index) {
+            <li>{{ l }}</li>
+          }
+        </ol>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- Outro -->
+<section class="block block--tight block--end" aria-labelledby="q-outro">
+  <div class="container">
+    <div class="outro" mhReveal>
+      <h2 id="q-outro" class="title">{{ c.outro.title }}</h2>
+      <p class="sub">{{ c.outro.body }}</p>
+      <div class="actions">
+        <a class="btn btn--primary" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn--ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" />{{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn--ghost" routerLink="/work"><ng-icon name="phosphorArrowLeft" aria-hidden="true" />{{ c.outro.work }}</a>
+      </div>
+    </div>
+  </div>
+</section>

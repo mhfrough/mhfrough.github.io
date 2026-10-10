@@ -1,8 +1,8 @@
 # mhfrough.dev
 
 Personal brand site for **Mohammad Hamza (@mhfrough)**, software architect (Angular, NestJS, multi-tenant SaaS).
-Frontend only (no backend yet). Angular 21, standalone, zoneless, signals, static prerender (SSG) of every route in two
-languages. Dark mode only. Deployed as static files (target: GitHub Pages or Cloudflare Pages on `mhfrough.dev`).
+Frontend only (no backend yet). Angular 21, standalone, zoneless, signals, static prerender (SSG) of every route.
+English only. Dark mode only. Deployed as static files (target: GitHub Pages or Cloudflare Pages on `mhfrough.dev`).
 
 ## Disk rule (C: is full)
 
@@ -27,67 +27,61 @@ Node is 22.12, which is why we are on Angular 21 (Angular 22 needs Node >= 22.22
 - `npm start` : dev server on :4300.
 - `npm run e2e` : Playwright (+ axe). `npm run lighthouse` : Lighthouse on the built site.
 
-## Design read (Taste Skill, `.devcache/taste/repo/skills/taste-skill/SKILL.md`)
+## Design system: Quorum, in black and white (owner decision, 2026-10-10)
 
-Reading this as: **developer + designer portfolio for hiring managers and freelance clients, with a monochrome,
-mathematical / geometric language, leaning toward native CSS in Angular (no UI kit), Geist + JetBrains Mono, restrained
-content-level motion.** Dials: `DESIGN_VARIANCE 7`, `MOTION_INTENSITY 5`, `VISUAL_DENSITY 4`.
+The owner wants the whole site to look and feel like his Quorum product site
+(`D:workspace-personalquorumindex.html`, live https://mhfrough.github.io/quorum/), re-skinned monochrome.
+An earlier "mathematical blocks / tiny radius / brackets" direction was rejected as childish. **Before designing any
+page, open the Quorum site (or read its index.html CSS + markup) and copy its patterns, spacing and proportions.**
+Urdu was removed: English only, no /ur, no RTL work.
 
-### Brand rules (hard)
+Quorum patterns to reuse (all already ported as global classes in `src/styles/_components.scss`):
+- Floating glass pill nav (done, `src/app/layout/nav.ts`), brand mark = rounded 10px square with the ء mark.
+- Hero: left column = `.pill-link` (solid tag + text + arrow), `.display` headline in two `.line` spans with the
+  second line `.soft` (muted), `.lede`, then actions (`.btn .btn-solid` + `.btn .btn-ghost`) or a `.cmd` mono bar.
+  Right column = a real working component in a `.card.card--lift` (like Quorum's "Build your Quorum" builder), never
+  a fake screenshot. Hero sits in `.glow`. Entry motion: wrap hero in `.hero-anim`, add `.ready` in
+  `afterNextRender`; use `.rise .d2 .d4` on items.
+- Sections: `<section class="section">` + `.wrap`; head = `h2.title` (max 18ch) + `p.sub` (56ch); content starts
+  ~44px below. Centered heads use `.center`.
+- Cards: `.card` (surface, 1px line, 20px radius, 26px padding), `.card--hover` (lift 3px + shadow),
+  `.card--solid` (inverted featured cell), `.card--lift` (shadow-lg). Bento grids like Quorum's "seven" (3 columns,
+  `.wide` spans 2, mixed solid/plain cells). Sticky split like Quorum's "How a council runs" (left sticky head,
+  right stacked `.card` items with `.icon-well`). Paired rows like Quorum's "tensions". Reels row (`.reels .reel
+  .reel-media`). One `.marquee` max per page.
+- Pills: `.chip` (aria-pressed toggles), `.badge`, `.tag` (mono badge), `.seg` segmented tabs, `.copy` button on
+  dark blocks, `.code` block, `.cmd` bar, `.icon-btn`, `.icon-tile`.
+- Forms: pill `.input`/`.select` (46px), `.textarea` (14px radius), `.field` + `.field__label` above,
+  `.field__hint`, `.field__error` below, `.check`.
+- Tokens (`src/styles/_tokens.scss`): `--bg #111`, `--surface #1a1a1a`, `--surface-2 #222`, `--ink #ededed`,
+  `--ink-2`, `--muted`, `--line`, `--accent` (= ink), `--accent-soft`, `--solid`, `--cta`, `--shadow`,
+  `--shadow-lg`, `--glass-edge`, `--glass-hi`, `--r-card 20px`, `--r-inner 14px`, pills 999px. Never hard-code
+  colors in pages; case-study themes override tokens in `src/styles/themes/`.
+- Type: Geist Variable + Geist Mono Variable only. Mono for commands, metadata, numbers, small captions.
+- Icons: Phosphor regular via `@ng-icons/phosphor-icons/regular` + `viewProviders: [provideIcons({...})]`.
+- Motion: `.hero-anim`/`.ready`, `[mhReveal]` (+ `[revealIndex]` for 55ms stagger), transform/opacity only,
+  everything gated by `prefers-reduced-motion`. Looping animations pause off-screen.
+- Skeletons: `<mh-skeleton>` inside `@defer (on viewport) { } @placeholder (minimum 300ms) { }` for heavy or
+  below-the-fold media; SEO text stays server-rendered.
 
-- **Dark only, monochrome.** No accent hue. CTAs invert (ink fill, bg text). Use only tokens from
-  `src/styles/_tokens.scss`. Never hard-code hex in components (case-study themes are the only exception and live in
-  `src/styles/themes/`).
-- **Small radius:** `--r-1` 2px (tags, inputs), `--r-2` 4px (buttons, cards, nav, media). Avatar is the one circle.
-- **Type:** Geist for text and headings, JetBrains Mono for metadata, numbers, handles, code, labels. Urdu uses
-  Noto Nastaliq Urdu automatically via `:root[lang='ur']`. Emphasis = weight or italic of the same family, never a serif.
-- **Math / geometry motif, used with intent:** matrix brackets, function notation `f(x)`, set notation, axes with ticks,
-  the end-of-proof mark `∎` (`.qed`), compass-and-straightedge construction lines, the ء mark's own geometry.
-  Lines and grids must organize real content, never decorate empty space.
-- **Logo:** `mh-logo` (`src/app/shared/ui/logo.ts`). The ء is a 225 degree arc landing on a bar on a 48 grid. Never
-  redraw it.
-- **Global primitives** in `src/styles/_components.scss`: `.container .section .page-head .display .h1 .h2 .h3 .lede
-  .body .muted .mono .label .math .qed .link .btn(.btn--primary|--ghost|--quiet|--sm) .icon-btn .tag .tag-list .block
-  .block--ticks .field .field__label .field__hint .field__error .input .select .textarea .check .skeleton .sr-only`.
-  Use them. Do not restyle them per page.
-- **Icons:** Phosphor only, via `@ng-icons/phosphor-icons/regular` + `viewProviders: [provideIcons({...})]`. Never
-  hand-draw icon SVG paths.
-- **Motion:** content only. `mhReveal` directive (`src/app/shared/directives/reveal.directive.ts`) for scroll
-  reveals, `.rise > span` for masked headline lines, `.fade-in`. Only `transform`/`opacity`. Everything gated by
-  `prefers-reduced-motion`. No `window` scroll listeners (IntersectionObserver or CSS scroll timelines only).
-- **Owner's taste (learned, keep):** liked generative glyph-field hero canvas (`·` `+` `ء`), masked title rises,
-  scroll staggers, a single tech marquee, hover project previews, the Karachi local-time line, the footer availability
-  link. **Rejected:** custom cursors, magnetic buttons, animated link underlines, big footer CTA text, vertical hairline
-  dividers in the footer.
-- **Copy:** zero em dashes or en dashes anywhere visible (use `-`, commas, colons, periods). No filler verbs (elevate,
-  seamless, unleash, next-gen). No fake numbers: only facts from the CV (7 years, 14+ products, 6 banking apps, etc.).
-  Max one small uppercase eyebrow per three sections. No section numbering labels (`01 /`), no scroll cues, no version
-  stamps, no decorative status dots (the footer availability mark is the one semantic exception).
-- **Never name employers** (no Arittek, Nearby Cars/Nearby Group, Malik Tech). Describe work by domain and scale
-  ("tax-filing platform embedded in 6 banking apps"). Do not name client banks either.
-- **One label per CTA intent across the whole site:** portfolio = "View work", hire info = "Hire me", contact =
-  "Get in touch", form submit = "Send message".
+Owner's taste (keep): restrained, polished, Quorum-level craft. Rejected: custom cursors, magnetic buttons, animated
+link underlines, big footer CTA text, vertical hairline dividers in the footer, childish/decorative geometry.
+
+### Copy rules
+Zero em dashes or en dashes in visible text. No filler verbs (elevate, seamless, unleash). Facts only from
+`docs/content.md` (7 years, 14+ products, 6 banking apps, 4 Angular apps...). **Never name employers** (Arittek,
+Nearby Cars / Nearby Group, Malik Tech) or client banks. One label per CTA intent site-wide: portfolio "View work",
+hire info "Hire me", contact "Get in touch", form submit "Send message".
 
 ### Engineering rules
-
-- Standalone components, `ChangeDetectionStrategy.OnPush`, signals, `input()`/`output()`, new control flow
-  (`@if/@for/@defer`). Inline templates/styles are fine; split into `.html/.scss` files when a page is large.
-- **i18n:** all visible strings live in a `Copy<T>` object (`{ en, ur }`) next to the page, read via
-  `inject(I18n).select(COPY)`. Links use the `loc` pipe: `[routerLink]="'/hire' | loc"`. Latin tech terms inside Urdu
-  stay Latin (wrap in `<span lang="en" dir="ltr">` or use `.tag`). Use logical CSS properties
-  (`margin-inline-start`, `inset-inline-end`, `padding-block`) so RTL mirrors without extra CSS.
-- **SEO:** every page calls `inject(Seo).set({...})` in its constructor with localized title/description, `path`
-  (language-less), optional `breadcrumbs`, `image`, and extra `jsonLd` nodes.
-- **SSR safety:** pages are prerendered in Node. Touch `window`, `document`, `matchMedia`, canvas only inside
-  `afterNextRender` or `@defer`. 
-- **Skeletons:** heavy or below-the-fold media/interactive parts use
-  `@defer (on viewport) { ... } @placeholder (minimum 300ms) { <mh-skeleton ... /> }`. Content that matters for SEO
-  must stay server-rendered (plain markup, or `@defer (hydrate on viewport)`).
-- **Images:** WebP or SVG, explicit `width`/`height`, `loading="lazy"` + `decoding="async"` below the fold,
-  `fetchpriority="high"` for the LCP image. Put files under `public/images/...`. Convert with sharp
-  (`node_modules/sharp`). Videos: `preload="none"`, poster WebP, captions `<track>`.
-- **a11y:** WCAG 2.1 AA. Landmarks, one `h1` per page, heading order, visible focus, labels above inputs, error text
-  below inputs linked by `aria-describedby`, 44px targets, `aria-current` on active nav.
+- Standalone components, OnPush, signals, `input()`, new control flow. Copy in plain `const` objects (no i18n).
+  Plain router paths (`routerLink="/hire"`). Do not import from `core/i18n` (deprecated shim, to be deleted).
+- SEO: every page calls `inject(Seo).set({ title, description, path, breadcrumbs?, image?, jsonLd? })` in its
+  constructor. Import `PERSON_ID`, `abs` from `core/seo/seo.service`. OG images live in `public/og/`.
+- SSR safety: `window`/`document`/canvas only inside `afterNextRender` or `@defer`.
+- Images WebP/SVG with width/height, lazy below the fold, `fetchpriority="high"` on the LCP image.
+- a11y WCAG 2.1 AA: one h1, heading order, focus visible, labels above inputs, errors linked with
+  `aria-describedby`, 44px targets.
 
 ## File ownership (parallel agents)
 

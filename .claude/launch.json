@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mhfrough-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "--port", "4300"],
+      "port": 4300,
+      "env": {
+        "npm_config_cache": "D:\workspace-personal\mhfrough.dev\.devcache\npm",
+        "TEMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp",
+        "TMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp",
+        "NG_CLI_ANALYTICS": "false"
+      }
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+<section class="page-head head hero-anim" [class.ready]="ready()">
+  <div class="wrap">
+    <h1 class="title rise">{{ t.head.title }}</h1>
+    <p class="sub rise d2">{{ t.head.sub }}</p>
+
+    <div class="filter rise d4">
+      <div class="seg" role="group" [attr.aria-label]="t.filter.label">
+        @for (f of filters; track f.id) {
+          <button type="button" [attr.aria-pressed]="filter() === f.id" (click)="select(f.id)">
+            {{ f.label }}<span class="n" aria-hidden="true">{{ f.count }}</span>
+          </button>
+        }
+      </div>
+    </div>
+    <p class="sr-only" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>
+  </div>
+</section>
+
+<section class="work">
+  <div class="wrap">
+    @if (showFeatured()) {
+      <div class="featured-slot" mhReveal>
+        <article class="card card--hover featured">
+          <div class="featured__body">
+            <div class="featured__meta">
+              <span class="badge">{{ t.featured.eyebrow }}</span>
+              <span class="badge">{{ t.featured.badge }}</span>
+              <span class="mono muted">{{ featured.years }}</span>
+            </div>
+            <h2 class="featured__title">{{ featured.title }}</h2>
+            <p class="featured__line">{{ featured.oneLiner }}</p>
+            <ul class="tag-list" role="list" aria-label="Stack">
+              @for (s of featured.stack; track s) {
+                <li class="tag">{{ s }}</li>
+              }
+            </ul>
+            <a class="btn btn-solid featured__cta" [routerLink]="featured.path">
+              {{ t.featured.cta }}
+              <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+            </a>
+          </div>
+          <div class="featured__media">
+            <img
+              [src]="featured.cover.src"
+              [width]="featured.cover.width"
+              [height]="featured.cover.height"
+              [alt]="featured.cover.alt"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+        </article>
+      </div>
+    }
+
+    @if (cells().length) {
+      <div class="grid-head">
+        <div>
+          <h2 class="grid-title" id="work-grid-title">{{ t.grid.title }}</h2>
+          <p class="grid-note">{{ t.grid.note }}</p>
+        </div>
+        <p class="mono muted grid-count">{{ t.grid.count(cells().length) }}</p>
+      </div>
+
+      <ul class="bento" role="list">
+        @for (c of cells(); track c.p.id; let i = $index) {
+          <li class="slot" [class.wide]="c.span === 2" [class.full]="c.span === 3" mhReveal [revealIndex]="i % 3">
+            <article class="card card--hover cell" [class.card--solid]="c.solid">
+              <div class="cell__head">
+                <span class="icon-tile" aria-hidden="true"><ng-icon [name]="c.p.icon" /></span>
+                <div class="cell__id">
+                  <h3 class="cell__title">{{ c.p.title }}</h3>
+                  <p class="cell__meta">
+                    @for (m of meta(c.p); track m; let last = $last) {
+                      <span>{{ m }}</span>@if (!last) {<span class="sep"><span aria-hidden="true"> · </span><span class="sr-only">, </span></span>}
+                    }
+                  </p>
+                </div>
+              </div>
+
+              <p class="cell__outcome">{{ c.p.outcome }}</p>
+
+              @if (c.span > 1 && c.p.stats) {
+                <dl class="stats">
+                  @for (s of c.p.stats; track s.label) {
+                    <div class="stat">
+                      <dt>{{ s.label }}</dt>
+                      <dd>{{ s.value }}</dd>
+                    </div>
+                  }
+                </dl>
+              }
+
+              <p class="cell__role"><span class="k">{{ t.grid.role }}</span>{{ c.p.role }}</p>
+
+              <div class="cell__foot">
+                <ul class="tag-list" role="list" [attr.aria-label]="t.grid.stack">
+                  @for (s of c.p.stack; track s) {
+                    <li class="tag">{{ s }}</li>
+                  }
+                </ul>
+                @if (c.p.link; as l) {
+                  <a class="link cell__link" [href]="l.href" target="_blank" rel="noopener">
+                    {{ l.label }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+                    <span class="sr-only">{{ t.grid.externalHint }}</span>
+                  </a>
+                } @else {
+                  <p class="cell__status">{{ t.grid.status }}</p>
+                }
+              </div>
+            </article>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</section>
+
+<section class="section close center">
+  <div class="wrap" mhReveal>
+    <h2 class="close__title">{{ t.close.title }}</h2>
+    <p class="sub">{{ t.close.sub }}</p>
+    <a class="btn btn-solid" routerLink="/hire">
+      {{ t.close.cta }}
+      <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+    </a>
+  </div>
+</section>

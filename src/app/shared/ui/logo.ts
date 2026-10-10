@@ -31,7 +31,7 @@ export const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 } as const;
       <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.w" [attr.height]="bar.h" fill="currentColor" />
     </svg>
     @if (wordmark()) {
-      <span class="word" translate="no">mhfrough</span>
+      <span class="word" translate="no">Mohammad Hamza</span>
     }
   `,
   styles: `
@@ -39,8 +39,7 @@ export const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 } as const;
       display: inline-flex;
       align-items: center;
       gap: calc(var(--logo-size) * 0.28);
-      color: var(--ink);
-      direction: ltr;
+      color: inherit;
     }
     .mark {
       flex-shrink: 0;
@@ -50,10 +49,8 @@ export const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 } as const;
       stroke: var(--line-strong);
     }
     .word {
-      font-family: var(--font-mono);
       font-weight: 600;
-      font-size: calc(var(--logo-size) * 0.5);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
       line-height: 1;
     }
   `,

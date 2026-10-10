@@ -25,7 +25,7 @@ export class Reveal {
         (entries) => {
           for (const e of entries) {
             if (e.isIntersecting) {
-              node.classList.add('is-in');
+              node.classList.add('in');
               io.disconnect();
             }
           }

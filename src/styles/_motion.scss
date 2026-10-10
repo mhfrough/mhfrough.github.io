@@ -1,53 +1,58 @@
-// Motion primitives. Rule: motion on content, never on chrome (no custom cursor, no magnetic buttons).
-// Every animation is gated by prefers-reduced-motion and only touches transform/opacity.
-// [mhReveal] adds .reveal only to elements that start below the fold (so prerendered HTML never flashes),
-// then .is-in when they enter the viewport (IntersectionObserver, no scroll listeners).
+// Motion, as on Quorum: entry and reveal motivated by reading order. transform/opacity only.
+// - Hero: `.display .line > span` rises, `.rise` (+ .d2 / .d4) fades up. Add `.ready` to the hero after first render.
+// - Sections: [mhReveal] adds .reveal to elements that start below the fold, then .in when they scroll in.
 
 @media (prefers-reduced-motion: no-preference) {
+  .js .hero-anim .display .line > span {
+    transform: translateY(108%);
+    transition: transform 1s var(--ease);
+  }
+
+  .js .hero-anim .display .line:nth-child(2) > span {
+    transition-delay: 0.09s;
+  }
+
+  .js .hero-anim.ready .display .line > span {
+    transform: none;
+  }
+
+  .js .hero-anim .rise {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.8s var(--ease),
+      transform 0.8s var(--ease);
+  }
+
+  .js .hero-anim.ready .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .hero-anim.ready .rise.d2 {
+    transition-delay: 0.26s;
+  }
+
+  .js .hero-anim.ready .rise.d3 {
+    transition-delay: 0.34s;
+  }
+
+  .js .hero-anim.ready .rise.d4 {
+    transition-delay: 0.42s;
+  }
+
   .reveal {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(18px);
     transition:
-      opacity var(--t-slow) var(--ease),
-      transform var(--t-slow) var(--ease);
-    transition-delay: calc(var(--i, 0) * 70ms);
+      opacity 0.8s var(--ease),
+      transform 0.8s var(--ease);
+    transition-delay: calc(var(--i, 0) * 55ms);
 
-    &.is-in {
+    &.in {
       opacity: 1;
       transform: none;
     }
-  }
-
-  // Masked line rise for display headlines: wrap each line in .rise > span
-  .rise {
-    display: block;
-    overflow: hidden;
-    padding-block-end: 0.08em;
-
-    > span {
-      display: inline-block;
-      transform: translateY(105%);
-      animation: rise var(--t-slow) var(--ease) forwards;
-      animation-delay: calc(120ms + var(--i, 0) * 90ms);
-    }
-  }
-
-  .fade-in {
-    opacity: 0;
-    animation: fade-in var(--t-slow) var(--ease) forwards;
-    animation-delay: calc(200ms + var(--i, 0) * 90ms);
-  }
-}
-
-@keyframes rise {
-  to {
-    transform: none;
-  }
-}
-
-@keyframes fade-in {
-  to {
-    opacity: 1;
   }
 }
 
