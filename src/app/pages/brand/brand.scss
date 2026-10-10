@@ -1,0 +1,249 @@
+// /brand page shell + the few doc-layout helpers shared by its section components.
+// ViewEncapsulation.None, so everything is scoped under .bp (the page host) and nothing leaks once it unloads.
+
+.bp {
+  display: block;
+
+  // ---------- Hero ----------
+  .bp-hero {
+    padding-bottom: 88px;
+  }
+
+  .bp-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.02fr;
+    gap: 56px;
+    align-items: center;
+
+    > * {
+      min-width: 0;
+    }
+  }
+
+  .bp-hero .lede {
+    margin-bottom: 32px;
+  }
+
+  .bp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 1040px) {
+    .bp-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  // ---------- Docs layout: sticky TOC + sections ----------
+  .bp-docs {
+    display: grid;
+    grid-template-columns: 216px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+    padding-bottom: 120px;
+  }
+
+  .bp-sec {
+    padding-top: 120px;
+    min-width: 0;
+
+    &:first-child {
+      padding-top: 24px;
+    }
+  }
+
+  @media (max-width: 1099px) {
+    .bp-docs {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .bp-sec:first-child {
+      padding-top: 64px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .bp-sec {
+      padding-top: 80px;
+    }
+
+    .bp-docs {
+      padding-bottom: 80px;
+    }
+  }
+
+  // ---------- Shared doc pieces ----------
+  .bp-head {
+    margin-bottom: 44px;
+
+    .sub {
+      max-width: 60ch;
+    }
+  }
+
+  .bp-subhead {
+    display: grid;
+    gap: 6px;
+    margin: 72px 0 18px;
+
+    p {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 62ch;
+    }
+  }
+
+  .bp-head + .bp-subhead,
+  .bp-head + * > .bp-subhead:first-child {
+    margin-top: 0;
+  }
+
+  .bp-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    > * {
+      min-width: 0;
+    }
+
+    > .span-all {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .bp-grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 900px) {
+    .bp-grid--3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bp-grid,
+    .bp-grid--3 {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  // Key / value rows (Quorum's flags list)
+  .bp-kv {
+    display: grid;
+    margin: 0;
+
+    > div {
+      display: grid;
+      grid-template-columns: minmax(120px, auto) 1fr;
+      gap: 4px 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    dt {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--ink);
+    }
+
+    dd {
+      font-size: 14.5px;
+      color: var(--ink-2);
+    }
+
+    @media (max-width: 480px) {
+      > div {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  // Plain list with a hairline between items
+  .bp-list {
+    display: grid;
+    gap: 0;
+
+    li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-2);
+      font-size: 15px;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .bp-card-title {
+    font-size: 1.05rem;
+    letter-spacing: -0.015em;
+    margin-bottom: 4px;
+  }
+
+  .bp-card-note {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  // Quiet result line (Quorum's .report .result)
+  .bp-callout {
+    margin-top: 12px;
+    padding: 14px 18px;
+    border-radius: var(--r-inner);
+    background: var(--surface-2);
+    color: var(--ink-2);
+    font-size: 14.5px;
+
+    code {
+      font-size: 13px;
+      color: var(--ink);
+    }
+  }
+
+  .bp-grade--AAA {
+    background: var(--cta);
+    color: var(--cta-ink);
+  }
+
+  .bp-grade--Decorative,
+  .bp-grade--Fails {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    color: var(--muted);
+  }
+
+  // Tokens inside prose (TkPipe)
+  .tk {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    white-space: nowrap;
+  }
+
+  // Specimen stage helpers
+  .bp-skel {
+    width: 100%;
+  }
+}

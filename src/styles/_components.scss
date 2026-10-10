@@ -285,6 +285,7 @@ section.block {
   b {
     background: var(--cta);
     color: var(--cta-ink);
+    white-space: nowrap;
     font-weight: 500;
     padding: 3px 10px;
     border-radius: 999px;
@@ -475,6 +476,16 @@ section.block {
     font-size: 13.5px;
     line-height: 1.75;
   }
+
+  > .copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  &:has(> .copy) pre {
+    padding-right: 96px;
+  }
 }
 
 // Copy button used on dark blocks
@@ -534,7 +545,9 @@ section.block {
 
   [aria-selected='true'],
   [aria-pressed='true'],
-  [aria-current='page'] {
+  [aria-current='page'],
+  [aria-current='true'],
+  [aria-current='location'] {
     background: var(--surface);
     color: var(--ink);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
@@ -606,7 +619,7 @@ section.block {
 
   &:focus,
   &:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus);
     outline-offset: 1px;
   }
 
@@ -766,6 +779,19 @@ section.block {
   to {
     transform: translateX(100%);
   }
+}
+
+// Brand tile: the ء mark on a rounded --cta square (nav 34px, footer 30px)
+.brand-mark {
+  --tile: 34px;
+  width: var(--tile);
+  height: var(--tile);
+  border-radius: calc(var(--tile) * 10 / 34);
+  background: var(--cta);
+  color: var(--cta-ink);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
 }
 
 // ---------- Hero glow ----------

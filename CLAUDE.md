@@ -8,13 +8,13 @@ English only. Dark mode only. Deployed as static files (target: GitHub Pages or 
 
 Everything heavy lives on D: inside this repo, under `.devcache/` (git-ignored):
 `.devcache/npm` (npm cache, also set in `.npmrc`), `.devcache/tmp` (TEMP/TMP), `.devcache/playwright` (browsers),
-`.devcache/build/*` (scratch builds), `.devcache/taste` (Taste Skill source). Before running node tooling, set:
+`.devcache/build/*` (scratch builds), `.devcache/preview` (stable preview, `bash .devcache/preview.sh "<ready pages>"`), `.devcache/taste` (Taste Skill source). Before running node tooling, set:
 
 ```powershell
 $c="D:\workspace-personal\mhfrough.dev\.devcache"; $env:npm_config_cache="$c\npm"; $env:TEMP="$c\tmp"; $env:TMP="$c\tmp"; $env:PLAYWRIGHT_BROWSERS_PATH="$c\playwright"; $env:NG_CLI_ANALYTICS="false"
 ```
 ```bash
-export C="D:/workspace-personal/mhfrough.dev/.devcache" npm_config_cache="$C/npm" TEMP="$C/tmp" TMP="$C/tmp" PLAYWRIGHT_BROWSERS_PATH="$C/playwright" NG_CLI_ANALYTICS=false
+export C="D:/workspace-personal/mhfrough.dev/.devcache"; export npm_config_cache="$C/npm" TEMP="$C/tmp" TMP="$C/tmp" PLAYWRIGHT_BROWSERS_PATH="$C/playwright" NG_CLI_ANALYTICS=false
 ```
 
 Node is 22.12, which is why we are on Angular 21 (Angular 22 needs Node >= 22.22) and Lighthouse 12.
