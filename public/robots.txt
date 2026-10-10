@@ -1,0 +1,5 @@
+# mhfrough.dev
+User-agent: *
+Allow: /
+
+Sitemap: https://mhfrough.dev/sitemap.xml

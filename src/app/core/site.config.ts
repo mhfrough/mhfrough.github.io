@@ -25,7 +25,7 @@ export const SITE = {
     dribbble: 'https://dribbble.com/mhfrough',
   },
   defaultOgImage: '/og/og-default.jpg',
-  themeColor: '#0a0a0b',
+  themeColor: '#111111',
   startedYear: 2020, // first full-time role
 } as const;
 

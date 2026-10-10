@@ -1,0 +1,122 @@
+<!doctype html>
+<!--
+  Open Graph card template, 1200 x 630. Rendered by scripts/og.mjs (Playwright screenshot -> sharp JPG).
+  Placeholders (double-brace FONTS, MARK, CONTENT) are replaced by og.mjs.
+  System: the Quorum design language re-skinned to monochrome (Geist + Geist Mono, pill chips,
+  20px card radius, soft layered shadows, neutral dark palette). Editorial and restrained: type leads.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  {{FONTS}}
+  :root {
+    --bg: #111111;
+    --surface: #1a1a1a;
+    --surface-2: #202020;
+    --line: #2a2a2a;
+    --ink: #ededed;
+    --ink-2: #c9c9c9;
+    --muted: #9a9a9a;
+    --faint: #4a4a4a;
+    --edge: rgba(255, 255, 255, 0.07);
+    --hi: rgba(255, 255, 255, 0.06);
+    --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 40px 80px -30px rgba(0, 0, 0, 0.75);
+    --sans: 'Geist', sans-serif;
+    --mono: 'Geist Mono', monospace;
+    --pad: 80px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(900px 520px at 88% 30%, #171717 0%, transparent 70%),
+      var(--bg);
+  }
+
+  .copy {
+    position: absolute;
+    inset: 72px auto 72px var(--pad);
+    width: 640px;
+    display: flex;
+    flex-direction: column;
+  }
+  .head { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--ink);
+    display: grid; place-items: center;
+  }
+  .brand-mark svg { width: 30px; height: 30px; display: block; }
+  .wordmark { font-family: var(--mono); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+  .path { font-family: var(--mono); font-size: 20px; color: var(--muted); margin-inline-start: -10px; }
+
+  .body { margin-top: auto; }
+  h1 {
+    font-weight: 600;
+    font-size: 86px;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+  .sub {
+    margin-top: 20px;
+    max-width: 600px;
+    font-size: 28px;
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    color: var(--ink-2);
+  }
+
+  .nw { white-space: nowrap; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .chip {
+    display: inline-flex; align-items: center; height: 40px; padding: 0 18px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--surface);
+    font-size: 17px; font-weight: 500; color: var(--ink-2);
+    box-shadow: inset 0 1px 0 var(--hi);
+  }
+  .chip.mono { font-family: var(--mono); font-size: 16px; font-weight: 400; color: var(--muted); }
+  /* Quorum's pill-link: an outlined pill with an inverted label inside. */
+  .pill {
+    display: inline-flex; align-items: center; gap: 12px; height: 40px; padding: 0 18px 0 5px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--surface);
+    font-size: 17px; font-weight: 500; color: var(--ink-2);
+    box-shadow: inset 0 1px 0 var(--hi);
+  }
+  .pill b {
+    height: 30px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 999px;
+    background: var(--ink); color: var(--bg); font-family: var(--mono); font-size: 15px; font-weight: 500;
+  }
+
+  /* One card: the mark at display size with its construction circle. 20px radius, layered shadow. */
+  .card {
+    position: absolute;
+    top: 72px; right: var(--pad);
+    width: 360px; height: 486px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #1c1c1c, var(--surface));
+    border: 1px solid var(--edge);
+    box-shadow: inset 0 1px 0 var(--hi), var(--shadow-lg);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+  }
+  .card .art { display: grid; place-items: center; }
+  .card .art svg { width: 330px; height: 330px; display: block; overflow: visible; }
+  .card .cap {
+    display: flex; justify-content: space-between;
+    padding: 18px 24px 20px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 14px; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <div class="card">{{MARK}}</div>
+  <div class="copy">{{CONTENT}}</div>
+</body>
+</html>

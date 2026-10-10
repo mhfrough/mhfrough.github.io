@@ -19,7 +19,7 @@ import { LAYOUT_COPY } from './layout.copy';
     <footer class="footer" role="contentinfo">
       <div class="wrap grid">
         <div class="id">
-          <a routerLink="/" class="home" [attr.aria-label]="t.homeLabel"><span class="brand-mark"><mh-logo [size]="20" /></span><span class="name">Mohammad Hamza</span><span class="handle mono">@mhfrough</span></a>
+          <a routerLink="/" class="home"><span class="brand-mark"><mh-logo [size]="20" /></span><span class="name">Mohammad Hamza</span><span class="handle mono">@mhfrough</span></a>
           <p class="blurb">{{ t.footer.blurb }}</p>
           <a class="status" routerLink="/hire">
             <span class="status__mark" [class.is-on]="available" aria-hidden="true"></span>

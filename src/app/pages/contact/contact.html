@@ -1,0 +1,386 @@
+<section class="page-head glow head" aria-labelledby="contact-title">
+  <div #hero class="wrap hero-anim">
+    <p class="pill-link rise">
+      <b>{{ c.hero.pillTag }}</b
+      >{{ c.hero.pill }}
+    </p>
+    <h1 id="contact-title" class="display">
+      <span class="line"
+        ><span>{{ c.hero.line1 }}</span></span
+      >
+      <span class="line"
+        ><span class="soft">{{ c.hero.line2 }}</span></span
+      >
+    </h1>
+    <p class="lede rise d2">{{ c.hero.lede }}</p>
+  </div>
+</section>
+
+<section class="body-section" aria-label="Contact options">
+  <div class="wrap grid">
+    <!-- Form card -->
+    <div class="card card--lift form-card">
+      @if (state() === 'success') {
+        <div #result class="result" role="status" tabindex="-1" aria-labelledby="c-result-title">
+          <span class="icon-well" aria-hidden="true"
+            ><ng-icon [name]="isMailto ? 'phosphorEnvelopeSimple' : 'phosphorCheck'"
+          /></span>
+          <span class="tag">{{ isMailto ? c.success.tag : c.sent.tag }}</span>
+          <h2 id="c-result-title" class="result__title">
+            {{ isMailto ? c.success.title : c.sent.title }}
+          </h2>
+          <p class="result__body">{{ isMailto ? c.success.body : c.sent.body }}</p>
+          @if (isMailto) {
+            <p class="result__note">{{ c.success.nothing }}</p>
+          }
+          <div class="result__actions">
+            @if (isMailto && lastMailto(); as href) {
+              <a class="btn btn-solid" [href]="href">
+                <ng-icon name="phosphorEnvelopeSimple" aria-hidden="true" />{{ c.success.again }}
+              </a>
+              <button type="button" class="btn btn-ghost" (click)="edit()">
+                <ng-icon name="phosphorPencil" aria-hidden="true" />{{ c.success.edit }}
+              </button>
+            }
+            <button type="button" class="btn btn--quiet" (click)="restart()">
+              {{ isMailto ? c.success.restart : c.sent.restart }}
+            </button>
+          </div>
+        </div>
+      } @else {
+        <form
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          novalidate
+          [attr.aria-busy]="state() === 'submitting'"
+          aria-labelledby="c-form-title"
+        >
+          <div class="form-head">
+            <h2 id="c-form-title" class="form-title">{{ c.formTitle }}</h2>
+            <p class="field__hint">{{ c.formNote }}</p>
+          </div>
+
+          @if (submitted() && errorList().length) {
+            <div
+              #summary
+              class="summary"
+              tabindex="-1"
+              role="group"
+              aria-labelledby="c-summary-title"
+            >
+              <h3 id="c-summary-title" class="summary__title">
+                <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{ c.summaryTitle }}
+              </h3>
+              <ul role="list">
+                @for (e of errorList(); track e.key) {
+                  <li>
+                    <a class="link" [attr.href]="'#' + e.target" (click)="jump($event, e.target)">{{
+                      e.text
+                    }}</a>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+
+          <div class="row">
+            <div class="field">
+              <label class="field__label" for="c-name">{{ c.name.label }}</label>
+              <input
+                id="c-name"
+                class="input"
+                type="text"
+                formControlName="name"
+                autocomplete="name"
+                spellcheck="false"
+                [attr.aria-invalid]="show('name')"
+                [attr.aria-describedby]="describedBy('name')"
+              />
+              @if (show('name')) {
+                <p id="c-name-error" class="field__error">
+                  <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{ errorText('name') }}
+                </p>
+              }
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="c-email">{{ c.email.label }}</label>
+              <input
+                id="c-email"
+                class="input"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                inputmode="email"
+                spellcheck="false"
+                [attr.aria-invalid]="show('email')"
+                [attr.aria-describedby]="describedBy('email', true)"
+              />
+              <p id="c-email-hint" class="field__hint">{{ c.email.hint }}</p>
+              @if (show('email')) {
+                <p id="c-email-error" class="field__error">
+                  <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{
+                    errorText('email')
+                  }}
+                </p>
+              }
+            </div>
+          </div>
+
+          <fieldset
+            class="field group"
+            [attr.aria-describedby]="show('topic') ? 'c-topic-error' : null"
+          >
+            <legend class="field__label">{{ c.topic.legend }}</legend>
+            <div class="chips">
+              @for (o of c.topic.options; track o.value) {
+                <label class="chip" [for]="'c-topic-' + o.value">
+                  <input
+                    class="sr-only"
+                    type="radio"
+                    [id]="'c-topic-' + o.value"
+                    formControlName="topic"
+                    [value]="o.value"
+                    [attr.aria-invalid]="show('topic')"
+                  />
+                  {{ o.label }}
+                </label>
+              }
+            </div>
+            @if (show('topic')) {
+              <p id="c-topic-error" class="field__error">
+                <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{ errorText('topic') }}
+              </p>
+            }
+          </fieldset>
+
+          <div class="row">
+            @if (showBudget()) {
+              <div class="field">
+                <label class="field__label" for="c-budget"
+                  >{{ c.budget.label }} <span class="opt">{{ c.optional }}</span></label
+                >
+                <select
+                  id="c-budget"
+                  class="select"
+                  formControlName="budget"
+                  aria-describedby="c-budget-hint"
+                >
+                  <option value="">{{ c.budget.empty }}</option>
+                  @for (o of c.budget.options; track o.value) {
+                    <option [value]="o.value">{{ o.label }}</option>
+                  }
+                </select>
+                <p id="c-budget-hint" class="field__hint">{{ c.budget.hint }}</p>
+              </div>
+            }
+            <div class="field">
+              <label class="field__label" for="c-timeline"
+                >{{ c.timeline.label }} <span class="opt">{{ c.optional }}</span></label
+              >
+              <select id="c-timeline" class="select" formControlName="timeline">
+                <option value="">{{ c.timeline.empty }}</option>
+                @for (o of c.timeline.options; track o.value) {
+                  <option [value]="o.value">{{ o.label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="c-message">{{ c.message.label }}</label>
+            <p id="c-message-hint" class="field__hint">{{ c.message.hint }}</p>
+            @if (briefText(); as b) {
+              <div class="brief">
+                <span class="brief__label mono">{{ c.brief.label }}</span>
+                <code>{{ b }}</code>
+                <button
+                  type="button"
+                  class="copy brief__x"
+                  [attr.aria-label]="c.brief.remove"
+                  (click)="removeBrief()"
+                >
+                  <ng-icon name="phosphorX" aria-hidden="true" />
+                </button>
+              </div>
+            }
+            <textarea
+              id="c-message"
+              class="textarea"
+              rows="7"
+              formControlName="message"
+              [attr.maxlength]="max"
+              [attr.aria-invalid]="show('message')"
+              [attr.aria-describedby]="describedBy('message', true)"
+            ></textarea>
+            <div class="message-foot">
+              @if (show('message')) {
+                <p id="c-message-error" class="field__error">
+                  <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{
+                    errorText('message')
+                  }}
+                </p>
+              }
+              <span
+                class="counter mono"
+                [class.is-short]="count() > 0 && count() < min"
+                aria-hidden="true"
+                >{{ c.counter(count(), max) }}</span
+              >
+            </div>
+            <p class="sr-only" aria-live="polite">{{ countSr() }}</p>
+          </div>
+
+          <div class="field">
+            <div class="check">
+              <input
+                id="c-consent"
+                type="checkbox"
+                formControlName="consent"
+                [attr.aria-invalid]="show('consent')"
+                [attr.aria-describedby]="describedBy('consent')"
+              />
+              <label for="c-consent">
+                {{ c.consent.before }}<a class="link" routerLink="/privacy">{{ c.consent.link }}</a
+                >{{ c.consent.after }}
+              </label>
+            </div>
+            @if (show('consent')) {
+              <p id="c-consent-error" class="field__error">
+                <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{
+                  errorText('consent')
+                }}
+              </p>
+            }
+          </div>
+
+          <!-- Honeypot: hidden from people and assistive tech -->
+          <div class="hp" aria-hidden="true">
+            <label for="c-website">{{ c.honeypot }}</label>
+            <input
+              id="c-website"
+              type="text"
+              formControlName="website"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+
+          @if (state() === 'error') {
+            <div class="failure" role="alert">
+              <h3 class="failure__title">
+                <ng-icon name="phosphorWarningCircle" aria-hidden="true" />{{ c.failure.title }}
+              </h3>
+              <p>{{ c.failure.body }}</p>
+              <div class="failure__actions">
+                <button type="submit" class="btn btn-ghost btn-sm">
+                  <ng-icon name="phosphorArrowCounterClockwise" aria-hidden="true" />{{
+                    c.failure.retry
+                  }}
+                </button>
+                <a class="btn btn--quiet btn-sm" [href]="lastMailto() ?? 'mailto:' + site.email">{{
+                  c.failure.mailto
+                }}</a>
+              </div>
+            </div>
+          }
+
+          <div class="submit">
+            <button
+              type="submit"
+              class="btn btn-solid"
+              [attr.aria-disabled]="state() === 'submitting'"
+              aria-describedby="c-submit-hint"
+            >
+              @if (state() === 'submitting') {
+                {{ isMailto ? c.submitting : c.submittingHttp }}
+              } @else {
+                <ng-icon name="phosphorPaperPlaneTilt" aria-hidden="true" />{{ c.submit }}
+              }
+            </button>
+            <p id="c-submit-hint" class="field__hint">
+              {{ isMailto ? c.submitHint : c.submitHintHttp }}
+            </p>
+          </div>
+        </form>
+      }
+    </div>
+
+    <!-- Direct channels -->
+    <aside class="aside" aria-label="Other ways to reach me">
+      <div class="card" mhReveal>
+        <h2 class="aside__title">{{ c.aside.direct }}</h2>
+        <p class="aside__sub">{{ c.aside.directSub }}</p>
+        <div class="cmd mail">
+          <ng-icon name="phosphorEnvelopeSimple" class="prompt" aria-hidden="true" />
+          <code
+            ><a [href]="'mailto:' + site.email">{{ site.email }}</a></code
+          >
+          <button
+            type="button"
+            class="copy"
+            [attr.aria-label]="c.aside.copyLabel"
+            (click)="copyEmail()"
+          >
+            <ng-icon
+              [name]="copied() === 'done' ? 'phosphorCheck' : 'phosphorCopy'"
+              aria-hidden="true"
+            />
+            <span aria-hidden="true">{{
+              copied() === 'done' ? c.aside.copied : c.aside.copy
+            }}</span>
+          </button>
+        </div>
+        <p class="sr-only" aria-live="polite">
+          {{
+            copied() === 'done' ? c.aside.copiedSr : copied() === 'failed' ? c.aside.copyFailed : ''
+          }}
+        </p>
+        @if (copied() === 'failed') {
+          <p class="field__hint copy-failed" aria-hidden="true">{{ c.aside.copyFailed }}</p>
+        }
+      </div>
+
+      <div class="card" mhReveal [revealIndex]="1">
+        <h2 class="aside__title">{{ c.aside.elsewhere }}</h2>
+        <ul class="channels" role="list">
+          @for (ch of c.aside.channels; track ch.key) {
+            <li>
+              <a class="channel" [href]="site.social[ch.key]" target="_blank" rel="me noopener">
+                <span class="icon-tile" aria-hidden="true"><ng-icon [name]="ch.icon" /></span>
+                <span class="channel__text">
+                  <b>{{ ch.label }}</b>
+                  <span>{{ ch.note }}</span>
+                </span>
+                <ng-icon name="phosphorArrowUpRight" class="channel__arrow" aria-hidden="true" />
+                <span class="sr-only">({{ c.aside.newTab }})</span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="card card--solid clock" mhReveal [revealIndex]="2">
+        <div class="clock__row">
+          <span class="clock__label">{{ c.aside.time }}</span>
+          <span class="tag">{{ c.aside.zone }}</span>
+        </div>
+        <p class="clock__time mono">
+          <time [attr.datetime]="timeIso() || null">{{ time() || '--- --:--' }}</time>
+        </p>
+        <p class="clock__status">
+          <span class="dot" [class.is-on]="working()" aria-hidden="true"></span>
+          {{
+            working() === null ? c.aside.overlap : working() ? c.aside.working : c.aside.offHours
+          }}
+        </p>
+        <dl class="clock__meta">
+          <div>
+            <dt><ng-icon name="phosphorClock" aria-hidden="true" />{{ c.aside.response }}</dt>
+            <dd>{{ c.aside.responseValue }}</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>

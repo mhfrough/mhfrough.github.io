@@ -1,0 +1,159 @@
+<!-- Hero: copy left, a working scope builder right (Quorum's "Build your Quorum" pattern) -->
+<section class="page-head glow hero" aria-labelledby="hire-title">
+  <div #hero class="wrap hero__grid hero-anim">
+    <div class="hero__copy">
+      <a class="pill-link rise" routerLink="/hire" fragment="ways">
+        <b>{{ available ? c.hero.pillTagOn : c.hero.pillTagOff }}</b
+        >{{ available ? c.hero.pillOn : c.hero.pillOff }}
+        <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+      </a>
+      <h1 id="hire-title" class="display">
+        <span class="line"
+          ><span>{{ c.hero.line1 }}</span></span
+        >
+        <span class="line"
+          ><span class="soft">{{ c.hero.line2 }}</span></span
+        >
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d2">
+        <a class="btn btn-solid" routerLink="/contact">{{ c.hero.primary }}</a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.secondary }}</a>
+      </div>
+      <dl class="facts rise d4">
+        @for (f of c.hero.facts; track f.v) {
+          <div>
+            <dt class="mono">{{ f.v }}</dt>
+            <dd>{{ f.k }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <mh-scope-builder class="rise d4" />
+  </div>
+</section>
+
+<!-- Ways to work together: bento, like Quorum's "Meet the seven" -->
+<section id="ways" class="section" aria-labelledby="ways-title">
+  <div class="wrap">
+    <header mhReveal>
+      <h2 id="ways-title" class="title">{{ c.ways.title }}</h2>
+      <p class="sub">{{ c.ways.sub }}</p>
+    </header>
+
+    <ul class="bento" role="list">
+      @for (w of c.ways.items; track w.id; let i = $index) {
+        <li
+          class="card card--hover cell"
+          [class.wide]="w.wide"
+          [class.card--solid]="w.solid"
+          mhReveal
+          [revealIndex]="i"
+        >
+          <div class="cell__head">
+            <span class="icon-tile" aria-hidden="true"><ng-icon [name]="w.icon" /></span>
+            <div>
+              <h3>{{ w.title }}</h3>
+              <span class="tag">{{ w.tag }}</span>
+            </div>
+          </div>
+          <p>{{ w.body }}</p>
+          <ul class="points" role="list">
+            @for (p of w.points; track p) {
+              <li><ng-icon name="phosphorCheck" aria-hidden="true" />{{ p }}</li>
+            }
+          </ul>
+        </li>
+      }
+      <li class="card cell full fits" mhReveal [revealIndex]="4">
+        <div class="fits__text">
+          <h3>{{ c.ways.fits.title }}</h3>
+          <p>{{ c.ways.fits.body }}</p>
+        </div>
+        <ul class="tag-list" role="list">
+          @for (f of c.ways.fits.items; track f) {
+            <li class="badge">{{ f }}</li>
+          }
+        </ul>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- How we work: sticky head + stacked steps, like Quorum's "How a council runs" -->
+<section class="section section--flush" aria-labelledby="how-title">
+  <div class="wrap how">
+    <header class="how__head" mhReveal>
+      <h2 id="how-title" class="title">{{ c.how.title }}</h2>
+      <p class="sub">{{ c.how.sub }}</p>
+    </header>
+    <ol class="how__list" role="list">
+      @for (s of c.how.steps; track s.t; let i = $index) {
+        <li class="card how__item" [class.card--solid]="i === 2" mhReveal [revealIndex]="i">
+          <span class="icon-well" aria-hidden="true"><ng-icon [name]="s.icon" /></span>
+          <div>
+            <h3>{{ s.t }}</h3>
+            <p>{{ s.d }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Working style: paired rows, like Quorum's "Disagreement is the point" -->
+<section class="section section--flush" aria-labelledby="style-title">
+  <div class="wrap">
+    <header mhReveal>
+      <h2 id="style-title" class="title">{{ c.style.title }}</h2>
+      <p class="sub">{{ c.style.sub }}</p>
+    </header>
+    <dl class="pairs">
+      @for (r of c.style.rows; track r.topic; let i = $index) {
+        <div class="card pair" mhReveal [revealIndex]="i">
+          <dt class="pair__side"><ng-icon [name]="r.icon" aria-hidden="true" />{{ r.topic }}</dt>
+          <dd class="pair__tag">
+            <span class="vs mono">{{ r.tag }}</span>
+          </dd>
+          <dd class="pair__side pair__promise">{{ r.promise }}</dd>
+          <dd class="pair__text">{{ r.d }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- FAQ: native details as cards -->
+<section class="section section--flush" aria-labelledby="faq-title">
+  <div class="wrap faq">
+    <header class="faq__head" mhReveal>
+      <h2 id="faq-title" class="title">{{ c.faq.title }}</h2>
+      <p class="sub">{{ c.faq.sub }}</p>
+    </header>
+    <div class="faq__list">
+      @for (f of c.faq.items; track f.q; let i = $index) {
+        <details class="card qa" mhReveal [revealIndex]="i">
+          <summary>
+            <h3>{{ f.q }}</h3>
+            <span class="qa__icon" aria-hidden="true"><ng-icon name="phosphorPlus" /></span>
+          </summary>
+          <p>{{ f.a }}</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Closing CTA -->
+<section class="section section--flush" aria-labelledby="close-title">
+  <div class="wrap">
+    <div class="card card--lift close center" mhReveal>
+      <h2 id="close-title" class="title">{{ c.close.title }}</h2>
+      <p class="sub">{{ c.close.sub }}</p>
+      <a class="btn btn-solid" routerLink="/contact"
+        >{{ c.close.cta }}<ng-icon name="phosphorArrowRight" aria-hidden="true"
+      /></a>
+    </div>
+  </div>
+</section>

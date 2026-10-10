@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # .npmrc points the npm cache at a Windows path for local dev; CI uses the runner's home.
+  npm_config_cache: /home/runner/.npm
+  # playwright.config.ts and scripts/* default to this folder, so install and run must agree.
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.devcache/playwright
+  NG_CLI_ANALYTICS: 'false'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build (ng build + postbuild, strict SEO checks)
+        run: |
+          npm run build
+          node scripts/postbuild.mjs --strict
+
+      - name: Cache Playwright Chromium
+        uses: actions/cache@v4
+        with:
+          path: .devcache/playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright (routes, a11y, content, nav, motion, CSP)
+        run: npm run e2e
+
+      - name: Lighthouse (mobile + desktop, asserted)
+        run: npm run lighthouse:assert
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            reports/
+            .devcache/playwright-results/
+          retention-days: 14

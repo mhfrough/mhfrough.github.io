@@ -1,0 +1,508 @@
+// /contact: form card left, direct channels right. Quorum pill inputs, 20px cards, monochrome errors
+// (ink border + icon + text, never colour alone). Colours only from tokens.
+
+:host {
+  display: block;
+}
+
+// ---------- Head ----------
+.head {
+  padding-bottom: 48px;
+
+  // Fade the global glow out at the bottom so it never ends on a hard edge.
+  &::before {
+    mask-image: linear-gradient(to bottom, black 55%, transparent);
+  }
+}
+
+.pill-link:hover {
+  border-color: var(--line);
+}
+
+// ---------- Layout ----------
+.body-section {
+  padding-bottom: 120px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .body-section {
+    padding-bottom: 80px;
+  }
+}
+
+.form-card {
+  padding: 32px;
+}
+
+@media (max-width: 640px) {
+  .form-card {
+    padding: 22px 18px;
+  }
+}
+
+// ---------- Form ----------
+form {
+  display: grid;
+  gap: 24px;
+}
+
+.form-head {
+  display: grid;
+  gap: 4px;
+}
+
+.form-title {
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px 16px;
+  align-items: start;
+}
+
+.opt {
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+
+  legend {
+    padding: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+label.chip {
+  position: relative;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:has(:checked) {
+    background: var(--cta);
+    color: var(--cta-ink);
+    border-color: var(--cta);
+  }
+
+  &:has(:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  &:has([aria-invalid='true']) {
+    border-color: var(--ink-2);
+  }
+}
+
+.field__error {
+  font-weight: 500;
+
+  ng-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+}
+
+// Field with an error: a short ink rule on the left, like GOV.UK, in monochrome
+.field:has(> .field__error),
+.field:has(> .message-foot > .field__error) {
+  padding-left: 14px;
+  border-left: 2px solid var(--ink);
+}
+
+.check {
+  label {
+    cursor: pointer;
+  }
+}
+
+.message-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+
+  .counter {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 12px;
+    padding-top: 1px;
+  }
+
+  .counter.is-short {
+    color: var(--ink-2);
+  }
+}
+
+// Brief carried over from /hire
+.brief {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 4px;
+  padding: 10px 10px 10px 16px;
+  border-radius: var(--r-inner);
+  background: var(--solid);
+  color: var(--solid-ink);
+  border: 1px solid var(--solid-edge);
+
+  .brief__label {
+    flex-basis: 100%;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+  }
+
+  code {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .brief__x {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+// Honeypot: off-screen, not display:none (some bots skip hidden fields)
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+// ---------- Error summary + failure ----------
+.summary,
+.failure {
+  border-radius: var(--r-inner);
+  border: 2px solid var(--ink);
+  background: var(--surface-2);
+  padding: 18px 20px;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+.summary__title,
+.failure__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+
+  ng-icon {
+    font-size: 20px;
+  }
+}
+
+.summary ul {
+  display: grid;
+  gap: 4px;
+  font-size: 15px;
+}
+
+.failure {
+  p {
+    color: var(--ink-2);
+    font-size: 15px;
+  }
+}
+
+.failure__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+// ---------- Submit ----------
+.submit {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+
+  .btn {
+    min-width: 168px;
+    height: 48px;
+  }
+
+  .field__hint {
+    max-width: 40ch;
+  }
+}
+
+form[aria-busy='true'] .submit .btn {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+@media (max-width: 560px) {
+  .submit {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+
+    .field__hint {
+      max-width: none;
+    }
+  }
+}
+
+// ---------- Success / sent ----------
+.result {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  padding: 12px 0 4px;
+  outline: none;
+}
+
+.result__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  max-width: 22ch;
+}
+
+.result__body {
+  color: var(--ink-2);
+  max-width: 52ch;
+}
+
+.result__note {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 52ch;
+}
+
+.result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+// ---------- Aside ----------
+.aside {
+  display: grid;
+  gap: 12px;
+}
+
+.aside__title {
+  font-size: 1.05rem;
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
+}
+
+.aside__sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.mail {
+  max-width: none;
+  padding-left: 16px;
+  font-size: 13px;
+
+  .prompt {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.copy-failed {
+  margin-top: 10px;
+}
+
+.channels {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.channel {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  padding: 8px 14px 8px 8px;
+  border-radius: var(--r-inner);
+  border: 1px solid transparent;
+  transition:
+    background var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease);
+
+  &:hover {
+    background: var(--surface-2);
+    border-color: var(--line);
+  }
+
+  &:focus-visible {
+    border-radius: var(--r-inner);
+  }
+
+  .icon-tile {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+
+    ng-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.channel__text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  line-height: 1.3;
+
+  b {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+}
+
+.channel__arrow {
+  color: var(--muted);
+  font-size: 16px;
+  transition: transform var(--t-base) var(--ease);
+}
+
+.channel:hover .channel__arrow {
+  transform: translate(2px, -2px);
+  color: var(--ink);
+}
+
+// Karachi clock (inverted card)
+.clock {
+  display: grid;
+  gap: 6px;
+
+  .tag {
+    background: color-mix(in oklab, var(--solid-ink) 10%, transparent);
+    color: var(--solid-ink);
+  }
+}
+
+.clock__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clock__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: color-mix(in oklab, var(--solid-ink) 72%, transparent);
+}
+
+.clock__time {
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.clock__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: color-mix(in oklab, var(--solid-ink) 72%, transparent);
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid currentColor;
+  }
+
+  .dot.is-on {
+    background: var(--solid-ink);
+    border-color: var(--solid-ink);
+  }
+}
+
+.clock__meta {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--solid-edge);
+
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+
+    ng-icon {
+      font-size: 15px;
+    }
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: color-mix(in oklab, var(--solid-ink) 72%, transparent);
+  }
+}

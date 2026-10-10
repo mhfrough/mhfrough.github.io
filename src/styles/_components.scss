@@ -449,7 +449,7 @@ section.block {
   font-size: 14px;
 
   .prompt {
-    opacity: 0.5;
+    opacity: 0.62; // 5.7:1 on --solid
   }
 
   code {
@@ -783,5 +783,8 @@ section.block {
     background:
       radial-gradient(60% 50% at 85% 20%, rgb(255 255 255 / 0.06), transparent 70%),
       radial-gradient(50% 40% at 10% 90%, rgb(255 255 255 / 0.035), transparent 70%);
+    // fade out so short heroes never end on a hard edge
+    -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
+    mask-image: linear-gradient(to bottom, #000 60%, transparent);
   }
 }
