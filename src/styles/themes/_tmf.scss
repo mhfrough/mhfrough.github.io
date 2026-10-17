@@ -1,0 +1,78 @@
+// Microfinance loan-management case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum
+// patterns) in the lender's colours: the staff app's Material palette of desert sand #d1a871 (primary) and leaf
+// green #88b03f (accent), on the warm off-white #f9f5ee of its primary 50.
+// Colour tokens only, like the other case-study themes: type, shape and components stay as on the rest of the site.
+// Applied by <html data-theme="tmf"> (route data on /work/tmf). Every rule is scoped to that attribute, so nothing
+// leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.5:1 on --bg, ink-2 8.2:1, muted 5.9:1 on --bg, 5.4:1 on --surface-2 and 6.5:1 on
+// white. The sand CTA #d1a871 carries dark ink at 7.2:1 (the app's own primary buttons were sand). --t-sand-text
+// 5.9:1 on white and 5.0:1 on --t-sand-soft, --t-green-text 6.0:1 on white and 5.3:1 on --t-green-soft,
+// --t-red-text 7.3:1 on white and 6.0:1 on --t-red-soft. The sand and green fills are for large shapes, bars and
+// dots only, never text. Night blocks: --n-ink 15.6:1, --n-muted 8.8:1.
+
+:root[data-theme='tmf'] {
+  // Surfaces
+  --bg: #f8f5ef;
+  --bg-2: #f1eadc;
+  --bg-raise: #f1eadc;
+  --surface: #ffffff;
+  --surface-2: #f1eadc;
+  --line: #e8dfcf;
+  --line-strong: #d6c8b1;
+
+  // Text
+  --ink: #2b2117;
+  --ink-2: #5a4630;
+  --muted: #6b5c48;
+  --faint: #d6c8b1; // decorative only
+
+  // Product colours
+  --t-sand: #d1a871;
+  --t-sand-deep: #b57d42;
+  --t-sand-text: #8a5a26;
+  --t-sand-soft: #f6ecdc;
+  --t-green: #88b03f;
+  --t-green-text: #4f6d0b;
+  --t-green-soft: #edf4dc;
+  --t-red-text: #a3271b;
+  --t-red-soft: #fae4e0;
+  --t-night: #241b11;
+  --t-night-2: #30251a;
+  --t-night-line: rgb(248 245 239 / 0.12);
+  --n-ink: #f8f5ef;
+  --n-muted: #c9b8a0;
+
+  --accent: #8a5a26;
+  --accent-ink: #ffffff;
+  --accent-soft: #f6ecdc;
+  --cta: #d1a871;
+  --cta-ink: #2b2117;
+  --focus: #8a5a26;
+
+  --solid: #241b11;
+  --solid-ink: #f8f5ef;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(36 27 17 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(36 27 17 / 0.05), 0 14px 34px -16px rgb(36 27 17 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(36 27 17 / 0.05), 0 36px 72px -28px rgb(36 27 17 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--t-sand-text);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #e3cda9;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(209 168 113 / 0.18), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(136 176 63 / 0.1), transparent 70%);
+  }
+}

@@ -1,0 +1,262 @@
+<mh-finclore-theme />
+
+<!-- Hero: copy left, the working formation wizard right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="fc-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="fc-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}<span class="stop">.</span></span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <mh-finclore-order class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="fc-numbers">
+  <div class="wrap">
+    <h2 id="fc-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The public site, rendered from the original build -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="fc-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">{{ c.site.url }}</span>
+        </div>
+        <img src="/images/finclore/site-home.webp" width="1600" height="1000" [alt]="c.site.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img src="/images/finclore/site-mobile.webp" width="780" height="1688" [alt]="c.site.mobileAlt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <div class="shots-3">
+      @for (s of c.site.details; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" width="1600" [height]="s.h" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+  </div>
+</section>
+}
+
+<!-- The mark: the owner's logo, its construction and its sizes -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="fc-logo">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-logo" class="title">{{ c.logo.title }}</h2>
+      <p class="sub">{{ c.logo.sub }}</p>
+    </header>
+    <mh-finclore-mark [c]="c.logo" mhReveal />
+  </div>
+</section>
+}
+
+<!-- Architecture: one app, three audiences -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="fc-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.customers; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <span class="core-mark"><img src="/images/finclore/finclore-mark.svg" width="34" height="34" alt="" /></span>
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.staff; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Lifecycle -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="fc-flow">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-flow" class="title">{{ c.flow.title }}</h2>
+      <p class="sub">{{ c.flow.sub }}</p>
+    </header>
+
+    <div class="rail card" mhReveal>
+      <ol role="list">
+        @for (s of c.flow.steps; track s; let i = $index) {
+          <li [style.--i]="i" [class.staff]="i > 1">
+            <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <ul class="rules" role="list">
+      @for (r of c.flow.holds; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Members and shares -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="fc-mem">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-mem" class="title">{{ c.members.title }}</h2>
+      <p class="sub">{{ c.members.sub }}</p>
+    </header>
+    <mh-finclore-members mhReveal />
+  </div>
+</section>
+}
+
+<!-- Permissions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="fc-acc">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-acc" class="title">{{ c.access.title }}</h2>
+      <p class="sub">{{ c.access.sub }}</p>
+    </header>
+    <mh-finclore-access mhReveal />
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="fc-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="fc-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="fc-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="fc-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="fc-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/bloomstone">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

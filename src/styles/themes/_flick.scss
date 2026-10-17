@@ -1,0 +1,67 @@
+// Flick case-study theme: the site's own design system (Geist, pills, 16px cards) in Flick's dark palette, read from
+// its styles.css: ground #0f110e, raised tones #1b1e19 and #282c25, ink #eceee6 and the one lime accent #d4f84b with
+// near-black #11130f on it. Flick separates surfaces by tone; this site keeps its hairlines, tinted to match.
+// Colour tokens only, like the other case studies. Applied by <html data-theme="flick"> (route data on /work/flick).
+// Every rule is scoped to that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1) on --bg #0f110e: ink 16.2:1, ink-2 11.6:1, muted 7.2:1 (5.7:1 on --surface-2),
+// --fl-lime 15.7:1 (12.5:1 on --surface-2), --fl-danger 8.3:1. CTA ink #11130f on lime #d4f84b 15.4:1.
+// Lines are decorative hairlines, as on the base theme.
+
+:root[data-theme='flick'] {
+  --bg: #0f110e;
+  --bg-2: #131611;
+  --bg-raise: #151813;
+  --surface: #1b1e19;
+  --surface-2: #232720;
+  --line: #2b2f27;
+  --line-strong: #3c4136;
+
+  --ink: #eceee6;
+  --ink-2: #c8ccbf;
+  --muted: #9ca191;
+  --faint: #555a4e; // decorative only
+
+  --fl-lime: #d4f84b;
+  --fl-lime-ink: #11130f;
+  --fl-lime-soft: #232a10;
+  --fl-lime-line: #4d5a1f;
+  --fl-danger: #ff8a7a;
+  --fl-grain: rgb(236 238 230 / 0.06);
+
+  --accent: #d4f84b;
+  --accent-ink: #11130f;
+  --accent-soft: #232a10;
+  --solid: #232720;
+  --solid-ink: #eceee6;
+  --cta: #d4f84b;
+  --cta-ink: #11130f;
+  --focus: #d4f84b;
+
+  --glass-edge: rgb(236 238 230 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.05);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.35), 0 40px 80px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #d4f84b;
+    color: #11130f;
+  }
+
+  .btn-solid:hover,
+  .btn--primary:hover {
+    background: #c3ea33;
+  }
+
+  .card--hover:hover {
+    border-color: var(--fl-lime-line);
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(55% 50% at 85% 18%, rgb(212 248 75 / 0.1), transparent 70%),
+      radial-gradient(45% 40% at 8% 90%, rgb(212 248 75 / 0.04), transparent 70%);
+  }
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, afterNextRender, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -10,8 +10,11 @@ import {
   phosphorClock,
   phosphorCode,
   phosphorCopy,
+  phosphorDatabase,
   phosphorDribbbleLogo,
   phosphorGithubLogo,
+  phosphorGraduationCap,
+  phosphorHandCoins,
   phosphorLinkedinLogo,
   phosphorPenNib,
   phosphorReceipt,
@@ -19,20 +22,25 @@ import {
   phosphorSparkle,
   phosphorStack,
   phosphorStorefront,
+  phosphorIdentificationBadge,
+  phosphorPencilSimpleLine,
+  phosphorTreePalm,
   phosphorTreeStructure,
   phosphorTruck,
 } from '@ng-icons/phosphor-icons/regular';
 import { PERSON_ID, Seo, abs } from '../../core/seo/seo.service';
 import { SITE } from '../../core/site.config';
+import { routes } from '../../app.routes';
 import { Reveal } from '../../shared/directives/reveal.directive';
-import { Avatar } from '../../shared/ui/avatar';
+import { Pattern } from '../../shared/ui/pattern';
 import { Skeleton } from '../../shared/ui/skeleton';
-import { EXPERIENCE, HOW, PROJECTS, REELS, STACK } from './home.data';
+import { BENTO, EXPERIENCE, HOW, REELS, STACK } from './home.data';
+import { HomeMore } from './home-more';
 import { WorkExplorer } from './work-explorer';
 
 @Component({
   selector: 'mh-page-home',
-  imports: [RouterLink, NgIcon, Avatar, Skeleton, Reveal, WorkExplorer],
+  imports: [RouterLink, NgIcon, Pattern, Skeleton, Reveal, WorkExplorer, HomeMore],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,
@@ -43,8 +51,11 @@ import { WorkExplorer } from './work-explorer';
       phosphorClock,
       phosphorCode,
       phosphorCopy,
+      phosphorDatabase,
       phosphorDribbbleLogo,
       phosphorGithubLogo,
+      phosphorGraduationCap,
+      phosphorHandCoins,
       phosphorLinkedinLogo,
       phosphorPenNib,
       phosphorReceipt,
@@ -52,6 +63,9 @@ import { WorkExplorer } from './work-explorer';
       phosphorSparkle,
       phosphorStack,
       phosphorStorefront,
+      phosphorIdentificationBadge,
+      phosphorPencilSimpleLine,
+      phosphorTreePalm,
       phosphorTreeStructure,
       phosphorTruck,
     }),
@@ -69,16 +83,26 @@ export class Home {
   protected readonly how = HOW;
   protected readonly experience = EXPERIENCE;
   protected readonly reels = REELS;
-  // Bento: the six strongest client projects after Quorum (Quorum is the feature cell)
-  protected readonly bento = ['tax', 'fleet', 'inbox', 'funds', 'food', 'practice'].map((id) => PROJECTS.find((p) => p.id === id)!);
+  // Bento: six client case studies after Quorum (the feature cell). Order and count live in BENTO.
+  protected readonly bento = BENTO;
+  /** Case studies on the site, counted from the router so the number cannot drift. */
+  protected readonly caseStudies = routes.filter((r) => r.path?.startsWith('work/')).length;
+
+  // Credentials, not a scoreboard: short facts from the CV, no big digits.
+  protected readonly credentials = [
+    { k: 'Since 2020', v: '7+ years of experience in production software' },
+    { k: '30+ products', v: 'Shipped across banking, tax, investment, fleet and SaaS' },
+    { k: 'Software architecture', v: 'Designs the system, sets conventions, reviews code' },
+    { k: 'All live platforms', v: 'Owns AWS releases for UAT and production' },
+  ];
 
   protected readonly kit = [
-    { group: 'Frontend', items: 'Angular, TypeScript, RxJS, SCSS, Angular SSR, PWA' },
-    { group: 'Architecture', items: 'Micro-frontends, multi-tenant SaaS, real-time, embeddable widgets' },
-    { group: 'Backend and data', items: 'NestJS, Node.js, PHP, PostgreSQL, MongoDB, Firebase, Supabase' },
-    { group: 'Mobile', items: 'Flutter, Ionic' },
-    { group: 'Cloud and DevOps', items: 'AWS, Cloudflare, Netlify, Render, Nginx, Coolify CI/CD' },
-    { group: 'Quality and design', items: 'Playwright, Karma, WCAG 2.1 AA, SEO, Adobe XD' },
+    { group: 'Frontend', items: ['Angular', 'React', 'TypeScript', 'JavaScript', 'RxJS', 'SCSS', 'Angular SSR', 'PWA'] },
+    { group: 'Architecture', items: ['Micro-frontends', 'Multi-tenant SaaS', 'Fintech', 'Real-time', 'Widgets'] },
+    { group: 'Backend and data', items: ['NestJS', 'Node.js', 'PHP', 'WordPress', 'PostgreSQL', 'MySQL', 'phpMyAdmin', 'MongoDB', 'Firebase', 'Supabase'] },
+    { group: 'Mobile', items: ['Flutter', 'Ionic', 'Android Studio'] },
+    { group: 'Cloud and DevOps', items: ['AWS', 'Cloudflare', 'Netlify', 'Render', 'Nginx', 'cPanel', 'Coolify'] },
+    { group: 'Quality and design', items: ['Playwright', 'Karma', 'WCAG 2.1 AA', 'SEO', 'Adobe XD'] },
   ];
 
   protected readonly offers = [
@@ -101,8 +125,6 @@ export class Home {
       points: ['Architecture, performance and bundle size', 'Accessibility and SEO audit', 'A written plan you can act on'],
     },
   ];
-  protected readonly offerId = signal(this.offers[0].id);
-  protected readonly offer = computed(() => this.offers.find((o) => o.id === this.offerId())!);
 
   protected readonly fits = [
     { k: 'angular', v: 'New Angular apps, or rescuing one that grew too fast' },
@@ -119,7 +141,7 @@ export class Home {
   constructor() {
     inject(Seo).set({
       description:
-        'Mohammad Hamza (@mhfrough) is a software architect in Karachi building Angular platforms, multi-tenant SaaS and design systems. Available for freelance and contract work.',
+        'Mohammad Hamza (@mhfrough) is a software architect in Karāchi building Angular platforms, multi-tenant SaaS and design systems. Available for freelance and contract work.',
       path: '/',
       type: 'profile',
       jsonLd: [
@@ -159,18 +181,5 @@ export class Home {
     } catch {
       window.location.href = `mailto:${this.email}`;
     }
-  }
-
-  protected onTabKey(e: KeyboardEvent): void {
-    const i = this.offers.findIndex((o) => o.id === this.offerId());
-    let next = i;
-    if (e.key === 'ArrowRight') next = (i + 1) % this.offers.length;
-    else if (e.key === 'ArrowLeft') next = (i - 1 + this.offers.length) % this.offers.length;
-    else if (e.key === 'Home') next = 0;
-    else if (e.key === 'End') next = this.offers.length - 1;
-    else return;
-    e.preventDefault();
-    this.offerId.set(this.offers[next].id);
-    document.getElementById('tab-' + this.offers[next].id)?.focus();
   }
 }

@@ -7,7 +7,7 @@ import { copyText, serializeChildren } from '../brand.util';
 /**
  * Specimen frame: a live stage (projected content), a mono class caption and a "Copy markup" button.
  * The copied markup is serialized from the rendered stage at click time, so it cannot drift from the code.
- * Pass `markup` only when the stage holds Angular components (mh-logo, mh-avatar) whose source differs from the DOM.
+ * Pass `markup` only when the stage holds Angular components (such as mh-logo) whose source differs from the DOM.
  */
 @Component({
   selector: 'mh-spec',

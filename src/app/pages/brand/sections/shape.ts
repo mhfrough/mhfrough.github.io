@@ -23,9 +23,9 @@ import { TkPipe } from './tk.pipe';
       <p>Containers hold, pills act. Nesting steps the radius down so inner corners stay parallel.</p>
     </div>
     <div class="nest card" aria-hidden="true">
-      <span class="nest__tag mono">--r-card 20px</span>
+      <span class="nest__tag mono">--r-card 16px</span>
       <div class="nest__inner">
-        <span class="nest__tag mono">--r-inner 14px</span>
+        <span class="nest__tag mono">--r-inner 12px</span>
         <div class="nest__row">
           <span class="btn btn-solid btn-sm">Pill</span>
           <span class="chip">Chip</span>
@@ -279,7 +279,7 @@ export class BrandShape {
   protected readonly t = COPY.shape;
   protected readonly live = signal<Record<string, string>>({});
   protected readonly glassLines = [
-    'Nearly 7 years of production SaaS, fintech and enterprise platforms.',
+    'Production SaaS, fintech and enterprise platforms since 2020.',
     'Content scrolls under the nav.',
     'The pill stays legible over anything: blur, a little saturation, a 62% surface and a 1px inner highlight.',
   ];

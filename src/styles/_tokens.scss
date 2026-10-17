@@ -32,8 +32,8 @@
   --glass-edge: rgb(255 255 255 / 0.09);
   --glass-hi: rgb(255 255 255 / 0.07);
 
-  --r-card: 20px;
-  --r-inner: 14px;
+  --r-card: 16px;
+  --r-inner: 12px;
   --r-pill: 999px;
   // legacy aliases
   --r-1: 8px;
@@ -51,10 +51,10 @@
   --t-base: 0.25s;
   --t-slow: 0.8s;
 
-  --max: 1200px;
+  --max: 1160px;
   --gutter: 24px;
-  --nav-h: 60px;
-  --nav-top: 12px;
+  --nav-h: 52px;
+  --nav-top: 14px;
 
   --z-nav: 20;
   --z-overlay: 40;
@@ -66,7 +66,7 @@
 @media (max-width: 640px) {
   :root {
     --gutter: 16px;
-    --nav-h: 56px;
-    --nav-top: 8px;
+    --nav-h: 50px;
+    --nav-top: 10px;
   }
 }

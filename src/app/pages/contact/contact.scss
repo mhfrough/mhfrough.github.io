@@ -130,13 +130,6 @@ label.chip {
   }
 }
 
-// Field with an error: a short ink rule on the left, like GOV.UK, in monochrome
-.field:has(> .field__error),
-.field:has(> .message-foot > .field__error) {
-  padding-left: 14px;
-  border-left: 2px solid var(--ink);
-}
-
 .check {
   label {
     cursor: pointer;
@@ -326,6 +319,7 @@ form[aria-busy='true'] .submit .btn {
 // ---------- Aside ----------
 .aside {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 
@@ -361,6 +355,23 @@ form[aria-busy='true'] .submit .btn {
   }
 }
 
+// Phones: icon-only copy button (it has an aria-label) so the whole address stays visible.
+@media (max-width: 420px) {
+  .mail {
+    gap: 8px;
+
+    .copy {
+      width: 36px;
+      padding: 0;
+      justify-content: center;
+
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
 .copy-failed {
   margin-top: 10px;
 }
@@ -373,7 +384,7 @@ form[aria-busy='true'] .submit .btn {
 
 .channel {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   min-height: 60px;
   padding: 8px 14px 8px 8px;
@@ -421,6 +432,7 @@ form[aria-busy='true'] .submit .btn {
 }
 
 .channel__arrow {
+  align-self: center;
   color: var(--muted);
   font-size: 16px;
   transition: transform var(--t-base) var(--ease);

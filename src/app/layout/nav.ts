@@ -7,8 +7,8 @@ import { Logo } from '../shared/ui/logo';
 import { LAYOUT_COPY } from './layout.copy';
 
 /**
- * Floating glass nav, as on Quorum: a pill that hovers over content, tinted to the page, with a
- * 1px inner highlight. Side padding and max-width match .wrap so the pill lines up with sections.
+ * Floating glass nav split in two: an identity pill (round ء tile + handle) on the left and a pill with the links and
+ * actions on the right, with the page showing through between them. Max-width matches .wrap.
  * Active link gets a dot underneath. Below 820px the links fold into a dropdown card.
  */
 @Component({
@@ -20,21 +20,21 @@ import { LAYOUT_COPY } from './layout.copy';
   template: `
     <header class="nav">
       <nav class="nav-inner" aria-label="Primary">
-        <a class="brand" routerLink="/" [attr.aria-label]="t.homeLabel">
+        <a class="pill brand" routerLink="/" [attr.aria-label]="t.homeLabel">
           <span class="brand-mark"><mh-logo [size]="22" /></span>
-          <span class="brand-text">Mohammad Hamza</span>
+          <span class="brand-text" translate="no">{{ t.brand }}</span>
         </a>
 
-        <ul class="nav-links" role="list">
-          @for (l of links; track l.path) {
-            <li>
-              <a [routerLink]="l.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{ l.label }}</a>
-            </li>
-          }
-        </ul>
-
-        <div class="nav-right">
-          <a class="icon-btn" [href]="github" target="_blank" rel="me noopener" aria-label="GitHub profile">
+        <div class="pill actions">
+          <ul class="nav-links" role="list">
+            @for (l of links; track l.path) {
+              <li>
+                <a [routerLink]="l.path" routerLinkActive="active" ariaCurrentWhenActive="page">{{ l.label }}</a>
+              </li>
+            }
+          </ul>
+          <span class="sep" aria-hidden="true"></span>
+          <a class="icon-btn gh" [href]="github" target="_blank" rel="me noopener" aria-label="GitHub profile">
             <ng-icon name="phosphorGithubLogo" aria-hidden="true" />
           </a>
           <a class="btn btn-solid btn-sm cta" routerLink="/hire">{{ t.hire }}</a>
@@ -76,15 +76,19 @@ import { LAYOUT_COPY } from './layout.copy';
       max-width: calc(var(--max) - 48px);
       margin: 0 auto;
     }
+    /* Two separate glass pills: identity on the left, navigation and actions on the right. */
     .nav-inner {
-      pointer-events: auto;
-      height: var(--nav-h);
-      padding: 0 10px 0 14px;
-      border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+    }
+    .pill {
+      pointer-events: auto;
+      height: var(--nav-h);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
       background: color-mix(in oklab, var(--surface) 62%, transparent);
       -webkit-backdrop-filter: blur(18px) saturate(1.6);
       backdrop-filter: blur(18px) saturate(1.6);
@@ -94,44 +98,49 @@ import { LAYOUT_COPY } from './layout.copy';
         0 8px 24px -12px rgb(0 0 0 / 0.5);
     }
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-      .nav-inner {
+      .pill {
         background: var(--surface);
       }
     }
     @media (prefers-reduced-transparency: reduce) {
-      .nav-inner {
+      .pill {
         background: var(--surface);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
     }
     .brand {
-      display: flex;
-      align-items: center;
       gap: 10px;
+      padding: 0 16px 0 8px;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      font-size: 15px;
+      letter-spacing: -0.02em;
       white-space: nowrap;
-      border-radius: 999px;
+      transition: border-color var(--t-base) var(--ease);
     }
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--cta);
-      color: var(--cta-ink);
-      display: grid;
-      place-items: center;
+    .brand .brand-mark {
+      --tile: 36px;
+      border-radius: 50%;
+    }
+    .brand:hover {
+      border-color: var(--line-strong);
+    }
+    .actions {
+      gap: 6px;
+      padding: 0 7px 0 22px;
     }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 28px;
-      font-size: 15px;
+      gap: 22px;
+      font-size: 14px;
       color: var(--ink-2);
     }
     .nav-links a {
       position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
       transition: color var(--t-fast) var(--ease);
     }
     .nav-links a:hover,
@@ -142,7 +151,7 @@ import { LAYOUT_COPY } from './layout.copy';
       content: '';
       position: absolute;
       left: 50%;
-      bottom: -9px;
+      bottom: 1px;
       width: 4px;
       height: 4px;
       border-radius: 50%;
@@ -153,10 +162,25 @@ import { LAYOUT_COPY } from './layout.copy';
     .nav-links a.active::after {
       transform: translateX(-50%) scale(1);
     }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .sep {
+      width: 1px;
+      height: 18px;
+      margin: 0 10px 0 16px;
+      background: var(--line-strong);
+    }
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-color: transparent;
+      background: transparent;
+    }
+    .icon-btn:hover {
+      background: var(--surface-2);
+    }
+    .cta {
+      height: 36px;
+      padding: 0 16px;
+      font-size: 13.5px;
     }
     .menu-btn {
       display: none;
@@ -164,8 +188,8 @@ import { LAYOUT_COPY } from './layout.copy';
     .menu {
       pointer-events: auto;
       position: absolute;
-      left: 0;
       right: 0;
+      width: min(280px, 100%);
       top: calc(100% + 8px);
       padding: 6px;
       border-radius: var(--r-card);
@@ -194,10 +218,10 @@ import { LAYOUT_COPY } from './layout.copy';
     .menu a {
       display: flex;
       align-items: center;
-      min-height: 48px;
+      min-height: 46px;
       padding: 0 16px;
       border-radius: var(--r-inner);
-      font-size: 16px;
+      font-size: 15px;
       color: var(--ink-2);
     }
     .menu a:hover,
@@ -206,11 +230,24 @@ import { LAYOUT_COPY } from './layout.copy';
       color: var(--ink);
     }
     @media (max-width: 820px) {
-      .nav-links {
+      .nav-links,
+      .sep {
         display: none;
+      }
+      .actions {
+        padding-left: 7px;
       }
       .menu-btn {
         display: inline-grid;
+      }
+      /* Touch sizes: both buttons are borderless, so 44px fills the 52px pill without looking heavier. */
+      .actions {
+        gap: 2px;
+        padding: 0 4px;
+      }
+      .icon-btn {
+        width: 44px;
+        height: 44px;
       }
     }
     @media (min-width: 821px) {
@@ -219,15 +256,7 @@ import { LAYOUT_COPY } from './layout.copy';
       }
     }
     @media (max-width: 640px) {
-      .nav-inner {
-        padding: 0 8px 0 10px;
-      }
       .cta {
-        display: none;
-      }
-    }
-    @media (max-width: 400px) {
-      .brand-text {
         display: none;
       }
     }
@@ -240,6 +269,7 @@ export class Nav {
   private readonly toggle = viewChild<ElementRef<HTMLButtonElement>>('toggle');
   protected readonly links = [
     { label: LAYOUT_COPY.nav.work, path: '/work' },
+    { label: LAYOUT_COPY.nav.about, path: '/about' },
     { label: LAYOUT_COPY.nav.brand, path: '/brand' },
     { label: LAYOUT_COPY.nav.contact, path: '/contact' },
   ];

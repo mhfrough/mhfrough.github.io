@@ -29,6 +29,7 @@ import {
 import { PERSON_ID, Seo, abs } from '../../core/seo/seo.service';
 import { SITE } from '../../core/site.config';
 import { Reveal } from '../../shared/directives/reveal.directive';
+import { Pattern } from '../../shared/ui/pattern';
 import { HIRE_COPY } from './hire.copy';
 import { ScopeBuilder } from './scope-builder';
 
@@ -36,7 +37,7 @@ const PATH = '/hire';
 
 @Component({
   selector: 'mh-page-hire',
-  imports: [RouterLink, NgIcon, Reveal, ScopeBuilder],
+  imports: [RouterLink, NgIcon, Reveal, Pattern, ScopeBuilder],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,

@@ -1,0 +1,101 @@
+<section class="icons" id="weather-icons" aria-labelledby="icons-title">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <span class="badge">{{ t.eyebrow }}</span>
+        <h2 class="head__title" id="icons-title">{{ t.title }}</h2>
+        <p class="head__note">{{ t.note }}</p>
+      </div>
+      <div class="head__actions">
+        @if (!reduced()) {
+          <div class="seg" role="group" [attr.aria-label]="t.modeLabel">
+            @for (m of modes; track m) {
+              <button type="button" [attr.aria-pressed]="mode() === m" (click)="setMode(m)">{{ t.modes[m] }}</button>
+            }
+          </div>
+        }
+        <a class="btn btn-ghost btn-sm" [href]="t.dribbbleUrl" target="_blank" rel="noopener">
+          {{ t.dribbble }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="card set">
+      <div class="grid" role="group" [attr.aria-label]="t.gridLabel" (keydown)="onKey($event)">
+        @for (icon of icons; track icon.id; let i = $index) {
+          <button
+            type="button"
+            class="cell"
+            [attr.aria-pressed]="i === index()"
+            [tabIndex]="i === index() ? 0 : -1"
+            (click)="select(i)"
+          >
+            <img [src]="shown(icon)" [width]="tile" [height]="tile" alt="" loading="lazy" decoding="async" />
+            <span class="cell__name">{{ icon.name }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="inspector">
+        <div class="stage">
+          <img
+            [src]="shown(current())"
+            [width]="tile"
+            [height]="tile"
+            [alt]="current().name + ' icon, full size'"
+            decoding="async"
+          />
+        </div>
+
+        <div class="detail">
+          <div class="sizes">
+            <span class="k">{{ t.sizes }}</span>
+            <div class="sizes__row">
+              @for (s of sizes; track s) {
+                <figure>
+                  <img [src]="shown(current())" [width]="s" [height]="s" alt="" decoding="async" />
+                  <figcaption>{{ s }}</figcaption>
+                </figure>
+              }
+            </div>
+          </div>
+
+          <h3 class="detail__name">{{ current().name }}</h3>
+          <dl class="meta">
+            <div><dt>{{ t.group }}</dt><dd>{{ current().group }}</dd></div>
+            <div><dt>{{ t.canvas }}</dt><dd>{{ tile }} × {{ tile }}</dd></div>
+            <div><dt>{{ t.shapes }}</dt><dd>{{ current().shapes }}</dd></div>
+            <div><dt>{{ t.colors }}</dt><dd>{{ current().colors.length }}</dd></div>
+            <div><dt>{{ t.motion }}</dt><dd>{{ current().motion.join(', ') || t.still }}</dd></div>
+            <div><dt>{{ t.file }}</dt><dd>{{ fileName(current()) }}, {{ fileSize(current()) }}</dd></div>
+          </dl>
+
+          <div class="actions">
+            <a class="btn btn-solid btn-sm" [href]="file(current())" [attr.download]="fileName(current())">
+              <ng-icon name="phosphorDownloadSimple" aria-hidden="true" />{{ t.download }}
+            </a>
+            <button type="button" class="btn btn-ghost btn-sm" (click)="copy()">
+              <ng-icon [name]="copied() ? 'phosphorCheck' : 'phosphorCopy'" aria-hidden="true" />
+              {{ copied() ? t.copied : t.copy }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="palette">
+        <span class="k">{{ t.palette }}</span>
+        <ul role="list">
+          @for (c of palette; track c) {
+            <li [class.on]="current().colors.includes(c)">
+              <span class="swatch" [style.background-color]="c" aria-hidden="true"></span>
+              <span class="hex">{{ c }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="sr-only" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>
+  </div>
+</section>

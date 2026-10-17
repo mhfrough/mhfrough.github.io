@@ -5,23 +5,21 @@ export const HIRE_COPY = {
   seo: {
     title: 'Hire me',
     description:
-      'Hire Mohammad Hamza (@mhfrough), a software architect in Karachi, for freelance builds, contract work, Angular architecture reviews and frontend rescues. Quote after a short scoping call.',
+      'Hire Mohammad Hamza (@mhfrough), a software architect in Karāchi, for freelance builds, contract work, Angular architecture reviews and frontend rescues. Quote after a short scoping call.',
     imageAlt: 'Hire Mohammad Hamza, software architect',
   },
 
   hero: {
-    pillTagOn: 'Available',
-    pillTagOff: 'Booked',
     pillOn: 'Taking on new projects',
     pillOff: 'Booked for now, still happy to talk',
     line1: 'Built right,',
     line2: 'from day one.',
-    lede: 'Freelance, contract and review work from a software architect with nearly 7 years of production Angular, NestJS and SaaS.',
+    lede: 'Freelance, contract and review work from a software architect with 7+ years of production Angular, NestJS and SaaS, since 2020.',
     primary: 'Get in touch',
     secondary: 'View work',
     facts: [
-      { v: '7 yrs', k: 'in production SaaS' },
-      { v: '14+', k: 'products delivered' },
+      { v: '7+ yrs', k: 'since 2020, in production SaaS' },
+      { v: '30+', k: 'products delivered' },
       { v: 'UTC+5', k: 'overlaps UK and EU' },
     ],
   },
@@ -78,7 +76,7 @@ export const HIRE_COPY = {
     ],
     fits: {
       title: 'Strong fits',
-      body: 'Work where nearly 7 years of production experience pays off most.',
+      body: 'Work where production experience since 2020 pays off most.',
       items: [
         'Angular apps from zero or rescue',
         'Micro-frontend splits',
@@ -134,7 +132,7 @@ export const HIRE_COPY = {
         topic: 'Timezone',
         tag: 'UTC+5',
         promise: 'Overlaps UK and EU',
-        d: 'Karachi sits 4 to 5 hours ahead of London, so your morning is my afternoon. Calls fit the shared window and the rest moves async.',
+        d: 'Karāchi sits 4 to 5 hours ahead of London, so your morning is my afternoon. Calls fit the shared window and the rest moves async.',
       },
       {
         icon: 'phosphorChatCircleText',
@@ -181,7 +179,7 @@ export const HIRE_COPY = {
       },
       {
         q: 'How do you handle the timezone difference?',
-        a: 'Karachi is UTC+5, which overlaps UK and EU working hours from your morning to mid afternoon. Calls go in that window, and daily written updates cover the rest.',
+        a: 'Karāchi is UTC+5, which overlaps UK and EU working hours from your morning to mid afternoon. Calls go in that window, and daily written updates cover the rest.',
       },
       {
         q: 'Do you work outside Angular?',

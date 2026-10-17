@@ -1,0 +1,78 @@
+// Malik Transport Solutions case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum
+// patterns) in the transport company's colours: its blue #3365a4, the navy #232343 of its dark blocks and the
+// light grey page it used. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="malik-transport"> (route data on /work/malik-transport). Every rule is scoped to
+// that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.6:1 on --bg, ink-2 8.7:1, muted 5.5:1 on --bg, 5.1:1 on --surface-2 and 6.0:1 on
+// white; white on the brand blue CTA #3365a4 5.9:1, and the blue as text 5.9:1 on white; --mt-blue-text 7.0:1 on
+// white and 5.9:1 on --mt-blue-soft; --mt-red-text 6.7:1 on white and 5.6:1 on --mt-red-soft; --mt-green-text
+// 5.8:1 and 5.0:1 on --mt-green-soft; --mt-amber-text 5.3:1 on --mt-amber-soft; --mt-cyan-text 5.7:1 on white and
+// 5.0:1 on --mt-cyan-soft. The brand cyan #16b0e3 is a fill for large shapes only. Night blocks: --n-ink 13.9:1
+// and --n-muted 8.0:1 on --mt-night.
+
+:root[data-theme='malik-transport'] {
+  --bg: #f4f6fa;
+  --bg-2: #e8edf4;
+  --bg-raise: #e8edf4;
+  --surface: #ffffff;
+  --surface-2: #e8edf4;
+  --line: #dae1eb;
+  --line-strong: #c2ccda;
+
+  --ink: #1b2236;
+  --ink-2: #3a4660;
+  --muted: #5a6478;
+  --faint: #c2ccda; // decorative only
+
+  --mt-blue: #3365a4;
+  --mt-blue-text: #2c5a94;
+  --mt-blue-soft: #e3ecf7;
+  --mt-cyan: #16b0e3;
+  --mt-cyan-text: #0b6f94;
+  --mt-cyan-soft: #e0f4fb;
+  --mt-red-text: #b31942;
+  --mt-red-soft: #fbe4ea;
+  --mt-green-text: #00753f;
+  --mt-green-soft: #dcf3e7;
+  --mt-amber-text: #8a5a00;
+  --mt-amber-soft: #fff2d1;
+  --mt-night: #232343;
+  --mt-night-2: #2d2d55;
+  --mt-night-line: rgb(244 246 250 / 0.12);
+  --n-ink: #f4f6fa;
+  --n-muted: #b7bbd6;
+
+  --accent: #3365a4;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3ecf7;
+  --cta: #3365a4;
+  --cta-ink: #ffffff;
+  --focus: #3365a4;
+
+  --solid: #232343;
+  --solid-ink: #f4f6fa;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(35 35 67 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(35 35 67 / 0.05), 0 14px 34px -16px rgb(35 35 67 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(35 35 67 / 0.05), 0 36px 72px -28px rgb(35 35 67 / 0.3);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--mt-blue);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b6c8e2;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(51 101 164 / 0.12), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(22 176 227 / 0.08), transparent 70%);
+  }
+}

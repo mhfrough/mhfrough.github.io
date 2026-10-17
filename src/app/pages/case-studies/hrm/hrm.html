@@ -1,0 +1,383 @@
+<mh-hrm-theme />
+
+<!-- Hero: copy left, the working theme lab right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="hr-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="hr-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+      <p class="status-pill dev rise d4"><span class="blip" aria-hidden="true"></span>{{ c.hero.status }}</p>
+    </div>
+    <mh-hrm-theme-lab class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="hr-numbers">
+  <div class="wrap">
+    <h2 id="hr-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Screens from the development build -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="hr-shots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-shots" class="title">{{ c.shots.title }}</h2>
+      <p class="sub">{{ c.shots.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">{{ c.shots.url }}</span>
+        </div>
+        <img src="/images/hrm/app-dashboard.webp" width="1600" height="1000" [alt]="c.shots.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="phone">
+        <img src="/images/hrm/phone-checkin.webp" width="540" height="1070" [alt]="c.shots.phoneAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.shots.phoneCap }}</figcaption>
+      </figure>
+    </div>
+
+    <div class="shots-2">
+      @for (s of c.shots.grid; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i % 2">
+          <img [src]="s.src" width="1600" height="1000" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+    <p class="note mono" mhReveal>{{ c.shots.note }}</p>
+  </div>
+</section>
+}
+
+<!-- One record, end to end: the flow and the modules -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="hr-record">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-record" class="title">{{ c.record.title }}</h2>
+      <p class="sub">{{ c.record.sub }}</p>
+    </header>
+
+    <div class="rail card" mhReveal>
+      <ol role="list">
+        @for (s of c.record.steps; track s; let i = $index) {
+          <li [style.--i]="i">
+            <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <ul class="mods" role="list">
+      @for (m of c.record.modules; track m.t; let i = $index) {
+        <li class="card card--hover" mhReveal [revealIndex]="i % 5">
+          <span class="node-ic"><ng-icon [name]="m.icon" aria-hidden="true" /></span>
+          <h3>{{ m.t }}</h3>
+          <p>{{ m.s }}</p>
+        </li>
+      }
+    </ul>
+    <p class="local" mhReveal>{{ c.record.local }}</p>
+  </div>
+</section>
+}
+
+<!-- Payroll demo -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="hr-pay">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-pay" class="title">{{ c.payroll.title }}</h2>
+      <p class="sub">{{ c.payroll.sub }}</p>
+    </header>
+    <mh-hrm-payrun mhReveal />
+  </div>
+</section>
+}
+
+<!-- Attendance demo -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="hr-att">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-att" class="title">{{ c.attendance.title }}</h2>
+      <p class="sub">{{ c.attendance.sub }}</p>
+    </header>
+    <mh-hrm-fence mhReveal />
+  </div>
+</section>
+}
+
+<!-- Design system -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="hr-ds">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-ds" class="title">{{ c.ds.title }}</h2>
+      <p class="sub">{{ c.ds.sub }}</p>
+    </header>
+
+    <dl class="facts">
+      @for (f of c.ds.facts; track f.t; let i = $index) {
+        <div class="card" mhReveal [revealIndex]="i">
+          <dt><span class="mono">{{ f.v }}</span> {{ f.t }}</dt>
+          <dd>{{ f.s }}</dd>
+        </div>
+      }
+    </dl>
+
+    <div class="ds-pair">
+      <figure class="card shot" mhReveal>
+        <img src="/images/hrm/ds-overview.webp" width="1600" height="1000" [alt]="c.ds.pageAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.ds.pageCap }}</figcaption>
+      </figure>
+      <div class="ds-side">
+        <ol class="layers card" role="list" mhReveal [revealIndex]="1">
+          @for (l of c.ds.layers; track l.k; let i = $index) {
+            <li>
+              <span class="mono step">{{ i + 1 }}</span>
+              <div>
+                <b>{{ l.k }}</b>
+                <code class="mono">{{ l.code }}</code>
+                <small>{{ l.s }}</small>
+              </div>
+            </li>
+          }
+        </ol>
+        <ul class="ds-rules card" role="list" mhReveal [revealIndex]="2">
+          @for (r of c.ds.rules; track r) {
+            <li>{{ r }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="shots-2">
+      <figure class="card shot" mhReveal>
+        <img src="/images/hrm/ds-theming.webp" width="1600" height="1043" [alt]="c.ds.themingAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.ds.themingCap }}</figcaption>
+      </figure>
+      <figure class="card shot" mhReveal [revealIndex]="1">
+        <img src="/images/hrm/ds-buttons.webp" width="1600" height="1213" [alt]="c.ds.buttonsAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.ds.buttonsCap }}</figcaption>
+      </figure>
+    </div>
+
+    <div class="compare-block" mhReveal>
+      <div class="compare-head">
+        <h3>{{ c.ds.compareTitle }}</h3>
+        <p>{{ c.ds.compareSub }}</p>
+      </div>
+      <mh-hrm-compare
+        light="/images/hrm/app-dashboard.webp"
+        dark="/images/hrm/app-dashboard-dark.webp"
+        [lightAlt]="c.ds.lightAlt"
+        [darkAlt]="c.ds.darkAlt"
+      />
+    </div>
+  </div>
+</section>
+}
+
+<!-- Architecture -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="hr-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.surfaces; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <img src="/images/hrm/hrm-mark.svg" width="44" height="44" alt="" />
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.behind; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <ul class="walls" role="list">
+      @for (w of c.arch.walls; track w.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ w.t }}</h3>
+          <p>{{ w.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Testing -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="hr-test">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-test" class="title">{{ c.testing.title }}</h2>
+      <p class="sub">{{ c.testing.sub }}</p>
+    </header>
+    <ul class="suites" role="list">
+      @for (s of c.testing.suites; track s.k; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <p class="mono k">{{ s.k }}</p>
+          <p class="v">{{ s.v }}</p>
+          <p class="s">{{ s.s }}</p>
+        </li>
+      }
+    </ul>
+    <p class="honest" mhReveal>{{ c.testing.honest }}</p>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="hr-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="hr-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- What is next -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="hr-next">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hr-next" class="title">{{ c.next.title }}</h2>
+      <p class="sub">{{ c.next.sub }}</p>
+    </header>
+
+    <div class="progress card" mhReveal>
+      <span class="mono">{{ c.next.progressLabel }}</span>
+      <span class="bar" role="img" [attr.aria-label]="c.next.progress + ' done'"><i></i></span>
+      <b>{{ c.next.progress }}</b>
+    </div>
+
+    <ul class="todo" role="list">
+      @for (t of c.next.items; track t.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="st" [class]="'st s-' + (t.s === 'Open' ? 'open' : t.s === 'In progress' ? 'wip' : 'plan')">{{ t.s }}</span>
+          <h3>{{ t.t }}</h3>
+          <p>{{ t.d }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Call to action -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="hr-cta">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="hr-cta" class="title">{{ c.cta.title }}</h2>
+        <p class="sub">{{ c.cta.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/quorum">{{ c.cta.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

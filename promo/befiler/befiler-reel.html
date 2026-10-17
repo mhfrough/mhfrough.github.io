@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Befiler Reel</title>
+<!--
+  Befiler promo reel, 1080x1920, 26.5 s. Pure CSS: every beat is an animation delay on one timeline.
+  Open directly (or through any static server rooted at the repo) to preview: it scales to the window and
+  shows Replay + a scrubber. ?render hides the controls and waits for startReel(), for a frame renderer
+  (same contract as the Quorum reels: window.reelReady, window.startReel(), window.REEL.duration).
+  Script and timing: befiler-reel-script.md. Theme: befiler.com (Poppins, #e41e26, light surfaces).
+-->
+<style>
+@font-face{font-family:Poppins;font-weight:400;src:url(../../public/fonts/befiler/poppins-400.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:500;src:url(../../public/fonts/befiler/poppins-500.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:600;src:url(../../public/fonts/befiler/poppins-600.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:700;src:url(../../public/fonts/befiler/poppins-700.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:800;src:url(../../public/fonts/befiler/poppins-800.woff2) format('woff2')}
+@font-face{font-family:"Noto Nastaliq Urdu";font-weight:400 700;src:url(fonts/noto-nastaliq-urdu-arabic.woff2) format('woff2')}
+
+@property --p { syntax: '<color>'; inherits: true; initial-value: #3f647d; }
+
+:root{
+  --bg:#fbfafa;--bg2:#fcf6f5;--surface:#fff;--surface-2:#f6f4f4;--line:#e8e8e8;
+  --ink:#1b1b1b;--ink-2:#444;--muted:#5f6672;
+  --red:#e41e26;--red-dark:#c0121a;--red-soft:#fde0e4;--red-edge:#f6c6cc;
+  --ease:cubic-bezier(.16,1,.3,1);--in:cubic-bezier(.55,0,.75,.2);--pop:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#2a2a2a}
+#reel{position:relative;width:1080px;height:1920px;overflow:hidden;color:var(--ink);
+  font-family:Poppins,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  background:linear-gradient(160deg,var(--bg),var(--bg2))}
+.ur{font-family:"Noto Nastaliq Urdu",serif}
+
+/* Nothing moves until startReel() adds .play: a frame renderer controls t = 0. Before that, scenes are hidden. */
+#reel:not(.play) .scene,#reel:not(.play) .brand{visibility:hidden}
+
+/* ---------- keyframes ---------- */
+@keyframes lineIn{from{transform:translateY(112%)}to{transform:translateY(0)}}
+@keyframes lineOut{from{transform:translateY(0)}to{transform:translateY(-112%)}}
+@keyframes rise{from{opacity:0;transform:translateY(56px)}to{opacity:1;transform:none}}
+@keyframes riseOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-56px)}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+@keyframes popOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.85)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@keyframes drift1{from{transform:translate(0,0) scale(1)}to{transform:translate(-180px,560px) scale(1.2)}}
+@keyframes drift2{from{transform:translate(0,0) scale(1)}to{transform:translate(220px,-620px) scale(1.15)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes press{0%,100%{transform:scale(1)}50%{transform:scale(.94)}}
+@keyframes check{from{background:#fff;border-color:#d6d6d6}to{background:var(--red);border-color:var(--red)}}
+@keyframes tickIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+@keyframes skin{
+  0%,13%{--p:#3f647d} 17%,30%{--p:#0b2145} 34%,47%{--p:#363636}
+  51%,64%{--p:#2f7a29} 68%,81%{--p:#16775a} 85%,100%{--p:#4d6b00}}
+@keyframes nameIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes nameOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-24px)}}
+@keyframes flip{from{transform:rotateY(0)}to{transform:rotateY(180deg)}}
+@keyframes ring{from{transform:scale(1);opacity:.55}to{transform:scale(2.2);opacity:0}}
+@keyframes stage{from{background:#fff;border-color:#d6d6d6;color:transparent}to{background:var(--red);border-color:var(--red);color:#fff}}
+@keyframes ink{from{color:#9aa0a8}to{color:var(--ink)}}
+
+/* ---------- background ---------- */
+.glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(24px)}
+.g1{width:1300px;height:1300px;right:-560px;top:-280px;background:radial-gradient(closest-side,rgba(228,30,38,.16),rgba(228,30,38,0))}
+.g2{width:1200px;height:1200px;left:-600px;bottom:-320px;background:radial-gradient(closest-side,rgba(242,110,85,.12),rgba(242,110,85,0))}
+.play .g1{animation:drift1 27s linear 0s both}
+.play .g2{animation:drift2 27s linear 0s both}
+
+/* ---------- persistent brand ---------- */
+.brand{position:absolute;top:196px;left:0;right:0;display:flex;justify-content:center;z-index:5}
+.play .brand{animation:rise .9s var(--ease) .1s both, riseOut .5s var(--in) 22.2s forwards}
+.brand-in{display:flex;align-items:center;gap:20px;padding:12px 34px 12px 12px;border-radius:999px;
+  background:rgba(255,255,255,.85);border:2px solid var(--line);box-shadow:0 10px 30px -12px rgba(0,0,0,.15)}
+.brand-in img{width:72px;height:72px;border-radius:20px}
+.brand-in b{font-size:38px;font-weight:700;letter-spacing:-.01em}
+.brand-in span{font-size:27px;color:var(--muted);padding-left:20px;border-left:2px solid var(--line)}
+
+/* ---------- scenes ---------- */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:330px 90px 380px}
+.h{font-weight:800;letter-spacing:-.035em;line-height:1.04;text-align:center}
+.line{display:block;overflow:hidden;padding:0 .04em .1em}
+.line>span{display:inline-block;white-space:nowrap}
+.play .line>span{animation:lineIn 1s var(--ease) var(--d) both, lineOut .5s var(--in) var(--o) forwards}
+.red{color:var(--red)}
+.soft{color:var(--muted)}
+
+/* Phone */
+.phone{width:560px;height:1060px;padding:20px;border-radius:84px;background:#1b1b1b;box-shadow:0 60px 120px -40px rgba(0,0,0,.45)}
+.screen{position:relative;height:100%;border-radius:66px;overflow:hidden;background:#f6f6f6}
+.appbar{display:flex;align-items:center;gap:18px;padding:70px 36px 28px}
+.card{background:#fff;border-radius:30px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+
+/* S1: hook */
+.s1 .h{font-size:150px}
+.rows{position:absolute;left:0;right:0;opacity:.75}
+.play .rows{animation:fadeIn 1s ease 0s both, fadeOut .5s var(--in) 3.3s forwards}
+.rows.top{top:470px}
+.rows.bot{top:1300px}
+.rows{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,#000 85%,transparent)}
+.track{display:flex;gap:18px;width:max-content}
+.play .track.l{animation:left 18s linear 0s both}
+.play .track.r{animation:right 18s linear 0s both}
+.q{flex-shrink:0;padding:20px 36px;border-radius:999px;background:#fff;border:2px solid var(--line);font-size:32px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.q.hot{background:var(--red-soft);border-color:var(--red-edge);color:var(--red-dark)}
+
+/* S2: one return, a few screens */
+.s2{justify-content:flex-start;padding-top:370px}
+.s2 .h{font-size:104px;margin-bottom:54px}
+.s2 .phone{transform-origin:top center}
+.play .s2 .pw{animation:rise .8s var(--ease) 4.1s both, riseOut .5s var(--in) 8.2s forwards}
+.s2 .appbar img.logo{height:52px;width:auto}
+.s2 .appbar .av{margin-left:auto;width:56px;height:56px;border-radius:50%;background:var(--red-soft)}
+.ret{margin:12px 30px;padding:34px}
+.ret h4{font-size:36px;font-weight:700}
+.ret .sub{font-size:24px;color:var(--muted);margin-top:4px}
+.bar{height:14px;margin:28px 0 30px;border-radius:999px;background:#eee;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--red);transform-origin:left;transform:scaleX(.1)}
+.play .s2 .bar i{animation:grow 2.2s var(--ease) 4.8s both}
+.steps{display:grid;gap:22px;list-style:none}
+.steps li{display:flex;align-items:center;gap:20px;font-size:30px;font-weight:500}
+.box{position:relative;width:46px;height:46px;border-radius:50%;border:3px solid #d6d6d6;background:#fff;display:grid;place-items:center}
+.box svg{width:26px;height:26px;opacity:0}
+.play .s2 .steps li .box{animation:check .3s ease var(--c) both}
+.play .s2 .steps li .box svg{animation:tickIn .4s var(--pop) var(--c) both}
+.steps em{margin-left:auto;font-style:normal;font-size:24px;color:var(--muted)}
+.btn{display:grid;place-items:center;height:104px;margin:34px 30px 0;border-radius:24px;
+  background:linear-gradient(var(--red),var(--red-dark));color:#fff;font-size:34px;font-weight:600;
+  box-shadow:0 12px 24px rgba(228,30,38,.3)}
+.play .s2 .btn{animation:press .35s ease 6.75s both}
+.done{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:20px;background:rgba(255,255,255,.96);opacity:0}
+.play .s2 .done{animation:fadeIn .4s ease 7.1s both}
+.seal{width:170px;height:170px;border-radius:50%;background:var(--red-soft);display:grid;place-items:center}
+.seal svg{width:96px;height:96px;color:var(--red-dark)}
+.play .s2 .seal{animation:pop .7s var(--pop) 7.2s both}
+.done b{font-size:44px;font-weight:700}
+.done span{font-size:26px;color:var(--muted)}
+
+/* S3: inside your bank */
+.s3{justify-content:flex-start;padding-top:370px}
+.s3 .h{font-size:100px;margin-bottom:46px}
+.s3 .pw{position:relative}
+.play .s3 .pw{animation:rise .8s var(--ease) 8.8s both, riseOut .5s var(--in) 14.2s forwards}
+.play .s3 .screen{animation:skin 5.2s linear 9.0s both}
+.s3 .appbar{background:var(--p);color:#fff;padding:70px 36px 34px}
+.s3 .appbar svg{width:40px;height:40px}
+.names{position:relative;height:50px;flex:1}
+.names b{position:absolute;inset:0;font-size:38px;font-weight:700;opacity:0;white-space:nowrap}
+.play .names b{animation:nameIn .35s var(--ease) var(--a) both, nameOut .3s var(--in) var(--z) forwards}
+.play .names b:last-child{animation:nameIn .35s var(--ease) var(--a) both}
+.s3 .powered{padding:28px 36px 8px;font-size:24px;color:var(--muted)}
+.s3 .ret{margin-top:6px}
+.s3 .bar i{background:var(--p);transform:scaleX(.66)}
+.s3 .box.on{background:var(--p);border-color:var(--p)}
+.s3 .box.on svg{opacity:1;color:#fff}
+.s3 .btn{background:var(--p);box-shadow:none}
+.logos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:44px;width:960px}
+.logo{display:grid;place-items:center;height:96px;padding:0 26px;border-radius:24px;background:#fff;border:2px solid var(--line)}
+.logo img{height:52px;width:auto}
+.logo.word{font-size:34px;font-weight:800}
+.play .s3 .logo{animation:pop .5s var(--pop) var(--l) both, popOut .35s var(--in) 14.2s forwards}
+
+/* S4: English or Urdu */
+.s4 .h{font-size:90px;margin-bottom:70px}
+.flipw{perspective:2400px}
+.play .s4 .flipw{animation:rise .8s var(--ease) 14.9s both, riseOut .5s var(--in) 18.4s forwards}
+.flipper{position:relative;width:860px;height:600px;transform-style:preserve-3d}
+.play .s4 .flipper{animation:flip .9s var(--ease) 16.2s both}
+.face{position:absolute;inset:0;padding:54px;border-radius:44px;background:#fff;border:2px solid var(--line);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.25);backface-visibility:hidden}
+.face.back{transform:rotateY(180deg)}
+.face h4{font-size:46px;font-weight:700}
+.face .tag{display:inline-block;margin-top:14px;padding:8px 22px;border-radius:999px;background:var(--red-soft);color:var(--red-dark);font-size:26px;font-weight:600}
+.face ul{list-style:none;display:grid;gap:26px;margin-top:44px}
+.face li{display:flex;align-items:center;gap:22px;font-size:34px}
+.face li i{width:20px;height:20px;border-radius:50%;background:var(--red);flex-shrink:0}
+.face li em{margin-inline-start:auto;font-style:normal;color:var(--muted);font-size:28px}
+.back[dir=rtl]{font-family:"Noto Nastaliq Urdu",serif}
+.back[dir=rtl] h4{font-size:48px;line-height:1.9}
+.back[dir=rtl] li{font-size:36px;line-height:1.9}
+.back[dir=rtl] .tag{font-family:Poppins,sans-serif}
+
+/* S5: then we file it */
+.s5 .h{font-size:110px;margin-bottom:64px}
+.tr{width:880px;padding:56px 60px}
+.play .s5 .tr{animation:rise .8s var(--ease) 18.9s both, riseOut .5s var(--in) 22.2s forwards}
+.tr h4{font-size:36px;font-weight:700;margin-bottom:30px}
+.tr ol{list-style:none;display:grid;gap:30px}
+.tr li{position:relative;display:flex;gap:30px;align-items:center}
+.tr li:not(:last-child)::after{content:'';position:absolute;left:27px;top:calc(50% + 33px);height:calc(100% - 36px);width:4px;border-radius:2px;background:var(--line)}
+.dot{position:relative;z-index:1;width:58px;height:58px;flex-shrink:0;border-radius:50%;border:4px solid #d6d6d6;background:#fff;display:grid;place-items:center;color:transparent}
+.dot svg{width:30px;height:30px}
+.play .s5 .dot{animation:stage .35s ease var(--s) both}
+.dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:4px solid var(--red);opacity:0}
+.play .s5 .dot::after{animation:ring .9s ease-out var(--s) both}
+.tr b{display:block;font-size:36px;font-weight:600;color:#9aa0a8}
+.play .s5 .tr b{animation:ink .35s ease var(--s) both}
+.tr span{font-size:26px;color:var(--muted)}
+.tr li.big b{font-size:40px}
+
+/* S6: call to action */
+.bigmark{width:190px;height:190px;border-radius:52px;margin-bottom:60px;box-shadow:0 30px 60px -20px rgba(228,30,38,.5)}
+.play .s6 .bigmark{animation:pop .7s var(--pop) 22.6s both}
+.s6 .h{font-size:94px}
+.url{margin-top:70px;display:flex;align-items:center;gap:20px;height:116px;padding:0 54px;border-radius:30px;
+  background:linear-gradient(var(--red),var(--red-dark));color:#fff;font-size:44px;font-weight:600;box-shadow:0 16px 32px rgba(228,30,38,.32)}
+.url svg{width:44px;height:44px}
+.play .s6 .url{animation:rise .7s var(--ease) 23.7s both}
+.foot{margin-top:50px;font-size:30px;color:var(--muted)}
+.foot b{color:var(--ink);font-weight:600}
+.play .s6 .foot{animation:rise .7s var(--ease) 24.3s both}
+.disc{position:absolute;left:0;right:0;bottom:250px;text-align:center;font-size:22px;color:rgba(95,102,114,.75)}
+.play .s6 .disc{animation:fadeIn .8s ease 24.8s both}
+.s6 .bigmark,.s6 .url,.s6 .foot,.s6 .disc{opacity:0}
+.play .s6 .bigmark,.play .s6 .url,.play .s6 .foot,.play .s6 .disc{opacity:1}
+
+/* ---------- preview chrome (hidden with ?render) ---------- */
+body.preview{min-height:100vh;display:grid;place-items:center;padding:12px 0 76px;font-family:Poppins,system-ui,sans-serif}
+body.preview .frame{position:relative;overflow:hidden;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+body.preview #reel{transform-origin:0 0}
+.ctrl{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:8px 14px;
+  border-radius:999px;background:rgba(20,20,20,.86);color:#eee;font-size:13px;z-index:10}
+.ctrl button{font:inherit;color:#111;background:#eee;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+.ctrl input{width:min(46vw,420px);accent-color:#e41e26}
+.ctrl output{font-variant-numeric:tabular-nums;min-width:74px}
+body:not(.preview) .ctrl{display:none}
+</style>
+</head>
+<body>
+<div class="frame"><div id="reel">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+
+  <!-- Persistent brand -->
+  <div class="brand"><div class="brand-in">
+    <img src="../../public/images/befiler/befiler-icon.webp" alt="">
+    <b>Befiler</b><span>Case study by @mhfrough</span>
+  </div></div>
+
+  <!-- S1 (0.2 to 3.6): hook -->
+  <section class="scene s1">
+    <div class="rows top"><div class="track l">
+      <span class="q">Wealth statement</span><span class="q hot">NTN</span><span class="q">Tax deducted</span><span class="q">FBR challan</span><span class="q hot">Salary</span><span class="q">Rent</span><span class="q">Tax credits</span><span class="q">Profit on savings</span>
+      <span class="q">Wealth statement</span><span class="q hot">NTN</span><span class="q">Tax deducted</span><span class="q">FBR challan</span><span class="q hot">Salary</span><span class="q">Rent</span><span class="q">Tax credits</span><span class="q">Profit on savings</span>
+    </div></div>
+    <h1 class="h">
+      <span class="line"><span style="--d:.25s;--o:3.25s">Tax season?</span></span>
+      <span class="line"><span class="red" style="--d:.45s;--o:3.3s">Again?</span></span>
+    </h1>
+    <div class="rows bot"><div class="track r">
+      <span class="q">Capital gains</span><span class="q">Dividends</span><span class="q hot">Deadline</span><span class="q">Freelance</span><span class="q">Pension</span><span class="q">Vehicles</span><span class="q hot">Penalty</span><span class="q">Bank accounts</span>
+      <span class="q">Capital gains</span><span class="q">Dividends</span><span class="q hot">Deadline</span><span class="q">Freelance</span><span class="q">Pension</span><span class="q">Vehicles</span><span class="q hot">Penalty</span><span class="q">Bank accounts</span>
+    </div></div>
+  </section>
+
+  <!-- S2 (3.8 to 8.4): one return, a few screens -->
+  <section class="scene s2">
+    <h2 class="h">
+      <span class="line"><span style="--d:3.8s;--o:8.15s">One return.</span></span>
+      <span class="line"><span class="red" style="--d:3.95s;--o:8.2s">A few screens.</span></span>
+    </h2>
+    <div class="pw"><div class="phone"><div class="screen">
+      <div class="appbar"><img class="logo" src="../../public/images/befiler/befiler-logo.webp" alt=""><span class="av"></span></div>
+      <div class="card ret">
+        <h4>Tax return 2026</h4>
+        <p class="sub">Salaried, resident</p>
+        <div class="bar"><i></i></div>
+        <ul class="steps">
+          <li style="--c:5.0s"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Personal info</li>
+          <li style="--c:5.6s"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Income<em>Salary, rent</em></li>
+          <li style="--c:6.2s"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Wealth statement</li>
+        </ul>
+      </div>
+      <div class="btn">Submit return</div>
+      <div class="done">
+        <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+        <b>Submitted</b><span>Case in queue</span>
+      </div>
+    </div></div></div>
+  </section>
+
+  <!-- S3 (8.6 to 14.4): inside your bank app -->
+  <section class="scene s3">
+    <h2 class="h">
+      <span class="line"><span style="--d:8.6s;--o:14.15s">Inside your</span></span>
+      <span class="line"><span class="red" style="--d:8.75s;--o:14.2s">bank app.</span></span>
+    </h2>
+    <div class="pw"><div class="phone" style="height:780px"><div class="screen">
+      <div class="appbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 5l-7 7 7 7"/></svg>
+        <span class="names">
+          <b style="--a:9.0s;--z:9.75s">HBL</b>
+          <b style="--a:9.88s;--z:10.62s">Allied Bank</b>
+          <b style="--a:10.75s;--z:11.5s">Bank Alfalah</b>
+          <b style="--a:11.62s;--z:12.37s">MCB</b>
+          <b style="--a:12.5s;--z:13.25s">Abhi</b>
+          <b style="--a:13.37s">Easypaisa</b>
+        </span>
+      </div>
+      <p class="powered">Filing by Befiler</p>
+      <div class="card ret">
+        <h4>Tax return 2026</h4>
+        <div class="bar"><i></i></div>
+        <ul class="steps">
+          <li><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Income</li>
+          <li><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Wealth statement</li>
+          <li><span class="box"></span>Payment<em>Ready</em></li>
+        </ul>
+      </div>
+      <div class="btn">Pay from your account</div>
+    </div></div></div>
+    <div class="logos">
+      <span class="logo" style="--l:12.0s"><img src="../../public/images/befiler/logos/hbl.webp" alt="HBL"></span>
+      <span class="logo" style="--l:12.12s"><img src="../../public/images/befiler/logos/ubl.webp" alt="UBL"></span>
+      <span class="logo word" style="--l:12.24s">MCB</span>
+      <span class="logo" style="--l:12.36s"><img src="../../public/images/befiler/logos/allied-bank.webp" alt="Allied Bank"></span>
+      <span class="logo" style="--l:12.48s"><img src="../../public/images/befiler/logos/bank-alfalah.webp" alt="Bank Alfalah"></span>
+      <span class="logo word" style="--l:12.6s">Abhi</span>
+      <span class="logo" style="--l:12.72s"><img src="../../public/images/befiler/logos/easypaisa.webp" alt="Easypaisa"></span>
+    </div>
+  </section>
+
+  <!-- S4 (14.6 to 18.6): English or Urdu -->
+  <section class="scene s4">
+    <h2 class="h">
+      <span class="line"><span style="--d:14.6s;--o:18.35s">English or Urdu.</span></span>
+      <span class="line"><span class="soft" style="--d:14.75s;--o:18.4s">Right to left, built in.</span></span>
+    </h2>
+    <div class="flipw"><div class="flipper">
+      <div class="face front" dir="ltr">
+        <h4>Tax return 2026</h4>
+        <span class="tag">English</span>
+        <ul><li><i></i>Income<em>Done</em></li><li><i></i>Wealth statement<em>Done</em></li><li><i></i>Payment<em>Ready</em></li></ul>
+      </div>
+      <div class="face back" dir="rtl" lang="ur">
+        <h4>ٹیکس ریٹرن 2026</h4>
+        <span class="tag">اردو</span>
+        <ul><li><i></i>آمدنی<em>مکمل</em></li><li><i></i>اثاثوں کا گوشوارہ<em>مکمل</em></li><li><i></i>ادائیگی<em>تیار</em></li></ul>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- S5 (18.8 to 22.4): then it gets filed -->
+  <section class="scene s5">
+    <h2 class="h">
+      <span class="line"><span style="--d:18.8s;--o:22.15s">Then we</span></span>
+      <span class="line"><span class="red" style="--d:18.95s;--o:22.2s">file it.</span></span>
+    </h2>
+    <div class="card tr">
+      <h4>Your return</h4>
+      <ol>
+        <li style="--s:19.5s"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>NTN registration</b><span>Updated with FBR</span></div></li>
+        <li style="--s:19.95s"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Case in queue</b><span>Assigned to a tax lawyer</span></div></li>
+        <li style="--s:20.4s"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Lawyer review</b><span>Every schedule checked</span></div></li>
+        <li class="big" style="--s:20.95s"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Submitted to FBR</b><span>Your return is filed</span></div></li>
+        <li style="--s:21.45s"><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Case closed</b><span>Receipt in your documents</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- S6 (22.6 to 26.5): call to action -->
+  <section class="scene s6">
+    <img class="bigmark" src="../../public/images/befiler/befiler-icon.webp" alt="">
+    <h2 class="h">
+      <span class="line"><span style="--d:22.85s;--o:99s">Tax returns,</span></span>
+      <span class="line"><span class="red" style="--d:23.0s;--o:99s">filed from any app.</span></span>
+    </h2>
+    <div class="url">befiler.com<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M9 7h8v8"/></svg></div>
+    <p class="foot">Case study at <b>mhfrough.dev/work/befiler</b></p>
+    <p class="disc">Bank and partner logos belong to their owners.</p>
+  </section>
+</div></div>
+
+<div class="ctrl" role="group" aria-label="Reel preview">
+  <button type="button" id="replay">Replay</button>
+  <input id="scrub" type="range" min="0" max="26.5" step="0.05" value="0" aria-label="Seek">
+  <output id="clock">0.0 s</output>
+</div>
+
+<script>
+(() => {
+  const DURATION = 26.5;
+  window.REEL = { duration: DURATION };
+  const reel = document.getElementById('reel');
+  const render = new URLSearchParams(location.search).has('render');
+
+  window.reelReady = document.fonts.ready.then(() =>
+    Promise.all([...document.images].map((i) => (i.complete ? null : new Promise((r) => (i.onload = i.onerror = r))))),
+  );
+  window.startReel = () => {
+    reel.classList.remove('play');
+    void reel.offsetWidth; // restart every animation from t = 0
+    reel.classList.add('play');
+  };
+  if (render) return;
+
+  // Preview: fit the 1080x1920 stage to the window, autoplay, replay and scrub.
+  document.body.classList.add('preview');
+  const frame = document.querySelector('.frame');
+  const fit = () => {
+    const s = Math.min(innerWidth / 1080, (innerHeight - 92) / 1920);
+    reel.style.transform = `scale(${s})`;
+    frame.style.width = 1080 * s + 'px';
+    frame.style.height = 1920 * s + 'px';
+  };
+  addEventListener('resize', fit);
+  fit();
+
+  const scrub = document.getElementById('scrub');
+  const clock = document.getElementById('clock');
+  let t0 = 0;
+  let seeking = false;
+  const anims = () => reel.getAnimations({ subtree: true });
+  const tick = () => {
+    if (!seeking) {
+      const t = Math.min(DURATION, (performance.now() - t0) / 1000);
+      scrub.value = t;
+      clock.textContent = t.toFixed(1) + ' s';
+    }
+    requestAnimationFrame(tick);
+  };
+  const play = () => {
+    window.startReel();
+    t0 = performance.now();
+  };
+  document.getElementById('replay').onclick = play;
+  scrub.oninput = () => {
+    seeking = true;
+    const t = +scrub.value;
+    clock.textContent = t.toFixed(1) + ' s';
+    for (const a of anims()) {
+      a.pause();
+      a.currentTime = t * 1000;
+    }
+  };
+  scrub.onchange = () => {
+    const t = +scrub.value;
+    for (const a of anims()) a.play();
+    t0 = performance.now() - t * 1000;
+    seeking = false;
+  };
+  window.reelReady.then(() => {
+    play();
+    tick();
+  });
+})();
+</script>
+</body>
+</html>

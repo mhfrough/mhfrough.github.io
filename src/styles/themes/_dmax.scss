@@ -1,0 +1,86 @@
+// DMAX case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in DMAX's colours.
+// The product is dark: a navy-black canvas #10121f, cards #252936, its green #19b98a and blue #0096ff (the two ends of
+// the gradient in its stacked-blocks mark), sky #96c8db for card titles and #b52148 for danger. Values come from the
+// apps' styles.scss. Colour tokens only, like the other case-study themes: type, shape and components stay as on the
+// rest of the site.
+// Applied by <html data-theme="dmax"> (route data on /work/dmax). Every rule is scoped to that attribute, so nothing
+// leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.2:1 on --bg, 13.2:1 on --surface-2; ink-2 10.4:1 on --bg; muted 6.4:1 on --bg, 5.9:1
+// on --surface and 5.2:1 on --surface-2. The green CTA carries the canvas colour as its label: 7.4:1. Text tokens on
+// --surface-2: --d-green-text 6.0:1, --d-blue-text 6.9:1, --d-sky 8.4:1, --d-red-text 6.1:1, --d-amber-text 9.9:1.
+// The product's own blue #0096ff and red #b52148 are fills (bars, dots), never small text.
+
+:root[data-theme='dmax'] {
+  --bg: #10121f;
+  --bg-2: #141728;
+  --bg-raise: #141728;
+  --surface: #181b2b;
+  --surface-2: #212536;
+  --line: #2a2f43;
+  --line-strong: #3a4058;
+
+  --ink: #e8f0f8;
+  --ink-2: #b6c3d4;
+  --muted: #8b98ae;
+  --faint: #3e4560; // decorative only
+
+  // Product colours (styles.scss in the four apps)
+  --d-green: #19b98a;
+  --d-green-dark: #13a079;
+  --d-green-text: #19b98a;
+  --d-green-soft: rgb(25 185 138 / 0.14);
+  --d-blue: #0096ff;
+  --d-blue-text: #5cb6ff;
+  --d-blue-soft: rgb(0 150 255 / 0.14);
+  --d-sky: #96c8db;
+  --d-red: #b52148;
+  --d-red-text: #ff7a95;
+  --d-red-soft: rgb(181 33 72 / 0.18);
+  --d-amber: #ffc940;
+  --d-amber-text: #ffc940;
+  --d-amber-soft: rgb(255 201 64 / 0.12);
+  --d-night: #0a0c16;
+  --d-card: #252936; // the product's own card grey, for the console mockups
+  --d-gradient: linear-gradient(135deg, #19b98a, #0096ff);
+
+  // CTA = the mark's green, with the canvas colour as its label.
+  --accent: #19b98a;
+  --accent-ink: #10121f;
+  --accent-soft: rgb(25 185 138 / 0.14);
+  --cta: #19b98a;
+  --cta-ink: #10121f;
+  --focus: #5cb6ff;
+
+  --solid: #0a0c16;
+  --solid-ink: #e8f0f8;
+  --solid-edge: rgb(255 255 255 / 0.06);
+
+  --glass-edge: rgb(150 200 219 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.06);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.35), 0 40px 80px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #19b98a;
+    color: #10121f;
+  }
+
+  .btn-solid:hover {
+    background: var(--d-green-dark);
+    color: #10121f;
+  }
+
+  .card--hover:hover {
+    border-color: var(--line-strong);
+  }
+
+  // The mark's gradient as two soft washes: green top right, blue bottom left.
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 10%, rgb(25 185 138 / 0.14), transparent 70%),
+      radial-gradient(50% 40% at 5% 95%, rgb(0 150 255 / 0.12), transparent 70%);
+  }
+}

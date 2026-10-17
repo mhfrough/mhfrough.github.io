@@ -1,0 +1,86 @@
+// HRM Suite case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in HRM Suite's
+// dark theme: its navy canvas #0b0f17, surfaces #131a26 / #1a2231, the product's primary blue #2563eb and the brand
+// red #c62828 of the HR mark (logo moments only). Values come from the product's hrm-tokens.css (dark block).
+// Colour tokens only, like the other case-study themes: type, shape and components stay as on the rest of the site.
+// Applied by <html data-theme="hrm"> (route data on /work/hrm). Every rule is scoped to that attribute, so nothing
+// leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.2:1 on --bg, ink-2 10.3:1, muted 6.3:1 on --bg, 5.7:1 on --surface and 5.2:1 on
+// --surface-2. White on the blue CTA 5.2:1 (6.7:1 on hover). --h-blue-text 9.2:1, --h-green-text 7.4:1,
+// --h-amber-text 10.1:1, --h-red-text 6.5:1 and --h-violet-text 8.6:1, all on --surface. The brand red is a fill
+// behind white letters (the HR tile) and decoration, never small text.
+
+:root[data-theme='hrm'] {
+  --bg: #0b0f17;
+  --bg-2: #0e131d;
+  --bg-raise: #0e131d;
+  --surface: #131a26;
+  --surface-2: #1a2231;
+  --line: #243044;
+  --line-strong: #33415a;
+
+  --ink: #e7ecf4;
+  --ink-2: #b3bfd1;
+  --muted: #8794a9;
+  --faint: #46557a; // decorative only
+
+  // Product colours (hrm-tokens.css, dark theme)
+  --h-blue: #2563eb;
+  --h-blue-dark: #1d4ed8;
+  --h-blue-text: #9dbcff;
+  --h-blue-soft: rgb(59 119 240 / 0.16);
+  --h-violet: #6d4aff;
+  --h-violet-text: #bcaaff;
+  --h-teal: #13a39a;
+  --h-green-text: #4fbb92;
+  --h-green-soft: rgb(31 158 116 / 0.14);
+  --h-amber-text: #f0bd5e;
+  --h-amber-soft: rgb(234 164 47 / 0.13);
+  --h-red: #c62828;
+  --h-red-dark: #d04242;
+  --h-red-text: #f07a7a;
+  --h-red-soft: rgb(214 67 67 / 0.15);
+  --h-night: #070a10;
+
+  // CTA = the product's primary button: blue fill, white label.
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(59 119 240 / 0.16);
+  --cta: #2563eb;
+  --cta-ink: #ffffff;
+  --focus: #9dbcff;
+
+  // Dark blocks (code, command bar, featured cards) one step below the canvas.
+  --solid: #070a10;
+  --solid-ink: #e7ecf4;
+  --solid-edge: rgb(255 255 255 / 0.06);
+
+  --glass-edge: rgb(157 188 255 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.06);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.35), 0 40px 80px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #2563eb;
+    color: #fff;
+  }
+
+  .btn-solid:hover {
+    background: var(--h-blue-dark);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: var(--line-strong);
+  }
+
+  // The product's "soft" gradient (blue, violet, teal washes), as on its sign-in page and design-system hero.
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 10%, rgb(59 119 240 / 0.16), transparent 70%),
+      radial-gradient(45% 40% at 100% 60%, rgb(131 96 255 / 0.12), transparent 70%),
+      radial-gradient(50% 40% at 5% 95%, rgb(19 163 154 / 0.1), transparent 70%);
+  }
+}

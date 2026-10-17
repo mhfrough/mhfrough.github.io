@@ -1,0 +1,285 @@
+<mh-pizzerias-theme />
+
+<!-- Hero: copy left, the working storefront right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="pz-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="pz-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+      <p class="try mono rise d4">{{ c.hero.try }}</p>
+    </div>
+    <mh-pizzerias-storefront class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="pz-numbers">
+  <div class="wrap">
+    <h2 id="pz-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The brands -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="pz-brands">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-brands" class="title">{{ c.brands.title }}</h2>
+      <p class="sub">{{ c.brands.sub }}</p>
+    </header>
+    <ul class="stores" role="list">
+      @for (s of stores; track s.id; let i = $index) {
+        <li class="card store" mhReveal [revealIndex]="i % 4">
+          <div class="store-top">
+            <span class="logo"><img [src]="s.logo" alt="" width="48" height="48" loading="lazy" decoding="async" /></span>
+            <span class="gen mono">{{ c.brands.genLabel[s.gen] }}</span>
+          </div>
+          <h3>{{ s.name }}</h3>
+          <p class="where">{{ s.town ?? 'Germany' }}, Angular {{ s.angular }}</p>
+          <ul class="swatches" role="list" [attr.aria-label]="'Colours of ' + s.name">
+            @for (col of s.palette; track col) {
+              <li [style.background]="col" [title]="col"><span class="sr-only">{{ col }}</span></li>
+            }
+          </ul>
+          <p class="font mono">{{ s.font }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- The storefronts, rendered from the original builds -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="pz-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">{{ shots.main.url }}</span>
+        </div>
+        <img [src]="shots.main.src" [width]="shots.main.w" [height]="shots.main.h" [alt]="shots.main.alt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img [src]="shots.mobile.src" [width]="shots.mobile.w" [height]="shots.mobile.h" [alt]="shots.mobile.alt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <div class="shots-3">
+      @for (s of shots.details; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" [width]="s.w" [height]="s.h" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="shots-3 homes">
+      @for (s of shots.homes; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" [width]="s.w" [height]="s.h" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+  </div>
+</section>
+}
+
+<!-- What a brand is made of -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="pz-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.build; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <ng-icon name="phosphorStorefront" class="core-ic" aria-hidden="true" />
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.runtime; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Menu rules -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="pz-rules">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-rules" class="title">{{ c.rules.title }}</h2>
+      <p class="sub">{{ c.rules.sub }}</p>
+    </header>
+    <ol class="rules" role="list">
+      @for (r of c.rules.items; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Tracking -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="pz-track">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-track" class="title">{{ c.track.title }}</h2>
+      <p class="sub">{{ c.track.sub }}</p>
+    </header>
+    <mh-pizzerias-tracker mhReveal />
+  </div>
+</section>
+}
+
+<!-- Checkout and account -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="pz-acc">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-acc" class="title">{{ c.account.title }}</h2>
+      <p class="sub">{{ c.account.sub }}</p>
+    </header>
+    <ul class="acc-grid" role="list">
+      @for (b of c.account.cards; track b.t; let i = $index) {
+        <li class="card card--hover" mhReveal [revealIndex]="i % 3">
+          <span class="node-ic"><ng-icon [name]="b.icon" aria-hidden="true" /></span>
+          <h3>{{ b.t }}</h3>
+          <p>{{ b.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="pz-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="pz-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="pz-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="pz-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="pz-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/bloomstone">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

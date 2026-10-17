@@ -1,0 +1,75 @@
+// Befiler case-study theme: the site's own design system (Geist, pills, 16px cards, 12px nested blocks, the same
+// components and motion) in befiler.com's colour scheme: white surfaces, ink #1b1b1b and one red #e41e26.
+// Colour tokens only, like the Quorum theme. No fonts, radii or component shapes change here.
+// Applied by <html data-theme="befiler"> (route data on /work/befiler). Every rule is scoped to that attribute,
+// so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.5:1 on --bg, ink-2 9.4:1, muted 5.3:1 on --surface-2,
+// white on the red CTA 4.65:1, --b-red-text 6.3:1 on white and 5.1:1 on --accent-soft.
+
+:root[data-theme='befiler'] {
+  // Surfaces (befiler.com hero is #fbfafa to #fcf6f5, cards are white)
+  --bg: #fbfafa;
+  --bg-2: #f6f4f4;
+  --bg-raise: #f6f4f4;
+  --surface: #ffffff;
+  --surface-2: #f6f4f4;
+  --line: #e8e8e8;
+  --line-strong: #d6d6d6;
+
+  // Ink
+  --ink: #1b1b1b;
+  --ink-2: #444444;
+  --muted: #5f6672;
+  --faint: #c9c9c9;
+
+  // Red. --b-red is the brand fill, --b-red-text the one red used for text.
+  --b-red: #e41e26;
+  --b-red-dark: #c0121a;
+  --b-red-text: #c0121a;
+  --b-red-soft: #fde0e4;
+  --b-red-tint: #fff5f6;
+
+  --accent: #c0121a;
+  --accent-ink: #ffffff;
+  --accent-soft: #fde0e4;
+  --cta: #e41e26;
+  --cta-ink: #ffffff;
+  --focus: #c0121a;
+
+  // Dark blocks (code, command bar, featured cards) stay befiler.com's ink.
+  --solid: #1b1b1b;
+  --solid-ink: #ffffff;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  // Glass + elevation, softened for a light page (the dark-theme shadows read as smudges on white).
+  --glass-edge: rgb(0 0 0 / 0.07);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 18px 40px -18px rgb(0 0 0 / 0.16);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.04), 0 40px 80px -30px rgb(0 0 0 / 0.2);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--b-red);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #f6c6cc;
+  }
+
+  .link {
+    text-decoration-color: #f6c6cc;
+
+    &:hover {
+      text-decoration-color: var(--b-red);
+    }
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(228 30 38 / 0.07), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(242 110 85 / 0.05), transparent 70%);
+  }
+}

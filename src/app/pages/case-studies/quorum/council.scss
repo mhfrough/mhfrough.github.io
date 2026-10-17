@@ -276,6 +276,8 @@
     scrollbar-width: none;
     margin-inline: calc(-1 * var(--gutter));
     padding-inline: var(--gutter);
+    // Snap stops at the gutter, so the first tab never sits flush with the screen edge
+    scroll-padding-inline: var(--gutter);
     padding-block: 2px;
 
     &::-webkit-scrollbar {

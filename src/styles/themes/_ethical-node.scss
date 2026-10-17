@@ -1,0 +1,86 @@
+// EthicalNode case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// 2023 EthicalNode portals' colours: the crescent's teal #56ced1, the portals' blue #3380ff and navy #0a3161 on
+// the pale blue #eaf0fe they used for the page, with their green #00a389, amber #ffab2d and red #ff4949 for states.
+// Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="ethical-node"> (route data on /work/ethical-node). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 15.9:1 on --bg, ink-2 (the portals' navy) 11.9:1, muted 5.7:1 on --bg, 5.5:1 on
+// --surface-2 and 6.1:1 on white, white on the blue CTA #1d5fd6 5.7:1, --en-blue-text 5.7:1 on white and 4.8:1 on
+// --en-blue-soft, --en-teal-text 5.6:1 on white and 4.9:1 on --en-teal-soft, --en-green-text 5.5:1 on white and
+// 4.8:1 on --en-green-soft, --en-amber-text 5.7:1 on --en-amber-soft, --en-red-text 5.9:1 on white and 5.0:1 on
+// --en-red-soft. The portals' #3380ff (3.7:1) and the crescent's #56ced1 are fills for shapes only, never text on
+// light. Night blocks: --n-ink 16.0:1, --n-muted 8.7:1, the crescent teal 9.2:1 on --en-night.
+
+:root[data-theme='ethical-node'] {
+  --bg: #f2f6fd;
+  --bg-2: #e9effb;
+  --bg-raise: #e9effb;
+  --surface: #ffffff;
+  --surface-2: #edf2fc;
+  --line: #dbe3f2;
+  --line-strong: #c2cee4;
+
+  --ink: #0d1b33;
+  --ink-2: #0a3161;
+  --muted: #56627a;
+  --faint: #c2cee4; // decorative only
+
+  --en-teal: #56ced1;
+  --en-teal-text: #0b7377;
+  --en-teal-soft: #dcf4f4;
+  --en-blue: #3380ff;
+  --en-blue-text: #1d5fd6;
+  --en-blue-soft: #e3ecfe;
+  --en-green: #00a389;
+  --en-green-text: #00775f;
+  --en-green-soft: #dcf3ee;
+  --en-amber: #ffab2d;
+  --en-amber-text: #8a5300;
+  --en-amber-soft: #fff1d9;
+  --en-red: #ff4949;
+  --en-red-text: #c0262d;
+  --en-red-soft: #fde7e7;
+  // Coin discs in the mockups, white initials on each: 5.7:1, 6.6:1, 5.5:1.
+  --en-matic: #7b3fe4;
+  --en-eth: #4b5b8f;
+  --en-avax: #c62f30;
+  --en-night: #0a1a33;
+  --en-night-2: #11264a;
+  --en-night-line: rgb(242 246 253 / 0.12);
+  --n-ink: #f2f6fd;
+  --n-muted: #a9b8d3;
+
+  --accent: #1d5fd6;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3ecfe;
+  --cta: #1d5fd6;
+  --cta-ink: #ffffff;
+  --focus: #1d5fd6;
+
+  --solid: #0a1a33;
+  --solid-ink: #f2f6fd;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(10 26 51 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(10 26 51 / 0.05), 0 14px 34px -16px rgb(10 26 51 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(10 26 51 / 0.05), 0 36px 72px -28px rgb(10 26 51 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--en-blue-text);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b7cdf5;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(86 206 209 / 0.16), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(51 128 255 / 0.1), transparent 70%);
+  }
+}

@@ -1,0 +1,73 @@
+// KPMC case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the municipal
+// portal's colours: its green #00aa55 and slate #3d5170 on the light grey #f3f4f6 it used for the page.
+// Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="kpmc"> (route data on /work/kpmc). Every rule is scoped to that attribute, so
+// nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.1:1 on --bg, ink-2 (the portal's slate) 7.4:1, muted 5.4:1 on --bg and 5.0:1 on
+// --surface-2, white on the green CTA #007a45 5.4:1, --k-green-text 5.8:1 on white and 5.0:1 on --k-green-soft,
+// --k-red-text 6.7:1 and 5.5:1 on --k-red-soft, --k-amber-text 5.3:1 on --k-amber-soft. The portal's #00aa55 is a
+// fill for large shapes only. Night blocks: --n-ink 15.4:1, --n-muted 8.0:1.
+
+:root[data-theme='kpmc'] {
+  --bg: #f3f5f7;
+  --bg-2: #e9edf1;
+  --bg-raise: #e9edf1;
+  --surface: #ffffff;
+  --surface-2: #e9edf1;
+  --line: #dde3e9;
+  --line-strong: #c5ced8;
+
+  --ink: #1b2534;
+  --ink-2: #3d5170;
+  --muted: #5a6575;
+  --faint: #c5ced8; // decorative only
+
+  --k-green: #00aa55;
+  --k-green-dark: #007a45;
+  --k-green-text: #00753f;
+  --k-green-soft: #dcf3e7;
+  --k-red-text: #b5172f;
+  --k-red-soft: #fbe3e7;
+  --k-amber: #ffb400;
+  --k-amber-text: #8a5a00;
+  --k-amber-soft: #fff2d1;
+  --k-night: #122019;
+  --k-night-2: #1a2c23;
+  --k-night-line: rgb(243 245 247 / 0.12);
+  --n-ink: #f3f5f7;
+  --n-muted: #a7b6ad;
+
+  --accent: #007a45;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcf3e7;
+  --cta: #007a45;
+  --cta-ink: #ffffff;
+  --focus: #007a45;
+
+  --solid: #122019;
+  --solid-ink: #f3f5f7;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(18 32 25 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(18 32 25 / 0.05), 0 14px 34px -16px rgb(18 32 25 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(18 32 25 / 0.05), 0 36px 72px -28px rgb(18 32 25 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--k-green-dark);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b5dcc6;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(0 170 85 / 0.1), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(61 81 112 / 0.08), transparent 70%);
+  }
+}

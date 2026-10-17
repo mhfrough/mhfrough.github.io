@@ -17,7 +17,7 @@ const GROUPS = [
 ];
 
 /**
- * Hero visual: a working token inspector (Quorum's "Build your Quorum" card, pointed at the design tokens).
+ * Hero visual: a working token inspector, a real component in the hero card.
  * Pick a group, pick a token, read its live value and contrast, copy the var().
  */
 @Component({
@@ -224,6 +224,12 @@ const GROUPS = [
       }
       .tk {
         padding-right: 10px;
+      }
+    }
+    /* Smallest phones: one token per row so names like --surface-2 are not cut. */
+    @media (max-width: 360px) {
+      .insp__tokens {
+        grid-template-columns: minmax(0, 1fr);
       }
     }
   `,

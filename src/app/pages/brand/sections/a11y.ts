@@ -161,6 +161,17 @@ import { TkPipe } from './tk.pipe';
       align-items: center;
       color: var(--muted);
     }
+    /* Phones: the class name drops under the specimen instead of breaking mid-word. */
+    @media (max-width: 420px) {
+      .measure li {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 6px 12px;
+      }
+      .measure code {
+        grid-row: 2;
+        grid-column: 1 / -1;
+      }
+    }
   `,
 })
 export class BrandA11y {

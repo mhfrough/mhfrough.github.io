@@ -4,7 +4,7 @@
     {
       "name": "mhfrough-dev",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["ng", "serve", "--port", "4300"],
+      "runtimeArgs": ["ng", "serve", "--host", "0.0.0.0", "--port", "4300", "--no-hmr", "--live-reload"],
       "port": 4300,
       "env": {
         "npm_config_cache": "D:\workspace-personal\mhfrough.dev\.devcache\npm",
@@ -12,6 +12,26 @@
         "TMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp",
         "NG_CLI_ANALYTICS": "false"
       }
-    }
+    },
+    {
+      "name": "befiler-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ng", "serve", "--port", "4310", "--no-hmr"],
+      "port": 4310,
+      "env": {
+        "npm_config_cache": "D:\workspace-personal\mhfrough.dev\.devcache\npm",
+        "TEMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp",
+        "TMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp",
+        "NG_CLI_ANALYTICS": "false"
+      }
+    },
+    {"name": "bloomstone-dev", "runtimeExecutable": "npx", "runtimeArgs": ["ng", "serve", "--port", "4438", "--no-hmr"], "port": 4438, "env": {"npm_config_cache": "D:\workspace-personal\mhfrough.dev\.devcache\npm", "TEMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp", "TMP": "D:\workspace-personal\mhfrough.dev\.devcache\tmp", "NG_CLI_ANALYTICS": "false"}},
+    {"name": "bloomstone-build", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs", "--dist", ".devcache/build/bloomstone/browser", "--port", "4437"], "port": 4437},
+    {"name": "cs-build", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs", "--dist", ".devcache/build/cs/browser", "--port", "4441"], "port": 4441},
+    {"name": "about-build", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs", "--dist", ".devcache/build/about/browser", "--port", "4421"], "port": 4421},
+    {"name": "mhfrough-lan", "runtimeExecutable": "npx", "runtimeArgs": ["ng", "serve", "--host", "0.0.0.0", "--port", "4500", "--no-hmr"], "port": 4500, "env": {"npm_config_cache": "D:\\workspace-personal\\mhfrough.dev\\.devcache\\npm", "TEMP": "D:\\workspace-personal\\mhfrough.dev\\.devcache\\tmp", "TMP": "D:\\workspace-personal\\mhfrough.dev\\.devcache\\tmp", "NG_CLI_ANALYTICS": "false"}},
+    {"name": "mhfrough-lan-build", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs", "--dist", ".devcache/build/lan/browser", "--port", "4600", "--host", "0.0.0.0"], "port": 4600},
+    {"name": "nophoto-build", "runtimeExecutable": "node", "runtimeArgs": ["scripts/serve.mjs", "--dist", ".devcache/build/nophoto/browser", "--port", "4451"], "port": 4451},
+    {"name": "promo","runtimeExecutable": "npx", "runtimeArgs": ["http-server", ".", "-p", "5529", "-c-1", "--silent"], "port": 5529}
   ]
 }

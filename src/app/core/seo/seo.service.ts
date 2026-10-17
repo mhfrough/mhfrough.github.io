@@ -147,7 +147,7 @@ export function personNode(): Record<string, unknown> {
     jobTitle: SITE.role,
     description:
       'Software architect and lead frontend developer building production SaaS, fintech and enterprise platforms with Angular, NestJS and PostgreSQL.',
-    image: abs(SITE.avatar ?? '/icons/icon-512.png'),
+    image: abs('/icons/icon-512.png'),
     address: { '@type': 'PostalAddress', addressLocality: SITE.locality, addressCountry: SITE.countryCode },
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'Karachi Institute of Economics and Technology (KIET)' },
     knowsLanguage: ['en', 'ur'], // Urdu is a spoken language here, not a site language

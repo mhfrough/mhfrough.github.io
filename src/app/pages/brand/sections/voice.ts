@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Reveal } from '../../../shared/directives/reveal.directive';
 import { COPY } from '../brand.copy';
 
-/** Voice and copy: the house rules, one label per CTA intent, and paired before/after rows (Quorum's tensions). */
+/** Voice and copy: the house rules, one label per CTA intent, and paired before/after rows. */
 @Component({
   selector: 'mh-brand-voice',
   imports: [Reveal],

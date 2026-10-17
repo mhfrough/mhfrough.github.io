@@ -1,10 +1,11 @@
 <!-- Hero: copy left, a working scope builder right (Quorum's "Build your Quorum" pattern) -->
 <section class="page-head glow hero" aria-labelledby="hire-title">
+  <mh-pattern [intensity]="0.8" />
   <div #hero class="wrap hero__grid hero-anim">
     <div class="hero__copy">
-      <a class="pill-link rise" routerLink="/hire" fragment="ways">
-        <b>{{ available ? c.hero.pillTagOn : c.hero.pillTagOff }}</b
-        >{{ available ? c.hero.pillOn : c.hero.pillOff }}
+      <a class="status-pill rise" routerLink="/hire" fragment="ways">
+        <span class="blip" [class.is-on]="available" aria-hidden="true"></span>
+        {{ available ? c.hero.pillOn : c.hero.pillOff }}
         <ng-icon name="phosphorArrowRight" aria-hidden="true" />
       </a>
       <h1 id="hire-title" class="display">

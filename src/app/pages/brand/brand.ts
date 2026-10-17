@@ -16,7 +16,7 @@ import { BrandType } from './sections/type';
 import { BrandVoice } from './sections/voice';
 
 /**
- * /brand: the self-documenting design system. Quorum's system in black and white, rendered from the live
+ * /brand: the self-documenting design system. mhfrough's own system in black and white, rendered from the live
  * tokens, classes and components, so this page cannot drift from the code it documents.
  */
 @Component({
@@ -99,7 +99,6 @@ export class Brand {
           '@type': 'CreativeWork',
           '@id': url + '#design-system',
           name: 'mhfrough design system',
-          alternateName: 'Quorum, in black and white',
           description: COPY.seo.description,
           url,
           inLanguage: 'en',
@@ -108,7 +107,6 @@ export class Brand {
           author: { '@id': PERSON_ID },
           creator: { '@id': PERSON_ID },
           copyrightHolder: { '@id': PERSON_ID },
-          isBasedOn: 'https://mhfrough.github.io/quorum/',
           mainEntityOfPage: { '@id': url + '#webpage' },
           dateModified: '2026-10-10',
           keywords: ['design system', 'design tokens', 'monochrome', 'dark mode', 'Geist', 'Angular', 'WCAG 2.1 AA'],

@@ -133,7 +133,7 @@
     }
   }
 
-  // Key / value rows (Quorum's flags list)
+  // Key / value rows
   .bp-kv {
     display: grid;
     margin: 0;
@@ -208,7 +208,7 @@
     margin-bottom: 20px;
   }
 
-  // Quiet result line (Quorum's .report .result)
+  // Quiet result line
   .bp-callout {
     margin-top: 12px;
     padding: 14px 18px;

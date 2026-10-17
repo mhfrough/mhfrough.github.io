@@ -83,7 +83,7 @@ export const COLOR_GROUPS: ColorGroup[] = [
     note: 'Hairlines separate; they never carry meaning alone.',
     tokens: [
       onBg('--line', '#2c2c2c', '1px borders on cards, pills, inputs', 'decor'),
-      onBg('--line-strong', '#3a3a3a', 'Hover borders, avatar ring', 'decor'),
+      onBg('--line-strong', '#3a3a3a', 'Hover borders, strong rules', 'decor'),
     ],
   },
   {
@@ -133,7 +133,7 @@ export const TYPE_SCALE: TypeStyle[] = [
   { cls: 'h1', sample: 'Selected work', size: 'clamp(2.2rem, 4.6vw, 3.6rem)', leading: '1.04', tracking: '-0.04em', weight: '600', use: 'Page title when there is no hero.' },
   { cls: 'title', sample: 'How a council runs', size: 'clamp(2rem, 4vw, 3.1rem)', leading: '1.05', tracking: '-0.035em', weight: '600', use: 'Section heads. Max 18ch.' },
   { cls: 'h3', sample: 'Multi-tenant Angular frontend', size: '1.25rem', leading: '1.25', tracking: '-0.02em', weight: '600', use: 'Card and sub-section titles.' },
-  { cls: 'lede', sample: 'Seven years of production SaaS, fintech and enterprise platforms.', size: 'clamp(1.05rem, 1.4vw, 1.2rem)', leading: '1.6', tracking: '0', weight: '400', use: 'Hero intro under .display. Max 34ch.' },
+  { cls: 'lede', sample: 'Production SaaS, fintech and enterprise platforms since 2020.', size: 'clamp(1.05rem, 1.4vw, 1.2rem)', leading: '1.6', tracking: '0', weight: '400', use: 'Hero intro under .display. Max 34ch.' },
   { cls: 'sub', sample: 'The head of every section: one or two sentences, never more.', size: '1.075rem', leading: '1.6', tracking: '0', weight: '400', use: 'Section intro under .title. Max 56ch.' },
   { cls: 'body', sample: 'A tax-filing flow embedded in six banking apps, kept in one codebase.', size: '1rem', leading: '1.6', tracking: '0', weight: '400', use: 'Running prose. Max 65ch.' },
   { cls: 'label', sample: 'Your email', size: '13px', leading: '1.6', tracking: '0', weight: '500', use: 'Field and group labels, muted.' },
@@ -168,4 +168,61 @@ export const ICON_SIZES = [
   { px: 18, where: '.btn, .icon-btn' },
   { px: 24, where: '.icon-well' },
   { px: 26, where: '.icon-tile' },
+];
+
+/**
+ * Case-study themes. Each one overrides the colour tokens above under :root[data-theme='<slug>']
+ * (src/styles/themes/_<slug>.scss) and nothing else. A theme only applies to the whole document, so these swatches
+ * cannot be read live: the values below are copied from those files (bg, ink, cta, cta-ink, accent) for display
+ * only. Keep them in step when a theme changes. Order follows /work. The company-site theme is left out here
+ * because that client is only named on its own case study, /work and /sitemap.
+ */
+export interface CaseTheme {
+  slug: string;
+  name: string;
+  href: string;
+  /** The product's own mark (favicon-first rule); otherwise `icon`. */
+  mark?: string;
+  icon: string;
+  scheme: 'light' | 'dark';
+  bg: string;
+  ink: string;
+  accent: string;
+  cta: string;
+  ctaInk: string;
+}
+
+const theme = (
+  slug: string,
+  name: string,
+  icon: string,
+  mark: string | undefined,
+  scheme: 'light' | 'dark',
+  [bg, ink, accent, cta, ctaInk]: [string, string, string, string, string],
+): CaseTheme => ({ slug, name, href: `/work/${slug}`, icon, mark, scheme, bg, ink, accent, cta, ctaInk });
+
+export const CASE_THEMES: CaseTheme[] = [
+  theme('quorum', 'Quorum', 'phosphorUsersThree', '/images/quorum/favicon.svg', 'dark', ['#121110', '#eeebe6', '#eeebe6', '#eeebe6', '#161513']),
+  theme('befiler', 'Befiler', 'phosphorReceipt', '/images/befiler/befiler-icon.webp', 'light', ['#fbfafa', '#1b1b1b', '#c0121a', '#e41e26', '#ffffff']),
+  theme('emlaak', 'Emlaak Financials', 'phosphorChartLineUp', '/images/emlaak/emlaak-mark.webp', 'light', ['#f4f8fa', '#18222d', '#2e609b', '#2e609b', '#ffffff']),
+  theme('tmf', 'TMF', 'phosphorHandCoins', '/images/tmf/tmf-mark.webp', 'light', ['#f8f5ef', '#2b2117', '#8a5a26', '#d1a871', '#2b2117']),
+  theme('fleet', 'Fleet', 'phosphorTruck', undefined, 'light', ['#f2f4f3', '#141c1b', '#0d5c57', '#0d5c57', '#ffffff']),
+  theme('dmax', 'DMAX', 'phosphorDatabase', '/images/dmax/dmax-mark.webp', 'dark', ['#10121f', '#e8f0f8', '#19b98a', '#19b98a', '#10121f']),
+  theme('epractise', 'ePractise', 'phosphorBriefcase', '/images/epractise/epractise-mark.webp', 'light', ['#f5f7fb', '#1c2230', '#2563eb', '#2563eb', '#ffffff']),
+  theme('o2chat', 'O2Chat', 'phosphorChatsCircle', '/images/o2chat/o2chat-mark.webp', 'light', ['#f3f6fb', '#111a2e', '#0a58ca', '#0a58ca', '#ffffff']),
+  theme('bloomstone', 'Bloomstone', 'phosphorTreePalm', '/images/bloomstone/bloomstone-mark.webp', 'light', ['#f3eee2', '#2a2a2a', '#545c2b', '#545c2b', '#ffffff']),
+  theme('finclore', 'Finclore', 'phosphorBuildingOffice', '/images/finclore/finclore-mark.svg', 'light', ['#f5f6f8', '#131b2c', '#0a3161', '#0a3161', '#ffffff']),
+  theme('llcsavvy', 'LLC SAVVY', 'phosphorBuildingOffice', '/images/llcsavvy/llcsavvy-mark.webp', 'light', ['#f3f4f6', '#16202f', '#0a3161', '#b31942', '#ffffff']),
+  theme('pizzerias', 'Pizzerias', 'phosphorForkKnife', undefined, 'light', ['#fbf6ec', '#221d18', '#cc2f00', '#cc2f00', '#ffffff']),
+  theme('call-center', 'Call center', 'phosphorHeadset', undefined, 'light', ['#f5f5fb', '#131336', '#4d4cac', '#4d4cac', '#ffffff']),
+  theme('malik-transport', 'Malik Transport', 'phosphorTruck', '/images/malik-transport/malik-transport-mark.webp', 'light', ['#f4f6fa', '#1b2236', '#3365a4', '#3365a4', '#ffffff']),
+  theme('trades', 'SOS24 and AK Heating', 'phosphorWrench', undefined, 'light', ['#f5f6fb', '#0f1533', '#031071', '#031071', '#ffffff']),
+  theme('kpmc', 'KPMC', 'phosphorBuildings', '/images/kpmc/kpmc-logo.webp', 'light', ['#f3f5f7', '#1b2534', '#007a45', '#007a45', '#ffffff']),
+  theme('asaan-hisab', 'Asaan Hisab', 'phosphorInvoice', '/images/asaan-hisab/asaan-hisab-mark.webp', 'light', ['#f4f6f9', '#1c2733', '#0077c5', '#0077c5', '#ffffff']),
+  theme('hrm', 'HRM Suite', 'phosphorIdentificationBadge', '/images/hrm/hrm-mark.svg', 'dark', ['#0b0f17', '#e7ecf4', '#2563eb', '#2563eb', '#ffffff']),
+  theme('whiteboard', 'Whiteboard', 'phosphorPencilSimpleLine', undefined, 'dark', ['#1a1917', '#e4e0d8', '#818cf8', '#4f46e5', '#ffffff']),
+  theme('flick', 'Flick', 'phosphorShareNetwork', '/images/flick/flick-mark.svg', 'dark', ['#0f110e', '#eceee6', '#d4f84b', '#d4f84b', '#11130f']),
+  theme('scrawl', 'Scrawl', 'phosphorPenNib', '/images/scrawl/scrawl-mark.svg', 'dark', ['#161614', '#ebebe9', '#ffe14a', '#ffe14a', '#1d1d1b']),
+  theme('gift-wrap', 'Gift Wrap', 'phosphorGift', undefined, 'light', ['#fdf6f8', '#3a2330', '#7a0f3d', '#7a0f3d', '#ffffff']),
+  theme('ethical-node', 'EthicalNode', 'phosphorHandCoins', '/images/ethical-node/ethical-node-mark.webp', 'light', ['#f2f6fd', '#0d1b33', '#1d5fd6', '#1d5fd6', '#ffffff']),
 ];

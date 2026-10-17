@@ -1,0 +1,297 @@
+<mh-arittek-theme />
+
+<!-- Hero: copy left, the working post editor right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="ar-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="ar-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+        </a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <mh-arittek-editor class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="ar-numbers">
+  <div class="wrap">
+    <h2 id="ar-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The public site, live -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ar-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">{{ c.site.url }}</span>
+        </div>
+        <img src="/images/arittek/site-home.webp" width="1600" height="761" [alt]="c.site.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img src="/images/arittek/site-mobile.webp" width="780" height="1688" [alt]="c.site.mobileAlt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <div class="shots-3">
+      @for (s of c.site.details; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" width="1600" [height]="s.h" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <figure class="card shot wide" mhReveal>
+      <img src="/images/arittek/site-journey.webp" width="1600" height="667" [alt]="c.site.journeyAlt" loading="lazy" decoding="async" />
+    </figure>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+  </div>
+</section>
+}
+
+<!-- Architecture: static pages for visitors, PHP for the team -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ar-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.visitors; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <span class="core-mark"><img src="/images/arittek/arittek-mark.svg" width="56" height="28" alt="" /></span>
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.team; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- The life of a post -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ar-pub">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-pub" class="title">{{ c.publish.title }}</h2>
+      <p class="sub">{{ c.publish.sub }}</p>
+    </header>
+    <ol class="life" role="list">
+      @for (s of c.publish.steps; track s.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+          <h3>{{ s.t }}</h3>
+          <p>{{ s.s }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Campaigns -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ar-cmp">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-cmp" class="title">{{ c.campaigns.title }}</h2>
+      <p class="sub">{{ c.campaigns.sub }}</p>
+    </header>
+    <mh-arittek-campaign mhReveal />
+  </div>
+</section>
+}
+
+<!-- Roles and permissions -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ar-roles">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-roles" class="title">{{ c.roles.title }}</h2>
+      <p class="sub">{{ c.roles.sub }}</p>
+    </header>
+    <mh-arittek-roles mhReveal />
+  </div>
+</section>
+}
+
+<!-- The rest of the back office -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ar-office">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-office" class="title">{{ c.office.title }}</h2>
+      <p class="sub">{{ c.office.sub }}</p>
+    </header>
+    <ul class="office" role="list">
+      @for (o of c.office.items; track o.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="node-ic"><ng-icon [name]="o.icon" aria-hidden="true" /></span>
+          <h3>{{ o.t }}</h3>
+          <p>{{ o.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Build: one folder for the host -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ar-build">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-build" class="title">{{ c.build.title }}</h2>
+      <p class="sub">{{ c.build.sub }}</p>
+    </header>
+
+    <div class="rail card" mhReveal>
+      <ol role="list">
+        @for (s of c.build.steps; track s; let i = $index) {
+          <li [style.--i]="i">
+            <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <ul class="rules" role="list">
+      @for (r of c.build.rules; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ar-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ar-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ar-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="ar-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="ar-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/pizzerias">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

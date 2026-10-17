@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
- * The ء (hamza) mark, built from two primitives on a 48-unit grid:
- *   1. a 225 degree arc, centre (24, 21.5), r = 9, stroke 5 (the head of the letter)
- *   2. a 25 x 5 bar at y = 30 (the base stroke), which the arc lands on
+ * The ء (hamza) mark, built from two primitives on a 48-unit grid, optically centred in the tile:
+ *   1. a 225 degree arc, centre (24.5, 21), r = 8, stroke 5 (the head of the letter)
+ *   2. a tapered tail: from the base line y = 26.5 (where the arc lands) it runs right to x = 37, then sweeps
+ *      down-left to a 3 unit point at x = 15.5, thick on the right and thin on the left like a Naskh hamza
  * Geometry is documented on /brand (construction view). Do not redraw it by eye.
+ * Previous arc-on-bar mark: .devcache/backup/logo-arc-bar-2026-10-11.
  */
-export const MARK_ARC = 'M30.36 15.14A9 9 0 1 0 24 30.5';
-export const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 } as const;
+export const MARK_ARC = 'M30.16 15.34A8 8 0 1 0 24.5 29';
+export const MARK_TAIL = 'M22.5 26.5H37V28.5L15.5 38V35Z';
 
 @Component({
   selector: 'mh-logo',
@@ -28,7 +30,7 @@ export const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 } as const;
         <rect class="box" x="0.5" y="0.5" width="47" height="47" rx="3.5" />
       }
       <path [attr.d]="arc" fill="none" stroke="currentColor" stroke-width="5" />
-      <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.w" [attr.height]="bar.h" fill="currentColor" />
+      <path [attr.d]="tail" fill="currentColor" />
     </svg>
     @if (wordmark()) {
       <span class="word" translate="no">Mohammad Hamza</span>
@@ -62,5 +64,5 @@ export class Logo {
   /** Accessible name. Leave empty when the logo sits inside a labelled link. */
   readonly label = input('');
   protected readonly arc = MARK_ARC;
-  protected readonly bar = MARK_BAR;
+  protected readonly tail = MARK_TAIL;
 }

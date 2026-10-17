@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en" data-format="vertical">
+<head>
+<meta charset="utf-8">
+<title>Pitch Reel</title>
+<!-- One continuous 9:16 reel in three chapters: intro, selected work, hire. Voiceover-led (script.md).
+     Live preview: open this file through any static server at the repo root, e.g. /promo/reels/pitch/reel.html -->
+<style>
+@font-face{font-family:"Geist Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2) format("woff2-variations")}
+@font-face{font-family:"Geist Variable";font-style:normal;font-weight:100 900;font-display:block;unicode-range:U+0100-017F;
+  src:url(../../../node_modules/@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2) format("woff2-variations")}
+@font-face{font-family:"Geist Mono Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2) format("woff2-variations")}
+@font-face{font-family:"Geist Mono Variable";font-style:normal;font-weight:100 900;font-display:block;unicode-range:U+0100-017F;
+  src:url(../../../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-ext-wght-normal.woff2) format("woff2-variations")}
+
+/* Site tokens (src/styles/_tokens.scss). Sizes below are written in site pixels times --u. */
+:root{
+  --bg:#111111;--bg-2:#151515;--surface:#1a1a1a;--surface-2:#222222;
+  --ink:#ededed;--ink-2:#c9c9c9;--muted:#9a9a9a;--line:#2c2c2c;--line-strong:#3a3a3a;
+  --accent-soft:#232323;--solid:#262626;--solid-edge:rgb(255 255 255 / .08);
+  --cta:#ededed;--cta-ink:#111111;--glass-edge:rgb(255 255 255 / .09);--glass-hi:rgb(255 255 255 / .07);
+  --shadow-lg:0 2px 4px rgb(0 0 0 / .3),0 40px 80px -30px rgb(0 0 0 / .7);
+  --sans:"Geist Variable",system-ui,sans-serif;--mono:"Geist Mono Variable",monospace;
+  --ease:cubic-bezier(.16,1,.3,1);--in:cubic-bezier(.55,0,.75,.2);
+  --W:1080px;--H:1920px;--u:2.9px;--top:250px;--bottom:380px;--side:90px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
+body{position:relative;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+/* Nothing moves until fonts and images are in; then every animation starts from 0 together */
+body.hold *,body.hold *::before,body.hold *::after{animation-play-state:paused !important}
+
+@keyframes lineIn{from{transform:translateY(110%)}to{transform:none}}
+@keyframes lineOut{from{transform:none}to{transform:translateY(-110%)}}
+@keyframes rise{from{opacity:0;transform:translateY(calc(var(--u) * 14))}to{opacity:1;transform:none}}
+@keyframes riseOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(calc(var(--u) * -10))}}
+@keyframes cutIn{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:none}}
+@keyframes cutOut{from{opacity:1}to{opacity:0}}
+@keyframes zoomIn{from{opacity:0;transform:translateY(calc(var(--u) * 18)) scale(.96)}to{opacity:1;transform:none}}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-14%,9%)}}
+@keyframes blip{0%{transform:scale(1);opacity:.5}70%,100%{transform:scale(3.6);opacity:0}}
+@keyframes type{from{width:0}to{width:var(--w)}}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes lit{to{background:var(--solid);border-color:rgb(255 255 255 / .26);color:var(--ink)}}
+@keyframes wellLit{to{background:var(--cta);color:var(--cta-ink)}}
+@keyframes miniLit{to{background:var(--ink)}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+@keyframes seg2{from{transform:none}to{transform:translateX(100%)}}
+@keyframes seg3{from{transform:translateX(100%)}to{transform:translateX(200%)}}
+@keyframes pan{from{transform:none}to{transform:translateY(var(--pan))}}
+
+/* ---------- background ---------- */
+#field{position:absolute;inset:0;width:100%;height:100%;
+  -webkit-mask-image:radial-gradient(ellipse 85% 70% at 78% 30%,#000 15%,transparent 80%);
+          mask-image:radial-gradient(ellipse 85% 70% at 78% 30%,#000 15%,transparent 80%)}
+.glow{position:absolute;width:120%;aspect-ratio:1;right:-45%;top:-35%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(237 237 237 / .075),transparent);animation:drift 72s linear both}
+.vignette{position:absolute;inset:0;background:radial-gradient(120% 85% at 50% 45%,transparent 55%,rgb(0 0 0 / .5));pointer-events:none}
+
+/* ---------- shared bits ---------- */
+.a{animation:rise .9s var(--ease) var(--d) both,riseOut .45s var(--in) var(--o) forwards}
+.z{animation:zoomIn 1s var(--ease) var(--d) both,riseOut .45s var(--in) var(--o) forwards}
+.line{display:block;overflow:hidden;padding-bottom:.08em}
+.line>span{display:inline-block;white-space:nowrap;animation:lineIn 1s var(--ease) var(--d) both,lineOut .45s var(--in) var(--o) forwards}
+.soft{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.tile{display:grid;place-items:center;background:var(--cta);color:var(--cta-ink);flex-shrink:0}
+.tile svg{width:62%;height:62%}
+.ic{display:block;width:100%;height:100%}
+.ic svg{display:block;width:100%;height:100%}
+.status{display:inline-flex;align-items:center;gap:calc(var(--u) * 10);height:calc(var(--u) * 32);padding:0 calc(var(--u) * 14) 0 calc(var(--u) * 12);
+  border-radius:999px;background:var(--surface);border:calc(var(--u) * 1) solid var(--line);color:var(--ink-2);font-size:calc(var(--u) * 13);font-weight:500;white-space:nowrap}
+.blip{position:relative;width:calc(var(--u) * 7);height:calc(var(--u) * 7);border-radius:50%;background:var(--ink)}
+.blip::before,.blip::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ink);animation:blip 2.6s cubic-bezier(.2,.6,.3,1) infinite}
+.blip::after{animation-delay:1.3s}
+.card{background:var(--surface);border:calc(var(--u) * 1) solid var(--line);border-radius:calc(var(--u) * 16);padding:calc(var(--u) * 18)}
+.well{display:grid;place-items:center;width:calc(var(--u) * 38);height:calc(var(--u) * 38);border-radius:50%;background:var(--accent-soft);color:var(--ink);flex-shrink:0}
+.well .ic{width:calc(var(--u) * 19);height:calc(var(--u) * 19)}
+.tag{display:inline-flex;align-items:center;gap:calc(var(--u) * 6);height:calc(var(--u) * 26);padding:0 calc(var(--u) * 11);border-radius:999px;border:calc(var(--u) * 1) solid var(--line);
+  background:var(--surface);font-family:var(--mono);font-size:calc(var(--u) * 12);color:var(--ink-2);white-space:nowrap}
+.tag .ic{width:calc(var(--u) * 13);height:calc(var(--u) * 13)}
+.tag.solid{background:var(--cta);color:var(--cta-ink);border-color:transparent}
+.stack-cell{display:grid;width:100%}
+.stack-cell>*{grid-area:1/1}
+
+/* ---------- persistent top bar: brand pill + chapter segments ---------- */
+.top{position:absolute;top:var(--top);left:var(--side);right:var(--side);display:flex;align-items:center;justify-content:space-between;z-index:3}
+.brand{display:flex;align-items:center;gap:calc(var(--u) * 10);padding:calc(var(--u) * 5) calc(var(--u) * 16) calc(var(--u) * 5) calc(var(--u) * 5);border-radius:999px;
+  background:rgb(26 26 26 / .72);border:calc(var(--u) * 1) solid var(--glass-edge);box-shadow:inset 0 calc(var(--u) * 1) 0 var(--glass-hi);
+  font-weight:600;font-size:calc(var(--u) * 15);letter-spacing:-.01em}
+.brand .tile{width:calc(var(--u) * 30);height:calc(var(--u) * 30);border-radius:50%}
+.chapters{position:relative;display:grid;grid-template-columns:repeat(3,calc(var(--u) * 46));padding:calc(var(--u) * 4);border-radius:999px;
+  background:rgb(26 26 26 / .72);border:calc(var(--u) * 1) solid var(--glass-edge);box-shadow:inset 0 calc(var(--u) * 1) 0 var(--glass-hi)}
+.chapters span{position:relative;z-index:1;display:grid;place-items:center;height:calc(var(--u) * 26);font-size:calc(var(--u) * 12);font-weight:500;color:var(--ink-2)}
+.chapters i{position:absolute;top:calc(var(--u) * 4);left:calc(var(--u) * 4);width:calc(var(--u) * 46);height:calc(var(--u) * 26);border-radius:999px;background:var(--surface-2);
+  border:calc(var(--u) * 1) solid var(--line-strong);
+  animation:seg2 .7s var(--ease) var(--c2) forwards,seg3 .7s var(--ease) var(--c3) forwards}
+
+/* ---------- scenes ---------- */
+.scene{position:absolute;left:var(--side);right:var(--side);top:calc(var(--top) + var(--u) * 64);bottom:var(--bottom);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.display{font-size:calc(var(--u) * 46);line-height:1.04;letter-spacing:-.045em;font-weight:600;margin-bottom:calc(var(--u) * 22)}
+.title{font-size:calc(var(--u) * 34);line-height:1.06;letter-spacing:-.04em;font-weight:600;margin-bottom:calc(var(--u) * 20)}
+.kicker{font-family:var(--mono);font-size:calc(var(--u) * 13);color:var(--muted);margin-bottom:calc(var(--u) * 12)}
+.lede{font-size:calc(var(--u) * 16);line-height:1.5;color:var(--ink-2);max-width:32ch}
+
+/* browser frame around real screens */
+.frame{width:100%;border-radius:calc(var(--u) * 14);border:calc(var(--u) * 1) solid var(--line-strong);background:var(--surface);overflow:hidden;box-shadow:var(--shadow-lg)}
+.frame .bar{display:flex;align-items:center;gap:calc(var(--u) * 5);height:calc(var(--u) * 24);padding:0 calc(var(--u) * 10);border-bottom:calc(var(--u) * 1) solid var(--line)}
+.frame .bar i{width:calc(var(--u) * 6);height:calc(var(--u) * 6);border-radius:50%;background:var(--line-strong)}
+.frame .bar b{margin:0 auto;transform:translateX(calc(var(--u) * -12));height:calc(var(--u) * 15);padding:0 calc(var(--u) * 12);border-radius:999px;background:var(--surface-2);
+  font:400 calc(var(--u) * 9)/calc(var(--u) * 15) var(--mono);color:var(--muted)}
+.frame .view{position:relative;overflow:hidden}
+.frame img{display:block;width:100%;height:auto}
+
+/* phone mock (my own drawings of product screens) */
+.phone{width:calc(var(--u) * 128);border-radius:calc(var(--u) * 24);padding:calc(var(--u) * 6);background:#0c0c0c;border:calc(var(--u) * 1.5) solid var(--line-strong);box-shadow:var(--shadow-lg);flex-shrink:0}
+.phone .screen{border-radius:calc(var(--u) * 19);background:var(--bg-2);overflow:hidden;padding:calc(var(--u) * 10) calc(var(--u) * 9) calc(var(--u) * 12);
+  display:flex;flex-direction:column;gap:calc(var(--u) * 7);font-size:calc(var(--u) * 8.5)}
+.phone .notch{width:calc(var(--u) * 34);height:calc(var(--u) * 6);border-radius:999px;background:#0c0c0c;margin:0 auto calc(var(--u) * 2)}
+.phone .head{display:flex;align-items:center;gap:calc(var(--u) * 6);font-weight:600;font-size:calc(var(--u) * 9.5)}
+.phone .head .ic{width:calc(var(--u) * 12);height:calc(var(--u) * 12)}
+.phone .pcard{border-radius:calc(var(--u) * 9);background:var(--surface);border:calc(var(--u) * 1) solid var(--line);padding:calc(var(--u) * 8)}
+.phone .small{font-family:var(--mono);font-size:calc(var(--u) * 7);color:var(--muted)}
+.phone .big{font-size:calc(var(--u) * 13);font-weight:600;letter-spacing:-.03em;margin-top:calc(var(--u) * 2)}
+.phone .step{display:flex;align-items:center;gap:calc(var(--u) * 6);padding:calc(var(--u) * 4) 0;color:var(--ink-2)}
+.phone .step .ic{width:calc(var(--u) * 10);height:calc(var(--u) * 10)}
+.phone .step.todo{color:var(--muted)}
+.phone .step.todo::before{content:"";width:calc(var(--u) * 8);height:calc(var(--u) * 8);margin:0 calc(var(--u) * 1);border-radius:50%;border:calc(var(--u) * 1) solid var(--muted)}
+.phone .pbtn{display:grid;place-items:center;height:calc(var(--u) * 22);border-radius:999px;background:var(--cta);color:var(--cta-ink);font-weight:600;font-size:calc(var(--u) * 9)}
+.phone .embed{border-style:dashed;border-color:rgb(255 255 255 / .3)}
+.phone .embed .tag{height:calc(var(--u) * 14);padding:0 calc(var(--u) * 6);font-size:calc(var(--u) * 6.5);margin-bottom:calc(var(--u) * 5)}
+
+/* ---------- 1: quick cuts ---------- */
+.s1{display:grid;place-items:center;align-content:center}
+.cut{grid-area:1/1;width:100%;display:flex;justify-content:center;animation:cutIn .3s var(--ease) var(--d) both,cutOut .1s linear var(--o) forwards}
+.mini{padding:calc(var(--u) * 16) calc(var(--u) * 18) calc(var(--u) * 22)}
+.mini .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:calc(var(--u) * 26)}
+.mini .pill{display:flex;align-items:center;gap:calc(var(--u) * 6);height:calc(var(--u) * 22);padding:0 calc(var(--u) * 10) 0 calc(var(--u) * 3);border-radius:999px;border:calc(var(--u) * 1) solid var(--line);
+  font-size:calc(var(--u) * 9);font-weight:600}
+.mini .pill .tile{width:calc(var(--u) * 16);height:calc(var(--u) * 16);border-radius:50%}
+.mini .links{display:flex;align-items:center;gap:calc(var(--u) * 9);height:calc(var(--u) * 22);padding:0 calc(var(--u) * 3) 0 calc(var(--u) * 10);border-radius:999px;border:calc(var(--u) * 1) solid var(--line);
+  font-size:calc(var(--u) * 8);color:var(--ink-2)}
+.mini .links em{font-style:normal;height:calc(var(--u) * 16);padding:0 calc(var(--u) * 8);border-radius:999px;background:var(--cta);color:var(--cta-ink);font-weight:600;line-height:calc(var(--u) * 16)}
+.mini .status{height:calc(var(--u) * 20);font-size:calc(var(--u) * 8.5);gap:calc(var(--u) * 7);padding:0 calc(var(--u) * 9)}
+.mini .status .blip{width:calc(var(--u) * 5);height:calc(var(--u) * 5)}
+.mini h2{font-size:calc(var(--u) * 27);line-height:1.04;letter-spacing:-.045em;font-weight:600;margin:calc(var(--u) * 12) 0 calc(var(--u) * 9)}
+.mini p{font-size:calc(var(--u) * 9.5);line-height:1.5;color:var(--ink-2);max-width:34ch}
+.mini .btns{display:flex;gap:calc(var(--u) * 6);margin-top:calc(var(--u) * 14)}
+.mini .btns span{height:calc(var(--u) * 22);padding:0 calc(var(--u) * 12);border-radius:999px;border:calc(var(--u) * 1) solid var(--line);font-size:calc(var(--u) * 9);font-weight:600;line-height:calc(var(--u) * 20)}
+.mini .btns span:first-child{background:var(--cta);color:var(--cta-ink);border-color:transparent}
+
+/* ---------- 2: built right ---------- */
+.layers{display:grid;gap:calc(var(--u) * 9);width:100%}
+.layer{display:flex;align-items:center;gap:calc(var(--u) * 14);padding:calc(var(--u) * 12) calc(var(--u) * 16)}
+.layer strong{font-size:calc(var(--u) * 17);font-weight:600;letter-spacing:-.02em}
+.layer .tag{margin-left:auto}
+.launch{margin-top:calc(var(--u) * 16)}
+
+/* ---------- 3: identity ---------- */
+.who{align-items:center;text-align:center}
+.who .tile{width:calc(var(--u) * 84);height:calc(var(--u) * 84);border-radius:calc(var(--u) * 22);margin-bottom:calc(var(--u) * 24)}
+.who h1{font-size:calc(var(--u) * 34);font-weight:600;letter-spacing:-.045em;line-height:1.04}
+.who .role{font-size:calc(var(--u) * 18);color:var(--muted);margin:calc(var(--u) * 10) 0 calc(var(--u) * 26)}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--u) * 7)}
+
+/* ---------- 4: tax platform ---------- */
+.apps{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u) * 9);width:100%}
+.app{display:flex;align-items:center;gap:calc(var(--u) * 10);padding:calc(var(--u) * 12)}
+.app h3{font-size:calc(var(--u) * 15.5);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.app p{display:none}
+.embed-row{display:flex;align-items:center;gap:calc(var(--u) * 20);width:100%}
+.banks{display:grid;grid-template-columns:repeat(3,calc(var(--u) * 40));gap:calc(var(--u) * 9)}
+.bank{height:calc(var(--u) * 70);border-radius:calc(var(--u) * 10);border:calc(var(--u) * 1) solid var(--line-strong);background:var(--surface);padding:calc(var(--u) * 7) calc(var(--u) * 6);
+  display:flex;flex-direction:column;gap:calc(var(--u) * 4)}
+.bank i{display:block;height:calc(var(--u) * 4);border-radius:999px;background:var(--line-strong)}
+.bank i:nth-child(2){width:60%}
+.bank b{margin-top:auto;height:calc(var(--u) * 20);border-radius:calc(var(--u) * 5);border:calc(var(--u) * 1) dashed rgb(255 255 255 / .3);background:transparent;
+  animation:miniLit .4s var(--ease) var(--l) forwards}
+.banks-note{font-family:var(--mono);font-size:calc(var(--u) * 11);color:var(--muted);margin-top:calc(var(--u) * 12)}
+
+/* ---------- 5: fleet ---------- */
+.fleet{position:relative;width:100%}
+.fleet .frame{width:100%}
+.fleet .view{height:calc(var(--u) * 196)}
+.fleet .view img{--pan:calc(var(--u) * -18);animation:pan 7s ease-in-out var(--d) both}
+.fleet .phone{position:absolute;right:calc(var(--u) * -8);bottom:calc(var(--u) * -78);width:calc(var(--u) * 112)}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u) * 7);margin-top:calc(var(--u) * 22);max-width:calc(var(--u) * 186)}
+
+/* ---------- 6: quorum ---------- */
+.qhead{display:flex;align-items:center;gap:calc(var(--u) * 14);margin-bottom:calc(var(--u) * 18)}
+.fav{width:calc(var(--u) * 52);height:calc(var(--u) * 52);border-radius:calc(var(--u) * 14);background:#f4f4f4;display:grid;place-items:center;flex-shrink:0}
+.fav img{width:66%;height:66%;object-fit:contain}
+.qhead .title{margin:0}
+.q-note{margin-top:calc(var(--u) * 18)}
+
+/* ---------- 7: ways, 8: promises (lit in step with the voice) ---------- */
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u) * 10);width:100%}
+.way{display:flex;flex-direction:column;gap:calc(var(--u) * 10);padding:calc(var(--u) * 15);color:var(--muted)}
+.way h3{font-size:calc(var(--u) * 20);font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.way p{font-size:calc(var(--u) * 12.5);margin-top:calc(var(--u) * -6)}
+.rows{display:grid;gap:calc(var(--u) * 9);width:100%}
+.row{display:flex;align-items:center;gap:calc(var(--u) * 14);padding:calc(var(--u) * 10) calc(var(--u) * 14);color:var(--muted)}
+.row strong{font-size:calc(var(--u) * 16.5);font-weight:600;letter-spacing:-.02em}
+.hl{animation:rise .9s var(--ease) var(--d) both,lit .5s var(--ease) var(--l) forwards,riseOut .45s var(--in) var(--o) forwards}
+.hl .well{animation:wellLit .5s var(--ease) var(--l) forwards}
+
+/* ---------- 9: time zones ---------- */
+.tz{width:100%;padding:calc(var(--u) * 18) calc(var(--u) * 18) calc(var(--u) * 14)}
+.tz-grid{position:relative;display:grid;grid-template-columns:calc(var(--u) * 58) 1fr;row-gap:calc(var(--u) * 12);align-items:center}
+.tz-grid>span{font-size:calc(var(--u) * 13);font-weight:500;color:var(--ink-2)}
+.track{position:relative;height:calc(var(--u) * 20);border-radius:999px;background:var(--surface-2)}
+.track b{position:absolute;top:0;bottom:0;left:var(--x);width:var(--w);border-radius:999px;background:var(--line-strong);transform-origin:left;animation:grow .8s var(--ease) var(--l) both}
+.track.home b{background:var(--ink-2)}
+.shared{position:absolute;top:calc(var(--u) * -8);bottom:calc(var(--u) * -8);left:calc(var(--u) * 58 + (100% - var(--u) * 58) * .375);width:calc((100% - var(--u) * 58) * .25);
+  border-radius:calc(var(--u) * 10);border:calc(var(--u) * 1.5) solid var(--ink);background:rgb(237 237 237 / .06)}
+.axis{display:flex;justify-content:space-between;margin:calc(var(--u) * 14) 0 0 calc(var(--u) * 58);font-family:var(--mono);font-size:calc(var(--u) * 9.5);color:var(--muted)}
+.tz-foot{display:flex;justify-content:space-between;align-items:center;margin-top:calc(var(--u) * 16);padding-top:calc(var(--u) * 12);border-top:calc(var(--u) * 1) solid var(--line);
+  font-size:calc(var(--u) * 12);color:var(--muted)}
+
+/* ---------- 10: end card ---------- */
+.cta{align-items:center;text-align:center}
+.cta .tile{width:calc(var(--u) * 84);height:calc(var(--u) * 84);border-radius:calc(var(--u) * 22);margin-bottom:calc(var(--u) * 22)}
+.cta h2{font-size:calc(var(--u) * 34);font-weight:600;letter-spacing:-.045em;line-height:1.04}
+.cta .role{font-size:calc(var(--u) * 19);color:var(--muted);margin:calc(var(--u) * 8) 0 calc(var(--u) * 24)}
+.url{display:flex;align-items:center;gap:calc(var(--u) * 10);margin-top:calc(var(--u) * 18);height:calc(var(--u) * 46);padding:0 calc(var(--u) * 20);
+  border-radius:999px;background:var(--cta);color:var(--cta-ink);font-family:var(--mono);font-size:calc(var(--u) * 15.5);font-weight:500}
+.url .prompt{opacity:.55}
+.url code{font-family:inherit;display:inline-block;overflow:hidden;white-space:nowrap;width:0;--w:17ch;animation:type .9s steps(17) var(--type) forwards}
+.url i{display:inline-block;width:calc(var(--u) * 2);height:1.15em;background:var(--cta-ink);animation:caret 1s steps(1) infinite}
+</style>
+</head>
+<body class="hold">
+<canvas id="field"></canvas>
+<div class="glow"></div>
+<div class="vignette"></div>
+
+<div class="top">
+  <div class="brand a" data-in="brand" data-out="cta-.4"><span class="tile mark"></span>mhfrough</div>
+  <div class="chapters a" data-in="brand+.1" data-out="cta-.4"><i></i><span>Intro</span><span>Work</span><span>Hire</span></div>
+</div>
+
+<!-- ===================== 1. INTRO ===================== -->
+
+<!-- 1: quick cuts. VO "A production app is more than screens." -->
+<section class="scene s1">
+  <div class="cut" data-in="cut1" data-out="cut2">
+    <div class="frame">
+      <div class="bar"><i></i><i></i><i></i><b>mhfrough.dev</b></div>
+      <div class="mini">
+        <div class="nav"><span class="pill"><span class="tile mark"></span>mhfrough</span><span class="links">Work<span>About</span><em>Hire me</em></span></div>
+        <span class="status"><span class="blip"></span>Taking on new projects</span>
+        <h2>Software architect.<br><span class="soft">Angular at scale.</span></h2>
+        <p>Shipping SaaS, fintech and enterprise platforms with Angular and NestJS since 2020.</p>
+        <div class="btns"><span>View work</span><span>Hire me</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="cut" data-in="cut2" data-out="cut3">
+    <div class="frame"><div class="bar"><i></i><i></i><i></i><b>Fleet admin</b></div><div class="view"><img src="../../../public/images/fleet/admin-dashboard.webp" alt=""></div></div>
+  </div>
+  <div class="cut" data-in="cut3" data-out="cut4">
+    <div class="frame"><div class="bar"><i></i><i></i><i></i><b>mhfrough.github.io/quorum</b></div><div class="view"><img src="../../../public/images/quorum/site-hero.webp" alt=""></div></div>
+  </div>
+  <div class="cut" data-in="cut4" data-out="s2-.15">
+    <div class="phone"><div class="screen">
+      <div class="notch"></div>
+      <div class="head"><span class="ic" data-icon="bank"></span>Your bank</div>
+      <div class="pcard embed"><span class="tag">Tax filing</span><div class="big">File your 2026 return</div>
+        <div class="step"><span class="ic" data-icon="check"></span>Personal details</div>
+        <div class="step"><span class="ic" data-icon="check"></span>Income and salary</div>
+        <div class="step todo">Review and file</div>
+      </div>
+      <div class="pbtn">File return</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 2: VO "It needs architecture that can grow and someone who can carry the work through to launch." -->
+<section class="scene s2">
+  <h1 class="display">
+    <span class="line"><span data-in="s2" data-out="s3-.4">Built right,</span></span>
+    <span class="line soft"><span data-in="s2+.15" data-out="s3-.35">from day one.</span></span>
+  </h1>
+  <div class="layers">
+    <div class="card layer a" data-in="grow+1.2" data-out="s3-.4"><span class="well"><span class="ic" data-icon="browser"></span></span><strong>Angular apps</strong><span class="tag">frontend</span></div>
+    <div class="card layer a" data-in="grow+.6" data-out="s3-.37"><span class="well"><span class="ic" data-icon="code"></span></span><strong>NestJS API</strong><span class="tag">backend</span></div>
+    <div class="card layer a" data-in="grow" data-out="s3-.34"><span class="well"><span class="ic" data-icon="database"></span></span><strong>PostgreSQL</strong><span class="tag">data</span></div>
+  </div>
+  <span class="tag solid launch a" data-in="launch" data-out="s3-.3"><span class="ic" data-icon="check"></span>Live in production</span>
+</section>
+
+<!-- 3: VO "I'm Mohammad Hamza, a software architect focused on Angular and full-stack SaaS, ..." -->
+<section class="scene who">
+  <span class="tile mark z" data-in="s3" data-out="c2-.45"></span>
+  <h1><span class="line"><span data-in="s3+.15" data-out="c2-.4">Mohammad Hamza</span></span></h1>
+  <p class="role a" data-in="id2" data-out="c2-.36">Software Architect · Angular · SaaS</p>
+  <div class="tags">
+    <span class="tag a" data-in="id3" data-out="c2-.32">Since 2020</span>
+    <span class="tag a" data-in="id3+.1" data-out="c2-.3">7+ years in production</span>
+    <span class="tag a" data-in="id3+.2" data-out="c2-.28">Full-stack SaaS</span>
+  </div>
+</section>
+
+<!-- ===================== 2. SELECTED WORK ===================== -->
+
+<!-- 4: VO "I helped build and later lead a four-app tax platform, with a filing flow embedded in six banking apps." -->
+<section class="scene s4">
+  <p class="kicker a" data-in="c2" data-out="s5-.45">Tax-filing platform</p>
+  <div class="stack-cell">
+    <h2 class="title"><span class="line"><span data-in="c2+.1" data-out="embed-.42">4 Angular apps,</span></span><span class="line soft"><span data-in="c2+.2" data-out="embed-.4">one tax platform.</span></span></h2>
+    <h2 class="title"><span class="line"><span data-in="embed+.1" data-out="s5-.42">Embedded in</span></span><span class="line soft"><span data-in="embed+.2" data-out="s5-.4">6 banking apps.</span></span></h2>
+  </div>
+  <div class="stack-cell">
+    <div class="apps">
+      <div class="card app a" data-in="c2+.3" data-out="embed-.4"><span class="well"><span class="ic" data-icon="globe"></span></span><h3>Public portal</h3><p>file online</p></div>
+      <div class="card app a" data-in="c2+.4" data-out="embed-.37"><span class="well"><span class="ic" data-icon="gauge"></span></span><h3>Customer dashboard</h3><p>returns, status</p></div>
+      <div class="card app a" data-in="c2+.5" data-out="embed-.34"><span class="well"><span class="ic" data-icon="users"></span></span><h3>Agent portal</h3><p>file for clients</p></div>
+      <div class="card app a" data-in="c2+.6" data-out="embed-.31"><span class="well"><span class="ic" data-icon="shieldcheck"></span></span><h3>Admin</h3><p>staff tools</p></div>
+    </div>
+    <div>
+      <div class="embed-row">
+        <div class="phone z" data-in="embed+.2" data-out="s5-.4"><div class="screen">
+          <div class="notch"></div>
+          <div class="head"><span class="ic" data-icon="bank"></span>Your bank</div>
+         <div class="pcard embed"><span class="tag">Tax filing</span><div class="big">File your 2026 return</div>
+            <div class="step"><span class="ic" data-icon="check"></span>Personal details</div>
+            <div class="step"><span class="ic" data-icon="check"></span>Income and salary</div>
+            <div class="step todo">Review and file</div>
+          </div>
+          <div class="pbtn">File return</div>
+        </div></div>
+        <div>
+          <div class="banks a" data-in="banks" data-out="s5-.36">
+            <span class="bank"><i></i><i></i><b data-l="banks+.3"></b></span><span class="bank"><i></i><i></i><b data-l="banks+.45"></b></span><span class="bank"><i></i><i></i><b data-l="banks+.6"></b></span>
+            <span class="bank"><i></i><i></i><b data-l="banks+.75"></b></span><span class="bank"><i></i><i></i><b data-l="banks+.9"></b></span><span class="bank"><i></i><i></i><b data-l="banks+1.05"></b></span>
+          </div>
+          <p class="banks-note a" data-in="banks+1.3" data-out="s5-.32">one widget,<br>six host apps</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5: VO "On a fleet-management SaaS, I worked across the Angular admin, NestJS and PostgreSQL API, and Flutter driver apps." -->
+<section class="scene s5">
+  <p class="kicker a" data-in="s5" data-out="s6-.45">Fleet-management SaaS</p>
+  <div class="fleet">
+    <div class="frame z" data-in="s5+.1" data-out="s6-.4"><div class="bar"><i></i><i></i><i></i><b>Fleet admin</b></div>
+      <div class="view"><img src="../../../public/images/fleet/admin-dashboard.webp" alt="" data-in="s5+.1"></div></div>
+    <div class="phone z" data-in="driver" data-out="s6-.36"><div class="screen">
+      <div class="notch"></div>
+      <div class="head"><span class="ic" data-icon="truck"></span>Driver</div>
+      <div class="pcard"><div class="small">Today, 09:30</div><div class="big">Van 14</div><div class="small" style="margin-top:calc(var(--u) * 3)">Depot to North site</div></div>
+      <div class="pcard">
+        <div class="step"><span class="ic" data-icon="check"></span>Walkaround check</div>
+        <div class="step"><span class="ic" data-icon="check"></span>Licence valid</div>
+        <div class="step todo">Start of shift</div>
+      </div>
+      <div class="pbtn">Start shift</div>
+    </div></div>
+  </div>
+  <div class="chips">
+    <span class="tag a" data-in="stack" data-out="s6-.34">Angular</span>
+    <span class="tag a" data-in="stack+.1" data-out="s6-.32">NestJS</span>
+    <span class="tag a" data-in="stack+.2" data-out="s6-.3">PostgreSQL</span>
+    <span class="tag a" data-in="stack+.3" data-out="s6-.28">Flutter</span>
+  </div>
+</section>
+
+<!-- 6: VO "I also build my own products, including Quorum, an AI decision tool." -->
+<section class="scene s6">
+  <div class="qhead">
+    <span class="fav z" data-in="s6" data-out="c3-.45"><img src="../../../public/images/quorum/favicon.svg" alt=""></span>
+    <h2 class="title"><span class="line"><span data-in="s6+.1" data-out="c3-.42">Quorum</span></span><span class="line soft"><span data-in="s6+.2" data-out="c3-.4">My own product</span></span></h2>
+  </div>
+  <div class="frame z" data-in="s6+.35" data-out="c3-.38"><div class="bar"><i></i><i></i><i></i><b>mhfrough.github.io/quorum</b></div>
+    <div class="view"><img src="../../../public/images/quorum/site-hero.webp" alt=""></div></div>
+  <span class="tag q-note a" data-in="qnote" data-out="c3-.34"><span class="ic" data-icon="sparkle"></span>Seven AI agents, one verdict</span>
+</section>
+
+<!-- ===================== 3. WHY HIRE ME ===================== -->
+
+<!-- 7: VO "Bring me in to build from zero, join your team on contract, review architecture, or rescue an Angular app." -->
+<section class="scene s7">
+  <p class="kicker a" data-in="c3" data-out="s8-.45">Ways to work together</p>
+  <h2 class="title"><span class="line"><span data-in="c3+.1" data-out="s8-.42">Bring me in</span></span><span class="line soft"><span data-in="c3+.2" data-out="s8-.4">where it helps most.</span></span></h2>
+  <div class="ways">
+    <div class="card way hl" data-in="c3+.35" data-l="w1" data-out="s8-.4"><span class="well"><span class="ic" data-icon="cube"></span></span><h3>Build</h3><p>from zero</p></div>
+    <div class="card way hl" data-in="c3+.43" data-l="w2" data-out="s8-.37"><span class="well"><span class="ic" data-icon="calendarblank"></span></span><h3>Contract</h3><p>join your team</p></div>
+    <div class="card way hl" data-in="c3+.51" data-l="w3" data-out="s8-.34"><span class="well"><span class="ic" data-icon="magnifyingglass"></span></span><h3>Review</h3><p>your architecture</p></div>
+    <div class="card way hl" data-in="c3+.59" data-l="w4" data-out="s8-.31"><span class="well"><span class="ic" data-icon="lifebuoy"></span></span><h3>Rescue</h3><p>an Angular app</p></div>
+  </div>
+</section>
+
+<!-- 8: VO "You'll get clear scope, small reviewed changes, written updates, and work delivered in your repo." -->
+<section class="scene s8">
+  <p class="kicker a" data-in="s8" data-out="s9-.45">What you get</p>
+  <h2 class="title"><span class="line"><span data-in="s8+.1" data-out="s9-.42">No surprises,</span></span><span class="line soft"><span data-in="s8+.2" data-out="s9-.4">just steady work.</span></span></h2>
+  <div class="rows">
+    <div class="card row hl" data-in="s8+.3" data-l="r1" data-out="s9-.4"><span class="well"><span class="ic" data-icon="target"></span></span><strong>Clear scope</strong></div>
+    <div class="card row hl" data-in="s8+.38" data-l="r2" data-out="s9-.37"><span class="well"><span class="ic" data-icon="gitpullrequest"></span></span><strong>Small reviewed changes</strong></div>
+    <div class="card row hl" data-in="s8+.46" data-l="r3" data-out="s9-.34"><span class="well"><span class="ic" data-icon="chatcircletext"></span></span><strong>Written updates</strong></div>
+    <div class="card row hl" data-in="s8+.54" data-l="r4" data-out="s9-.31"><span class="well"><span class="ic" data-icon="key"></span></span><strong>Delivered in your repo</strong></div>
+  </div>
+</section>
+
+<!-- 9: VO "I'm based in Karāchi and overlap with UK and EU hours." -->
+<section class="scene s9">
+  <p class="kicker a" data-in="s9" data-out="cta-.45">Based in Karāchi, UTC+5</p>
+  <h2 class="title"><span class="line"><span data-in="s9+.1" data-out="cta-.42">Your morning,</span></span><span class="line soft"><span data-in="s9+.2" data-out="cta-.4">my afternoon.</span></span></h2>
+  <div class="card tz a" data-in="s9+.35" data-out="cta-.38">
+    <div class="tz-grid">
+      <span>Karāchi</span><div class="track home"><b style="--x:6.25%;--w:56.25%" data-l="s9+.6"></b></div>
+      <span>UK</span><div class="track"><b style="--x:37.5%;--w:50%" data-l="s9+.8"></b></div>
+      <span>EU</span><div class="track"><b style="--x:31.25%;--w:50%" data-l="s9+1"></b></div>
+      <div class="shared a" data-in="overlap" data-out="cta-.38"></div>
+    </div>
+    <div class="axis"><span>08</span><span>12</span><span>16</span><span>20</span><span>24</span></div>
+    <div class="tz-foot"><span>Karāchi time</span><span class="tag a" data-in="overlap+.2" data-out="cta-.38">4 to 5 shared hours</span></div>
+  </div>
+</section>
+
+<!-- 10: VO "Need someone who can think through the system and ship the details? Let's talk at mhfrough.dev/hire." -->
+<section class="scene cta">
+  <span class="tile mark z" data-in="cta"></span>
+  <h2><span class="line"><span data-in="cta+.1">Mohammad Hamza</span></span></h2>
+  <p class="role a" data-in="cta+.25">Software Architect</p>
+  <span class="status a" data-in="cta+.45"><span class="blip"></span>Taking on new projects</span>
+  <div class="url a" data-in="cta+.65"><span class="prompt">https://</span><code>mhfrough.dev/hire</code><i></i></div>
+</section>
+
+<script src="icons.js"></script>
+<script>
+/*
+  Timeline in seconds, set from an estimated read of the voiceover (about 2.5 words a second, see script.md).
+  Once the voiceover is recorded, move these to its real word timings. Retime the whole reel by editing CUES only.
+*/
+var CUES = {
+  brand: .1,
+  // Intro
+  cut1: .1, cut2: .95, cut3: 1.8, cut4: 2.6,   // quick cuts under "more than screens"
+  s2: 3.4,      // "It needs architecture that can grow"
+  grow: 4.6,    // layers stack up from the data
+  launch: 7.3,  // "carry the work through to launch"
+  s3: 9.2,      // "I'm Mohammad Hamza"
+  id2: 10.8,    // "a software architect focused on Angular and full-stack SaaS"
+  id3: 13.6,    // "7+ years of production experience, since 2020"
+  // Selected work
+  c2: 18.0,     // "I helped build and later lead a four-app tax platform"
+  embed: 22.0,  // "with a filing flow embedded in six banking apps"
+  banks: 23.0,
+  s5: 26.6,     // "On a fleet-management SaaS"
+  driver: 30.6, // "and Flutter driver apps"
+  stack: 28.6,  // "the Angular admin, NestJS and PostgreSQL API"
+  s6: 35.8,     // "I also build my own products"
+  qnote: 38.4,  // "including Quorum, an AI decision tool"
+  // Why hire me
+  c3: 43.0,     // "Bring me in to"
+  w1: 43.9, w2: 45.3, w3: 46.9, w4: 48.3,
+  s8: 50.4,     // "You'll get"
+  r1: 51.0, r2: 52.2, r3: 53.6, r4: 54.8,
+  s9: 56.6,     // "I'm based in Karāchi"
+  overlap: 58.6,// "and overlap with UK and EU hours"
+  cta: 61.6,    // "Need someone who can think through the system and ship the details?"
+  type: 65.4,   // "Let's talk at mhfrough.dev/hire"
+  end: 71.0
+};
+var SEED = 23;
+
+(function(){
+  var c = CUES, root = document.documentElement.style;
+  root.setProperty('--type', c.type + 's');
+  root.setProperty('--c2', c.c2 + 's');
+  root.setProperty('--c3', c.c3 + 's');
+  function at(expr){ var m = expr.match(/^([a-z0-9]+)([+-][.\d]+)?$/); return (isNaN(+m[1]) ? c[m[1]] : +m[1]) + (m[2] ? +m[2] : 0) }
+  document.querySelectorAll('[data-in]').forEach(function(el){
+    el.style.setProperty('--d', at(el.dataset.in).toFixed(2) + 's');
+    el.style.setProperty('--o', at(el.dataset.out || 'end+9').toFixed(2) + 's');
+  });
+  document.querySelectorAll('[data-l]').forEach(function(el){ el.style.setProperty('--l', at(el.dataset.l).toFixed(2) + 's') });
+  var MARK = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30.16 15.34A8 8 0 1 0 24.5 29" fill="none" stroke="currentColor" stroke-width="5"/><path d="M22.5 26.5H37V28.5L15.5 38V35Z" fill="currentColor"/></svg>';
+  document.querySelectorAll('.mark').forEach(function(el){ el.innerHTML = MARK });
+  document.querySelectorAll('[data-icon]').forEach(function(el){ el.innerHTML = window.ICONS[el.dataset.icon] });
+
+  var s = +new URLSearchParams(location.search).get('seed') || SEED;
+  Math.random = function(){
+    s |= 0; s = s + 0x6D2B79F5 | 0;
+    var t = Math.imul(s ^ s >>> 15, 1 | s);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+})();
+
+/* Truchet field, ported from src/app/shared/ui/pattern.ts (same as the hire reel): quarter arcs of the mark,
+   ripples turn tiles by 90 degrees, tiles near a scripted "pointer" brighten. */
+var Field = (function(){
+  var canvas = document.getElementById('field'), ctx = canvas.getContext('2d');
+  var W = innerWidth, H = innerHeight, dpr = devicePixelRatio || 1, Q = Math.PI / 2;
+  var size = 58, cols = Math.round(W / size), rows = Math.round(H / size), sx = W / cols / size, sy = H / rows / size;
+  canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var tiles = [];
+  for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+    var a = Math.random() < .5 ? 0 : Q;
+    tiles.push({ x: (i + .5) * size * sx, y: (j + .5) * size * sy, a: a, to: a, at: 0 });
+  }
+  var t0 = 0;
+  function ripple(now, ox, oy, reach){
+    var o = ox == null ? tiles[(Math.random() * tiles.length) | 0] : { x: ox, y: oy };
+    reach = reach || size * 7;
+    tiles.forEach(function(t){
+      var d = Math.hypot(t.x - o.x, t.y - o.y);
+      if (d < reach && Math.random() < .72) t.at = now + d * 1.4;
+    });
+  }
+  function draw(now){
+    var T = (now - t0) / 1000;
+    var px = W * (.62 + .26 * Math.sin(T * .42)), py = H * (.34 + .2 * Math.sin(T * .29 + 1.2));
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#ededed'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+    var half = size / 2, light = size * 5;
+    tiles.forEach(function(t){
+      if (t.at && now >= t.at) { t.to += Q; t.at = 0 }
+      var gap = t.to - t.a;
+      t.a = gap > .001 ? t.a + gap * .1 : t.to;
+      var d = Math.hypot(t.x - px, t.y - py), near = d < light ? 1 - d / light : 0, turning = Math.min(1, gap / Q);
+      ctx.globalAlpha = Math.min(.6, .1 + near * near * .3 + turning * .32);
+      ctx.save(); ctx.translate(t.x, t.y); ctx.scale(sx, sy); ctx.rotate(t.a);
+      ctx.beginPath(); ctx.arc(-half, -half, half, 0, Q); ctx.moveTo(0, half); ctx.arc(half, half, half, Math.PI, Math.PI + Q);
+      ctx.stroke(); ctx.restore();
+    });
+    ctx.globalAlpha = 1;
+  }
+  function loop(now){ draw(now); requestAnimationFrame(loop) }
+  return {
+    start: function(){ t0 = performance.now(); requestAnimationFrame(loop) },
+    ripple: function(ox, oy, reach){ ripple(performance.now(), ox, oy, reach) },
+    W: W, H: H
+  };
+})();
+
+/* Chapter changes and the end card get a full-screen ripple; small ones every 4 s keep the field alive */
+var big = function(){ Field.ripple(Field.W / 2, Field.H * .42, Field.W * 1.2) };
+var BEATS = [[CUES.c2, big], [CUES.c3, big], [CUES.cta, big]];
+for (var b = 4; b < CUES.end - 4; b += 4) BEATS.push([b, function(){ Field.ripple() }]);
+
+var fontsReady = Promise.all(['400 40px "Geist Variable"', '600 40px "Geist Variable"', '400 40px "Geist Mono Variable"']
+  .map(function(f){ return document.fonts.load(f, 'Karāchi') })).then(function(){ return document.fonts.ready });
+var imagesReady = Promise.all([].map.call(document.images, function(img){ return img.decode().catch(function(){}) }));
+window.reelReady = Promise.all([fontsReady, imagesReady]).then(function(){
+  window.REEL = { cues: CUES, duration: CUES.end, format: 'vertical' };
+});
+window.startReel = function(){
+  document.body.classList.remove('hold');
+  Field.start();
+  BEATS.forEach(function(b){ setTimeout(b[1], b[0] * 1000) });
+};
+// Live preview plays on its own; the renderer passes ?render and calls startReel itself.
+// ?t=40 jumps the live preview to 40 s (for checking one scene).
+(function(){
+  var q = new URLSearchParams(location.search);
+  if (q.has('render')) return;
+  window.reelReady.then(function(){
+    window.startReel();
+    var t = +q.get('t');
+    if (t) document.getAnimations().forEach(function(a){ a.currentTime = t * 1000 });
+  });
+})();
+</script>
+</body>
+</html>

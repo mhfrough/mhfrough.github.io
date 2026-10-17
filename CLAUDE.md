@@ -21,10 +21,16 @@ Node is 22.12, which is why we are on Angular 21 (Angular 22 needs Node >= 22.22
 
 ## Commands
 
+**Preview rule (owner, 2026-10-11):** to check changes, use the dev server on **http://localhost:4300**
+(`npm start`, launch config `mhfrough-dev`; it rebuilds itself on save). Do not run extra builds or start other
+preview servers just to look at a change.
+
 - `npx ng build --configuration development` : full build + prerender (catches SSR errors such as touching `window`).
   When several agents build at once, add `--output-path .devcache/build/<your-name>` so outputs do not collide.
 - `npm run build` : production build to `dist/mhfrough/browser`. `npm run serve:dist` serves it on :4400.
 - `npm start` : dev server on :4300.
+- `npm run about:photos` : converts `promo/about-photos/*` (gallery only, captions in `captions.json`) to WebP in
+  `public/images/about/` and regenerates `src/app/pages/about/about.photos.ts`. It skips `portrait.*` on purpose.
 - `npm run e2e` : Playwright (+ axe). `npm run lighthouse` : Lighthouse on the built site.
 
 ## Design system: Quorum, in black and white (owner decision, 2026-10-10)
@@ -36,7 +42,7 @@ page, open the Quorum site (or read its index.html CSS + markup) and copy its pa
 Urdu was removed: English only, no /ur, no RTL work.
 
 Quorum patterns to reuse (all already ported as global classes in `src/styles/_components.scss`):
-- Floating glass pill nav (done, `src/app/layout/nav.ts`), brand mark = rounded 10px square with the ء mark.
+- Floating glass nav (`src/app/layout/nav.ts`), now split in two pills (see the update below).
 - Hero: left column = `.pill-link` (solid tag + text + arrow), `.display` headline in two `.line` spans with the
   second line `.soft` (muted), `.lede`, then actions (`.btn .btn-solid` + `.btn .btn-ghost`) or a `.cmd` mono bar.
   Right column = a real working component in a `.card.card--lift` (like Quorum's "Build your Quorum" builder), never
@@ -44,7 +50,7 @@ Quorum patterns to reuse (all already ported as global classes in `src/styles/_c
   `afterNextRender`; use `.rise .d2 .d4` on items.
 - Sections: `<section class="section">` + `.wrap`; head = `h2.title` (max 18ch) + `p.sub` (56ch); content starts
   ~44px below. Centered heads use `.center`.
-- Cards: `.card` (surface, 1px line, 20px radius, 26px padding), `.card--hover` (lift 3px + shadow),
+- Cards: `.card` (surface, 1px line, 16px radius, 22px padding), `.card--hover` (lift 3px + shadow),
   `.card--solid` (inverted featured cell), `.card--lift` (shadow-lg). Bento grids like Quorum's "seven" (3 columns,
   `.wide` spans 2, mixed solid/plain cells). Sticky split like Quorum's "How a council runs" (left sticky head,
   right stacked `.card` items with `.icon-well`). Paired rows like Quorum's "tensions". Reels row (`.reels .reel
@@ -55,7 +61,7 @@ Quorum patterns to reuse (all already ported as global classes in `src/styles/_c
   `.field__hint`, `.field__error` below, `.check`.
 - Tokens (`src/styles/_tokens.scss`): `--bg #111`, `--surface #1a1a1a`, `--surface-2 #222`, `--ink #ededed`,
   `--ink-2`, `--muted`, `--line`, `--accent` (= ink), `--accent-soft`, `--solid`, `--cta`, `--shadow`,
-  `--shadow-lg`, `--glass-edge`, `--glass-hi`, `--r-card 20px`, `--r-inner 14px`, pills 999px. Never hard-code
+  `--shadow-lg`, `--glass-edge`, `--glass-hi`, `--r-card 16px`, `--r-inner 12px`, pills 999px. Never hard-code
   colors in pages; case-study themes override tokens in `src/styles/themes/`.
 - Type: Geist Variable + Geist Mono Variable only. Mono for commands, metadata, numbers, small captions.
 - Icons: Phosphor regular via `@ng-icons/phosphor-icons/regular` + `viewProviders: [provideIcons({...})]`.
@@ -64,13 +70,61 @@ Quorum patterns to reuse (all already ported as global classes in `src/styles/_c
 - Skeletons: `<mh-skeleton>` inside `@defer (on viewport) { } @placeholder (minimum 300ms) { }` for heavy or
   below-the-fold media; SEO text stays server-rendered.
 
+**Update 2026-10-10 (owner): "too bulky, an exact copy of Quorum".** Quorum is the starting point, not a template.
+Keep its craft, but the site now has its own, more compact identity:
+- Compact scale: `.section` 88px, `.display` max ~3.35rem, `.title` max ~2.25rem, `--r-card 16px`, `--r-inner 12px`,
+  card padding 22px, `--nav-h 52px`. Do not scale these back up.
+- Nav is two separate glass pills: left = round ء tile + "mhfrough"; right = links, GitHub, "Hire me", menu.
+- Geometric background art: `<mh-pattern>` (`src/app/shared/ui/pattern.ts`), a Truchet field of the logo's quarter
+  arc that ripples and brightens near the pointer. Used behind the home hero, the home contact band, /hire and
+  /contact heads. Not on legal pages.
+- Availability always shows as `.status-pill` + `.blip.is-on` (sonar ring).
+- Section heads are split (`.split-head` on home: title left, sub or action right); lists run horizontally (numbers
+  band, process rail, offer cards). Avoid Quorum's centred heads, sticky "how" split and install panels.
+- Footer is two short rows (identity + status + social icons; then copyright, Karachi time, Privacy, Back to top).
+  No link columns. Other legal pages are linked from the end of each legal page.
+- Legal pages: one narrow column, small type, no sidebar/TOC.
+- Cookie notice (`src/app/layout/cookie-notice.ts`): befiler.com layout in this theme. The site sets no cookies, so
+  it informs ("Got it"), never fake Accept/Decline. Closing stores `mh:cookie-notice` in localStorage (documented
+  on /cookies). If analytics are ever added, turn it into a real consent banner first.
+
 Owner's taste (keep): restrained, polished, Quorum-level craft. Rejected: custom cursors, magnetic buttons, animated
 link underlines, big footer CTA text, vertical hairline dividers in the footer, childish/decorative geometry.
 
+### No photos of the owner (owner, 2026-10-11)
+Never show a photo of Mohammad Hamza anywhere: not in the nav, avatar, About, home, /brand, OG images or JSON-LD.
+The ء mark on its tile stands in wherever a person image would go. The nav "identity loop" (mark to portrait) and
+the blue duotone portrait treatment were removed; do not bring them back. /brand documents **mhfrough's own
+system** in black and white: never describe it as "Quorum's system" or "ported from Quorum" on the page.
+
+### Project icons: favicon first (owner, 2026-10-11)
+Wherever a project gets an icon (home bento, home work explorer, /work cards, and any new place that lists
+projects), use the product's own favicon/mark if we have one, else a Phosphor icon. Data: `favicon?: string` next
+to `icon` in `home.data.ts` / `work.data.ts`; markup: `.icon-tile.icon-tile--fav > img` (light tile, image contained).
+Current favicons: Quorum `/images/quorum/favicon.svg`, Befiler `befiler/befiler-icon.webp`, Emlaak
+`emlaak/emlaak-mark.webp`, Bloomstone `bloomstone/bloomstone-mark.webp`, KPMC `kpmc/kpmc-logo.webp`,
+Asaan Hisab `asaan-hisab/asaan-hisab-mark.webp`, Finclore `finclore/finclore-mark.svg` (owner drew the Finclore logo),
+Arittek `arittek/arittek-mark.svg`, O2Chat `o2chat/o2chat-mark.webp`, DMAX `dmax/dmax-mark.webp`, ePractise
+`epractise/epractise-mark.webp`, LLC SAVVY `llcsavvy/llcsavvy-mark.webp`, TMF `tmf/tmf-mark.webp`, EthicalNode
+`ethical-node/ethical-node-mark.webp`. Multi-brand
+projects (Pizzerias, SOS24 + AK Heating) keep a Phosphor icon. New case study with a favicon: save it under
+`public/images/<page>/` and set `favicon` in both data files.
+
 ### Copy rules
 Zero em dashes or en dashes in visible text. No filler verbs (elevate, seamless, unleash). Facts only from
-`docs/content.md` (7 years, 14+ products, 6 banking apps, 4 Angular apps...). **Never name employers** (Arittek,
-Nearby Cars / Nearby Group, Malik Tech) or client banks. One label per CTA intent site-wide: portfolio "View work",
+`docs/content.md` (since 2020, 7+ years, 30+ products, 6 banking apps, 4 Angular apps...). Experience reads "Since 2020, 7+ years"
+(owner, 2026-10-13); never a bare "7 years". Products are 30+. No big-digit stat bands. Visible text spells the city **Karāchi** (owner, 2026-10-13); machine fields keep `Karachi` (Asia/Karachi, JSON-LD addressLocality via `SITE.locality`, SEO keywords, the KIET official name). Use `SITE.localityLabel` for display. **Never name employers** (Arittek,
+Nearby Cars / Nearby Group, Malik Tech) or client banks. Exception (owner, 2026-10-10): the /work/befiler case study names Befiler
+and its partner banks and shows their logos, as befiler.com does publicly. The employer behind it stays unnamed.
+Exception (owner, 2026-10-11): /work/arittek names Arittek as the client of its own company site and shows its
+logo and public pages. Never call Arittek an employer there, never link it next to Befiler, Finclore or Asaan Hisab
+(their "Next" links avoid it), and keep it unnamed everywhere else.
+Named products (owner, 2026-10-11), each on its own case study: O2Chat, DMAX, ePractise, LLC SAVVY, Asaan Hisab,
+Finclore, EthicalNode, and the client Thardeep Microfinance Foundation (TMF, /work/tmf). Never name the employer behind
+them; DMAX's client banks and the core banking vendor stay unnamed. Live epractise.com and asaanhisab.com pages carry
+the employer's name: screenshots hide or blur it. Marfiz was dropped (repo is other agencies' cloned content).
+Screenshot scripts wait for every image to load before capturing (`settleImages` in scripts/asaan-hisab-shots.mjs).
+Case studies show only public marketing sites as screenshots; product apps appear as my own mockups. One label per CTA intent site-wide: portfolio "View work",
 hire info "Hire me", contact "Get in touch", form submit "Send message".
 
 ### Engineering rules

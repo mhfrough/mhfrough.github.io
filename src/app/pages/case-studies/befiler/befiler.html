@@ -1,0 +1,498 @@
+<mh-befiler-theme />
+
+<!-- Hero: copy left, a working return mockup right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="bf-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="bf-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+        </a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <mh-befiler-return class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="bf-numbers">
+  <div class="wrap">
+    <h2 id="bf-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.value; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The products: one platform, six apps -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bf-products">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-products" class="title">{{ c.products.title }}</h2>
+      <p class="sub">{{ c.products.sub }}</p>
+    </header>
+    <ul class="products" role="list">
+      @for (p of c.products.items; track p.t; let i = $index) {
+        <li class="card card--hover" [class.wide]="p.wide" [class.featured]="p.featured" mhReveal [revealIndex]="i % 3">
+          <div class="p-head">
+            <span class="node-ic"><ng-icon [name]="p.icon" aria-hidden="true" /></span>
+            <div>
+              <h3>{{ p.t }}</h3>
+              <p class="who">{{ p.who }}</p>
+            </div>
+          </div>
+          <p>{{ p.s }}</p>
+          <ul class="feat" role="list" aria-label="Highlights">
+            @for (x of p.tags; track x) {
+              <li class="tag">{{ x }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- The public site: the only screenshots on the page -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bf-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">befiler.com</span>
+        </div>
+        <img src="/images/befiler/site-hero.webp" width="1600" height="1000" [alt]="c.site.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img src="/images/befiler/site-mobile.webp" width="780" height="1688" [alt]="c.site.mobileAlt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <div class="shots-2">
+      <figure class="card shot" mhReveal>
+        <img src="/images/befiler/site-plans.webp" width="1600" height="768" [alt]="c.site.plansAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.site.plansCap }}</figcaption>
+      </figure>
+      <figure class="card shot" mhReveal [revealIndex]="1">
+        <img src="/images/befiler/site-calculator.webp" width="1600" height="401" [alt]="c.site.calcAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.site.calcCap }}</figcaption>
+      </figure>
+    </div>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+
+    <header class="split-head svc-head" mhReveal>
+      <h3 class="title">{{ c.services.title }}</h3>
+      <p class="sub">{{ c.services.sub }}</p>
+    </header>
+    <div class="svc">
+      <div class="svc-col" mhReveal>
+        <figure class="browser">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">{{ c.services.salesTax.url }}</span>
+          </div>
+          <img src="/images/befiler/site-salestax.webp" width="1600" height="1033" [alt]="c.services.salesTax.alt" loading="lazy" decoding="async" />
+        </figure>
+        <h4>{{ c.services.salesTax.t }}</h4>
+        <p>{{ c.services.salesTax.s }}</p>
+      </div>
+      <div class="svc-col" mhReveal [revealIndex]="1">
+        <figure class="browser">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">{{ c.services.usa.url }}</span>
+          </div>
+          <img src="/images/befiler/site-usa.webp" width="1600" height="1033" [alt]="c.services.usa.alt" loading="lazy" decoding="async" />
+        </figure>
+        <h4>{{ c.services.usa.t }}</h4>
+        <p>{{ c.services.usa.s }}</p>
+      </div>
+    </div>
+    <div class="st-page" mhReveal>
+      <figure class="card shot">
+        <img src="/images/befiler/site-salestax-plans.webp" width="1600" height="461" [alt]="c.services.salesTax.page.plansAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.services.salesTax.page.plansCap }}</figcaption>
+      </figure>
+      <div class="st-info">
+        <div>
+        <h4>{{ c.services.salesTax.page.t }}</h4>
+        <p>{{ c.services.salesTax.page.s }}</p>
+        <dl class="st-figs">
+          @for (f of c.services.salesTax.page.figures; track f.k) {
+            <div>
+              <dt>{{ f.k }}</dt>
+              <dd>{{ f.v }}</dd>
+            </div>
+          }
+        </dl>
+        <p class="st-note mono">{{ c.services.salesTax.page.figuresNote }}</p>
+        </div>
+        <div>
+        <h5>{{ c.services.salesTax.page.whoT }}</h5>
+        <ul class="tag-list" role="list">
+          @for (w of c.services.salesTax.page.who; track w) {
+            <li class="tag">{{ w }}</li>
+          }
+        </ul>
+        </div>
+        <div>
+        <h5>{{ c.services.salesTax.page.backT }}</h5>
+        <ul class="st-back" role="list">
+          @for (b of c.services.salesTax.page.back; track b) {
+            <li>{{ b }}</li>
+          }
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="svc-strip">
+      <figure class="card shot" mhReveal>
+        <img src="/images/befiler/site-salestax-services.webp" width="1600" height="383" [alt]="c.services.salesTax.cardsAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.services.salesTax.cardsCap }}</figcaption>
+      </figure>
+      <figure class="card shot" mhReveal>
+        <img src="/images/befiler/site-usa-pricing.webp" width="1600" height="537" [alt]="c.services.usa.cardsAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.services.usa.cardsCap }}</figcaption>
+      </figure>
+    </div>
+    <p class="note mono" mhReveal>{{ c.services.also }}</p>
+  </div>
+</section>
+}
+
+<!-- Architecture: many front doors, one API -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bf-doors">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-doors" class="title">{{ c.doors.title }}</h2>
+      <p class="sub">{{ c.doors.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label mono">{{ c.doors.left }}</p>
+        <ul role="list">
+          @for (d of c.doors.doorsList; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <img src="/images/befiler/befiler-icon.webp" width="56" height="56" alt="" />
+        <b>{{ c.doors.core }}</b>
+        <small>{{ c.doors.coreSub }}</small>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label mono">{{ c.doors.right }}</p>
+        <ul role="list">
+          @for (d of c.doors.backList; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Partner skins -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bf-partner">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-partner" class="title">{{ c.partner.title }}</h2>
+      <p class="sub">{{ c.partner.sub }}</p>
+    </header>
+    <mh-befiler-partner mhReveal />
+
+    <h3 class="sr-only">{{ c.partner.waysTitle }}</h3>
+    <ul class="ways" role="list">
+      @for (w of c.partner.ways; track w.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="tag">{{ w.tag }}</span>
+          <h4>{{ w.t }}</h4>
+          <p>{{ w.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Customer dashboard -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bf-dash">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-dash" class="title">{{ c.dashboard.title }}</h2>
+      <p class="sub">{{ c.dashboard.sub }}</p>
+    </header>
+    <div class="dash">
+      <mh-befiler-dashboard mhReveal />
+      <ul class="dash-list" role="list">
+        @for (d of c.dashboard.items; track d.t; let i = $index) {
+          <li mhReveal [revealIndex]="i">
+            <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+            <div>
+              <h3>{{ d.t }}</h3>
+              <p>{{ d.s }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- The filing flow -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bf-flow">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-flow" class="title">{{ c.flow.title }}</h2>
+      <p class="sub">{{ c.flow.sub }}</p>
+    </header>
+
+    <div class="flow card" mhReveal>
+      <div class="seg" role="tablist" aria-label="Flow">
+        <button
+          id="flow-tab-portal"
+          type="button"
+          role="tab"
+          aria-controls="flow-panel"
+          [attr.aria-selected]="flowTab() === 'portal'"
+          [attr.tabindex]="flowTab() === 'portal' ? 0 : -1"
+          (click)="flowTab.set('portal')"
+          (keydown)="onFlowKey($event)"
+        >
+          {{ c.flow.tabs.portal }}
+        </button>
+        <button
+          id="flow-tab-widget"
+          type="button"
+          role="tab"
+          aria-controls="flow-panel"
+          [attr.aria-selected]="flowTab() === 'widget'"
+          [attr.tabindex]="flowTab() === 'widget' ? 0 : -1"
+          (click)="flowTab.set('widget')"
+          (keydown)="onFlowKey($event)"
+        >
+          {{ c.flow.tabs.widget }}
+        </button>
+      </div>
+      <!-- The tabpanel wraps the list, so the <ol> keeps its list role for screen readers. -->
+      <div id="flow-panel" role="tabpanel" [attr.aria-labelledby]="'flow-tab-' + flowTab()">
+        <ol class="flow-steps">
+          @for (s of flowTab() === 'portal' ? c.flow.portal : c.flow.widget; track flowTab() + s; let i = $index) {
+            <li [style.--i]="i"><span class="mono">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>{{ s }}</li>
+          }
+        </ol>
+      </div>
+    </div>
+
+    <div class="flow-2">
+      <div class="card" mhReveal>
+        <h3 class="mini">{{ c.flow.incomeTitle }}</h3>
+        <ul class="badges" role="list">
+          @for (x of c.flow.income; track x) {
+            <li class="tag">{{ x }}</li>
+          }
+        </ul>
+      </div>
+      <div class="card" mhReveal [revealIndex]="1">
+        <h3 class="mini">{{ c.flow.wealthTitle }}</h3>
+        <ul class="badges" role="list">
+          @for (x of c.flow.wealth; track x) {
+            <li class="tag">{{ x }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Back office -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bf-back">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-back" class="title">{{ c.back.title }}</h2>
+      <p class="sub">{{ c.back.sub }}</p>
+    </header>
+    <ul class="roles" role="list" [attr.aria-label]="c.back.rolesLabel" mhReveal>
+      @for (r of c.back.roles; track r.t) {
+        <li><ng-icon [name]="r.icon" aria-hidden="true" />{{ r.t }}</li>
+      }
+    </ul>
+    <div class="back">
+      <ul class="back-grid" role="list">
+        @for (b of c.back.cards; track b.t; let i = $index) {
+          <li class="card card--hover" mhReveal [revealIndex]="i">
+            <span class="node-ic"><ng-icon [name]="b.icon" aria-hidden="true" /></span>
+            <h3>{{ b.t }}</h3>
+            <p>{{ b.s }}</p>
+          </li>
+        }
+      </ul>
+      <mh-befiler-tracker [title]="c.back.tracker" mhReveal />
+    </div>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bf-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" [class.wide]="'wide' in g && g.wide" mhReveal [revealIndex]="i % 3">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Partners -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bf-partners">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-partners" class="title">{{ c.partners.title }}</h2>
+      <p class="sub">{{ c.partners.sub }}</p>
+    </header>
+
+    <div class="logo-rows">
+      <div class="logo-row" mhReveal>
+        <h3 class="mini">{{ c.partners.embedded }}</h3>
+        <ul role="list" class="logos">
+          @for (l of embedded; track l.name) {
+            <li>
+              @if (l.file) {
+                <img [src]="'/images/befiler/logos/' + l.file + '.webp'" [width]="l.w" [height]="l.h" [alt]="l.name" loading="lazy" decoding="async" />
+              } @else {
+                <span class="wordmark">{{ l.name }}</span>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="logo-row" mhReveal>
+        <h3 class="mini">{{ c.partners.payments }}</h3>
+        <ul role="list" class="logos">
+          @for (l of payments; track l.name) {
+            <li>
+              <img [src]="'/images/befiler/logos/' + l.file + '.webp'" [width]="l.w" [height]="l.h" [alt]="l.name" loading="lazy" decoding="async" />
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="logo-row" mhReveal>
+        <h3 class="mini">{{ c.partners.collab }}</h3>
+        <ul role="list" class="logos small">
+          @for (l of collab; track l.name) {
+            <li>
+              <img [src]="'/images/befiler/logos/' + l.file + '.webp'" [width]="l.w" [height]="l.h" [alt]="l.name" loading="lazy" decoding="async" />
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bf-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bf-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="bf-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="bf-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/quorum">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

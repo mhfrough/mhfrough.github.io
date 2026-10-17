@@ -1,0 +1,72 @@
+// Compact action pill for the Malik Transport demos (order rows, leave rows, shift buttons), same shape as the
+// ePractise one: 30px to the eye, a 44px tall hit area through ::before. Ghost by default; .is-primary is the one
+// solid action in a row, .is-danger the reject or decline.
+.mini-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--t-base) var(--ease),
+    background var(--t-base) var(--ease),
+    color var(--t-base) var(--ease);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -7px -3px;
+  }
+
+  ng-icon {
+    font-size: 13px;
+  }
+
+  &:hover:not([disabled]) {
+    border-color: var(--mt-blue);
+    background: var(--mt-blue-soft);
+    color: var(--mt-blue-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  &.is-primary {
+    border-color: var(--mt-blue);
+    background: var(--mt-blue);
+    color: #fff;
+
+    &:hover:not([disabled]) {
+      border-color: var(--mt-blue-text);
+      background: var(--mt-blue-text);
+      color: #fff;
+    }
+  }
+
+  &.is-danger:hover:not([disabled]) {
+    border-color: var(--mt-red-text);
+    background: var(--mt-red-soft);
+    color: var(--mt-red-text);
+  }
+
+  // Disabled reads as muted text on a grey pill (no opacity, so the label keeps its contrast).
+  &[disabled] {
+    border-color: var(--line);
+    background: var(--surface-2);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+}

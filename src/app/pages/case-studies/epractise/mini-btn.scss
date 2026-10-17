@@ -1,0 +1,78 @@
+// Compact action pill shared by the ePractise demos (job cards, document rows, invoice rows). Sized to the small
+// cards it sits in: 30px to the eye, but a 44px tall hit area through ::before, so it still meets the touch target.
+// Ghost by default; .is-primary is the one solid action in a row.
+.mini-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color var(--t-base) var(--ease),
+    background var(--t-base) var(--ease),
+    color var(--t-base) var(--ease);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -7px -3px;
+  }
+
+  ng-icon {
+    font-size: 13px;
+  }
+
+  &:hover:not([disabled]) {
+    border-color: var(--e-blue);
+    background: var(--e-blue-soft);
+    color: var(--e-blue-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  &.is-primary {
+    border-color: var(--e-blue);
+    background: var(--e-blue);
+    color: #fff;
+
+    &:hover:not([disabled]) {
+      border-color: var(--e-blue-text);
+      background: var(--e-blue-text);
+      color: #fff;
+    }
+  }
+
+  // Icon only (the accessible name comes from aria-label): a 30px circle, 44px to the finger.
+  &.mini-btn--icon {
+    width: 30px;
+    padding: 0;
+    flex-shrink: 0;
+
+    &::before {
+      inset: -7px;
+    }
+
+    ng-icon {
+      font-size: 14px;
+    }
+  }
+
+  &[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}

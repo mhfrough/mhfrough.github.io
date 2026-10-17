@@ -1,0 +1,393 @@
+<mh-whiteboard-theme />
+
+<!-- Hero: copy left, a working mini board right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="wb-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="wb-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <div class="hero-demo rise d2">
+      <mh-wb-board-demo />
+      <p class="demo-note mono">{{ c.hero.demoNote }}</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="wb-numbers">
+  <div class="wrap">
+    <h2 id="wb-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The real board -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="wb-shots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-shots" class="title">{{ c.shots.title }}</h2>
+      <p class="sub">{{ c.shots.sub }}</p>
+    </header>
+
+    <figure class="browser" mhReveal>
+      <div class="browser-bar" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">{{ c.shots.url }}</span>
+      </div>
+      <img src="/images/whiteboard/board.webp" width="1600" height="1000" [alt]="c.shots.mainAlt" loading="lazy" decoding="async" />
+    </figure>
+
+    <div class="shots-3">
+      @for (s of c.shots.details; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" width="1600" height="1000" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="shots-2">
+      @for (s of c.shots.pair; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" [width]="s.w" [height]="s.h" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+    <p class="note mono" mhReveal>{{ c.shots.note }}</p>
+  </div>
+</section>
+}
+
+<!-- Rendering architecture -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="wb-render">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-render" class="title">{{ c.render.title }}</h2>
+      <p class="sub">{{ c.render.sub }}</p>
+    </header>
+
+    <div class="render">
+      <figure class="stack-fig" mhReveal>
+        <figcaption class="sr-only">Board layers from top to bottom</figcaption>
+        <ol class="layers" role="list">
+          @for (l of c.render.layers; track l.t; let i = $index) {
+            <li class="layer" [attr.data-space]="l.space" [style.--i]="i">
+              <div class="layer-head">
+                <b>{{ l.t }}</b>
+                <span class="space mono">{{ l.space === 'world' ? c.render.world : l.space === 'screen' ? c.render.screen : c.render.fixed }}</span>
+              </div>
+              <p>{{ l.s }}</p>
+            </li>
+          }
+        </ol>
+      </figure>
+
+      <div class="render-side" mhReveal>
+        <pre class="codeblock mono" tabindex="0" aria-label="Viewport math"><code>{{ c.render.code }}</code></pre>
+        <ul class="notes" role="list">
+          @for (n of c.render.notes; track n) {
+            <li>{{ n }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Services map -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="wb-services">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-services" class="title">{{ c.services.title }}</h2>
+      <p class="sub">{{ c.services.sub }}</p>
+    </header>
+
+    <div class="svc-map" mhReveal>
+      <div class="svc-root mono" aria-hidden="true">CanvasBoardComponent providers</div>
+      <ul class="svc-groups" role="list">
+        @for (g of c.services.groups; track g.t; let i = $index) {
+          <li class="card svc-group">
+            <h3><span class="svc-ic"><ng-icon [name]="g.icon" aria-hidden="true" /></span>{{ g.t }}</h3>
+            <ul role="list">
+              @for (s of g.items; track s.n) {
+                <li>
+                  <span class="mono svc-name">{{ s.n }}</span>
+                  <span class="svc-desc">{{ s.s }}</span>
+                </li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Engineering details -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="wb-inside">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-inside" class="title">{{ c.inside.title }}</h2>
+      <p class="sub">{{ c.inside.sub }}</p>
+    </header>
+    <ul class="inside" role="list">
+      @for (d of c.inside.items; track d.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="mono idx">0{{ i + 1 }}</span>
+          <h3>{{ d.t }}</h3>
+          <p>{{ d.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Collaboration protocol -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="wb-collab">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-collab" class="title">{{ c.collab.title }}</h2>
+      <p class="sub">{{ c.collab.sub }}</p>
+    </header>
+
+    <div class="collab">
+      <figure class="card seq" mhReveal>
+        <figcaption class="sr-only">Message sequence between Browser A, the relay and Browser B</figcaption>
+        <div class="lanes" aria-hidden="true">
+          @for (l of c.collab.lanes; track l) {
+            <span class="mono">{{ l }}</span>
+          }
+        </div>
+        <ol class="steps" role="list">
+          @for (s of c.collab.steps; track $index) {
+            <li class="step">
+              <div class="msg" [class.left]="s.to < s.from" [style.grid-column]="span(s.from, s.to)">
+                <span class="mono">{{ s.msg }}</span>
+                <i aria-hidden="true"></i>
+              </div>
+              <p class="step-note">
+                <span class="sr-only">{{ c.collab.lanes[s.from] }} to {{ c.collab.lanes[s.to] }}: {{ s.msg }}. </span>{{ s.note }}
+              </p>
+            </li>
+          }
+        </ol>
+      </figure>
+
+      <div class="collab-side" mhReveal>
+        <pre class="codeblock mono" tabindex="0" aria-label="Scene op type and merge rule"><code>{{ c.collab.code }}</code></pre>
+        <div class="card rules">
+          <h3>{{ c.collab.rulesTitle }}</h3>
+          <ul role="list">
+            @for (r of c.collab.rules; track r) {
+              <li>{{ r }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Persistence and versions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="wb-persist">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-persist" class="title">{{ c.persist.title }}</h2>
+      <p class="sub">{{ c.persist.sub }}</p>
+    </header>
+
+    <ol class="tiers" role="list">
+      @for (t of c.persist.tiers; track t.t; let i = $index) {
+        <li class="card tier" mhReveal [revealIndex]="i">
+          <div class="tier-head">
+            <h3>{{ t.t }}</h3>
+            <span class="tag">{{ t.tag }}</span>
+          </div>
+          <ul role="list">
+            @for (x of t.items; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ol>
+
+    <div class="db">
+      <div mhReveal>
+        <h3 class="mini">{{ c.persist.entitiesTitle }}</h3>
+        <ul class="entities" role="list">
+          @for (e of c.persist.entities; track e.t) {
+            <li class="card">
+              <b class="mono">{{ e.t }}</b>
+              <span>{{ e.s }}</span>
+            </li>
+          }
+        </ul>
+        <p class="access">{{ c.persist.access }}</p>
+      </div>
+      <div mhReveal>
+        <h3 class="mini">{{ c.persist.apiTitle }}</h3>
+        <ul class="api codeblock mono" role="list">
+          @for (a of c.persist.api; track a) {
+            <li>{{ a }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="wb-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="wb-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Honest status -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="wb-status">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-status" class="title">{{ c.status.title }}</h2>
+      <p class="sub">{{ c.status.sub }}</p>
+    </header>
+    <div class="status">
+      <div class="card st st--ok" mhReveal>
+        <h3>{{ c.status.worksTitle }}</h3>
+        <ul role="list">
+          @for (w of c.status.works; track w) {
+            <li><ng-icon name="phosphorCheckCircle" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+      <div class="card st st--todo" mhReveal [revealIndex]="1">
+        <h3>{{ c.status.notTitle }}</h3>
+        <ul role="list">
+          @for (w of c.status.not; track w) {
+            <li><ng-icon name="phosphorCircleDashed" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Roadmap -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="wb-next">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="wb-next" class="title">{{ c.roadmap.title }}</h2>
+      <p class="sub">{{ c.roadmap.sub }}</p>
+    </header>
+    <ol class="road" role="list">
+      @for (r of c.roadmap.items; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="mono idx">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- CTA -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="wb-cta">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="wb-cta" class="title">{{ c.cta.title }}</h2>
+        <p class="sub">{{ c.cta.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/quorum">{{ c.cta.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

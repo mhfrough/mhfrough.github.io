@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/sitemap.mjs --source",
     "start": "ng serve --port 4300",
+    "prebuild": "node scripts/sitemap.mjs --source",
     "build": "ng build && node scripts/postbuild.mjs",
+    "prebuild:dev": "node scripts/sitemap.mjs --source",
     "build:dev": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -15,6 +18,8 @@
     "icons": "node scripts/icons.mjs",
     "og": "node scripts/og.mjs",
     "sitemap": "node scripts/sitemap.mjs",
+    "about:photos": "node scripts/about-photos.mjs",
+    "about:covers": "node scripts/hobby-covers.mjs",
     "e2e:report": "playwright show-report reports/playwright/html",
     "lighthouse:assert": "node scripts/lighthouse.mjs --assert",
     "qa": "npm run build && npm run e2e && npm run lighthouse:assert"

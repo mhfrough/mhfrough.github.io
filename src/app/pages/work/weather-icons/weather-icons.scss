@@ -1,0 +1,366 @@
+// Weather icon set on /work: the shot's 5x5 grid, an inspector beside it and the set palette below.
+// UI colors come from tokens; the only literal colors are the artwork's own swatches (bound from data).
+
+:host {
+  display: block;
+}
+
+.icons {
+  padding-top: 96px;
+}
+
+// ---------- Head ----------
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .btn ng-icon {
+    font-size: 15px;
+  }
+}
+
+.head__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+
+  .seg button {
+    cursor: pointer;
+  }
+}
+
+.head__title {
+  margin: 14px 0 0;
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.head__note {
+  margin: 8px 0 0;
+  max-width: 56ch;
+  color: var(--muted);
+  font-size: 15px;
+  text-wrap: pretty;
+}
+
+.k {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+// ---------- Card ----------
+.set {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  padding: 0;
+  overflow: hidden;
+}
+
+// ---------- Grid ----------
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  padding: 14px;
+  border-right: 1px solid var(--line);
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 4px 4px 12px;
+  border: 0;
+  border-radius: var(--r-inner);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background var(--t-base) var(--ease),
+    color var(--t-base) var(--ease);
+
+  img {
+    display: block;
+    width: 82%;
+    height: auto;
+    transition: transform 0.4s var(--ease);
+  }
+
+  &:hover {
+    background: var(--bg-2);
+    color: var(--ink-2);
+
+    img {
+      transform: translateY(-2px);
+    }
+  }
+
+  &[aria-pressed='true'] {
+    background: var(--surface-2);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+}
+
+.cell__name {
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ---------- Inspector ----------
+.inspector {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+// Artboard: the 146px tile on a dot grid.
+.stage {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-inner);
+  background:
+    radial-gradient(circle, var(--line-strong) 1px, transparent 1.2px) center / 16px 16px,
+    var(--bg);
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sizes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sizes__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+
+  figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  figcaption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+}
+
+.detail__name {
+  margin: 4px 0 0;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.meta {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    text-align: right;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+
+  .btn {
+    flex: 1 1 0;
+    padding: 0 12px;
+  }
+
+  ng-icon {
+    font-size: 16px;
+  }
+}
+
+// ---------- Palette ----------
+.palette {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Colours the current icon does not use fade back: the swatch dims, the hex label stays readable (muted, AA).
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    .swatch {
+      opacity: 0.35;
+      transition: opacity var(--t-base) var(--ease);
+    }
+    .hex {
+      color: var(--muted);
+    }
+    &.on .swatch {
+      opacity: 1;
+    }
+    &.on .hex {
+      color: var(--ink-2);
+    }
+  }
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+}
+
+.hex {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+// ---------- Responsive ----------
+@media (max-width: 960px) {
+  .set {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  // Preview and details side by side under the grid.
+  .inspector {
+    display: grid;
+    grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+}
+
+@media (max-width: 640px) {
+  .icons {
+    padding-top: 72px;
+  }
+
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .grid {
+    gap: 2px;
+    padding: 8px;
+  }
+
+  .cell {
+    padding: 4px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .cell__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .inspector {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+
+  .stage {
+    width: min(220px, 100%);
+    justify-self: center;
+  }
+
+  .palette {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell img {
+    transition: none;
+  }
+
+  .cell:hover img {
+    transform: none;
+  }
+}

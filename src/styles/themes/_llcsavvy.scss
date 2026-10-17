@@ -1,0 +1,85 @@
+// LLC SAVVY case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in LLC SAVVY's
+// colours: the navy #0a3161 of its header and footer (also its theme colour), the red #b31942 of its "Get started"
+// pills, and the green of the crescent in its globe mark, on the pale grey #f3f4f6 its pages sat on. Colour tokens
+// only, like the other case-study themes. Its sister Finclore shares the navy and red; here the CTA turns red, as it
+// was on the product, and the crescent's green carries the numbers.
+// Applied by <html data-theme="llcsavvy"> (route data on /work/llcsavvy). Every rule is scoped to that attribute, so
+// nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.9:1 on --bg, ink-2 8.9:1, muted 5.5:1 on --bg, 5.2:1 on --surface-2 and 6.1:1 on
+// white, white on the red CTA 6.7:1, white on the navy 12.9:1, navy 10.5:1 on --l-navy-soft, red 6.7:1 on white and
+// 5.5:1 on --l-red-soft, --l-green-text 5.8:1 on white, 5.3:1 on --bg and 5.0:1 on --l-green-soft, --l-amber-text
+// 5.3:1 on --l-amber-soft. Night blocks (the header navy): --n-ink 11.7:1, --n-muted 6.5:1 (5.2:1 on --l-night-2),
+// --n-green 6.7:1 (5.4:1 on --l-night-2), --n-amber 9.1:1.
+
+:root[data-theme='llcsavvy'] {
+  // Surfaces
+  --bg: #f3f4f6;
+  --bg-2: #e9ecf1;
+  --bg-raise: #eceef2;
+  --surface: #ffffff;
+  --surface-2: #eceef2;
+  --line: #dde1e8;
+  --line-strong: #c4cad5;
+
+  // Ink, the product's #212529 nudged towards its navy
+  --ink: #16202f;
+  --ink-2: #3a4454;
+  --muted: #5a6372;
+  --faint: #c4cad5; // decorative only
+
+  // Brand: navy for surfaces, links and focus; red for the one call to action; the crescent's green for numbers
+  // and anything that went through.
+  --l-navy: #0a3161;
+  --l-navy-2: #11407a;
+  --l-navy-soft: #e2e8f2;
+  --l-red: #b31942;
+  --l-red-soft: #f8e3e9;
+  --l-green: #18b858; // fills only (bars, dots)
+  --l-green-text: #13753c;
+  --l-green-soft: #ddf3e6;
+  --l-blue: #2858c0; // fills only (the globe's blue canton)
+  --l-amber-text: #8a5a00;
+  --l-amber-soft: #fff2d1;
+  --l-night: #0a3161;
+  --l-night-2: #11407a;
+  --l-night-line: rgb(243 244 246 / 0.12);
+  --l-night-line-strong: rgb(243 244 246 / 0.24);
+  --n-ink: #f3f4f6;
+  --n-muted: #a9b9d2;
+  --n-green: #5fd08f;
+  --n-amber: #ffd27a;
+
+  --accent: #0a3161;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2e8f2;
+  --cta: #b31942;
+  --cta-ink: #ffffff;
+  --focus: #0a3161;
+
+  --solid: #0a3161;
+  --solid-ink: #f3f4f6;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(10 49 97 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(10 49 97 / 0.05), 0 14px 34px -16px rgb(10 49 97 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(10 49 97 / 0.05), 0 36px 72px -28px rgb(10 49 97 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--l-navy);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b9c6da;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(10 49 97 / 0.11), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(24 184 88 / 0.07), transparent 70%);
+  }
+}

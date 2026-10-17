@@ -1,0 +1,73 @@
+// Gift Wrap case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// storefront's palette: rose #d86b8a, wine #7a0f3d, blush #e89cb3, sage #7b7a5c on the pale blush #fdf6f8 it used
+// for section grounds. Colour tokens only, like the other case-study themes (the storefront's Cinzel and Montserrat
+// stay in its screenshots). Applied by <html data-theme="gift-wrap"> (route data on /work/gift-wrap). Every rule is
+// scoped to that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 13.5:1 on --bg, ink-2 9.2:1, muted 5.6:1 on --bg and 5.1:1 on --surface-2, white on the
+// wine CTA 10.7:1, wine text 10.0:1 on --bg and 9.0:1 on --surface-2, --g-rose-text 5.9:1 on --bg and 5.3:1 on
+// --surface-2, --g-sage-text 6.2:1 on --bg. The storefront's rose #d86b8a is a fill for large shapes only (white
+// on it is 3.3:1). Night blocks: --n-ink 16.8:1, --n-muted 9.5:1.
+
+:root[data-theme='gift-wrap'] {
+  --bg: #fdf6f8;
+  --bg-2: #f7e8ec;
+  --bg-raise: #f7e8ec;
+  --surface: #ffffff;
+  --surface-2: #f7e8ec;
+  --line: #f0d9e1;
+  --line-strong: #e2c2cf;
+
+  --ink: #3a2330;
+  --ink-2: #5b3a4a;
+  --muted: #7a5a6a;
+  --faint: #e2c2cf; // decorative only
+
+  --g-rose: #d86b8a;
+  --g-rose-text: #a8355b;
+  --g-rose-soft: #fbe4ec;
+  --g-blush: #e89cb3;
+  --g-wine: #7a0f3d;
+  --g-wine-soft: #f3dbe5;
+  --g-sage: #7b7a5c;
+  --g-sage-text: #5f5e44;
+  --g-sage-soft: #ecebdc;
+  --g-night: #2b0d1b;
+  --g-night-2: #3a1426;
+  --g-night-line: rgb(253 246 248 / 0.12);
+  --n-ink: #fdf6f8;
+  --n-muted: #d9b3c3;
+
+  --accent: #7a0f3d;
+  --accent-ink: #ffffff;
+  --accent-soft: #f3dbe5;
+  --cta: #7a0f3d;
+  --cta-ink: #ffffff;
+  --focus: #7a0f3d;
+
+  --solid: #2b0d1b;
+  --solid-ink: #fdf6f8;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(122 15 61 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(122 15 61 / 0.05), 0 14px 34px -16px rgb(122 15 61 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(122 15 61 / 0.05), 0 36px 72px -28px rgb(122 15 61 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--g-wine);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: var(--g-blush);
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(216 107 138 / 0.14), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(123 122 92 / 0.08), transparent 70%);
+  }
+}

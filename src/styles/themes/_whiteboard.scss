@@ -1,0 +1,67 @@
+// Whiteboard case-study theme: the site's own design system (Geist, pills, 16px cards) in the board's colours:
+// its warm charcoal canvas #1a1917, warm ink #e4e0d8 and the indigo #6366f1 it used for the active tool,
+// with the green and amber of its palette for small highlights. Colour tokens only, like the other case studies.
+// Applied by <html data-theme="whiteboard"> (route data on /work/whiteboard). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1) on --bg #1a1917: ink 13.3:1, ink-2 9.9:1, muted 5.9:1 (4.8:1 on --surface-2),
+// --wb-indigo-text 5.9:1 (5.3:1 on --surface), --wb-green 10.1:1, --wb-amber 8.2:1. White on the CTA #4f46e5 6.3:1.
+// The board's own #6366f1 is a fill and stroke colour only (3.9:1), never text.
+
+:root[data-theme='whiteboard'] {
+  --bg: #1a1917;
+  --bg-2: #1f1e1c;
+  --bg-raise: #201f1d;
+  --surface: #242220;
+  --surface-2: #2c2a27;
+  --line: #36332f;
+  --line-strong: #4a463f;
+
+  --ink: #e4e0d8;
+  --ink-2: #c7c2b9;
+  --muted: #9a958d;
+  --faint: #5c5852; // decorative only
+
+  --wb-indigo: #6366f1;
+  --wb-indigo-text: #818cf8;
+  --wb-indigo-soft: #26254a;
+  --wb-green: #4ade80;
+  --wb-green-soft: #1d3326;
+  --wb-amber: #f59e0b;
+  --wb-sticky: #d97706;
+  --wb-sticky-ink: #1a1917;
+  --wb-dot: rgb(228 224 216 / 0.13);
+
+  --accent: #818cf8;
+  --accent-ink: #15141f;
+  --accent-soft: #26254a;
+  --cta: #4f46e5;
+  --cta-ink: #ffffff;
+  --focus: #818cf8;
+
+  --glass-edge: rgb(228 224 216 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.06);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 18px 40px -18px rgb(0 0 0 / 0.6);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.3), 0 40px 80px -30px rgb(0 0 0 / 0.7);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: var(--wb-indigo);
+    color: #fff;
+  }
+
+  .btn-solid:hover {
+    background: #4338ca;
+  }
+
+  .card--hover:hover {
+    border-color: #4a4a7a;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(55% 50% at 85% 20%, rgb(99 102 241 / 0.16), transparent 70%),
+      radial-gradient(45% 40% at 8% 90%, rgb(245 158 11 / 0.06), transparent 70%);
+  }
+}

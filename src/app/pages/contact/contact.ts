@@ -42,6 +42,7 @@ import { debounceTime } from 'rxjs';
 import { PERSON_ID, Seo, abs } from '../../core/seo/seo.service';
 import { SITE } from '../../core/site.config';
 import { Reveal } from '../../shared/directives/reveal.directive';
+import { Pattern } from '../../shared/ui/pattern';
 import { CONTACT_COPY, MESSAGE_MAX, MESSAGE_MIN } from './contact.copy';
 import {
   BUDGET_TOPICS,
@@ -79,7 +80,7 @@ const emailFormat = (c: AbstractControl<string>): ValidationErrors | null =>
  */
 @Component({
   selector: 'mh-page-contact',
-  imports: [ReactiveFormsModule, RouterLink, NgIcon, Reveal],
+  imports: [ReactiveFormsModule, RouterLink, NgIcon, Reveal, Pattern],
   viewProviders: [
     provideIcons({
       phosphorArrowCounterClockwise,

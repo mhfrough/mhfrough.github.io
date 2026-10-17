@@ -1,0 +1,70 @@
+// Bloomstone case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in
+// bloomstone.pk's colour scheme: cream #f0eadc, olive #545c2b, bronze #8d5722 and the logo's night green #313616.
+// Colour tokens only, like the Quorum theme: type, shape and components stay exactly as on the rest of the site.
+// Applied by <html data-theme="bloomstone"> (route data on /work/bloomstone). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 12.4:1 on --bg, muted 5.9:1 on --bg and 6.4:1 on --surface, olive 6.2:1 on --bg,
+// --b-bronze 5.2:1 on --bg and 4.6:1 on --b-bronze-soft, white on the olive CTA 7.1:1.
+// Night blocks (--b-night): cream text 13.6:1, --n-muted 6.5:1, slot colours 6.4:1 or more.
+
+:root[data-theme='bloomstone'] {
+  // Surfaces (bloomstone.pk body is #f0eadc, cards are warm white)
+  --bg: #f3eee2;
+  --bg-2: #ece5d4;
+  --bg-raise: #ece5d4;
+  --surface: #fbf8f1;
+  --surface-2: #efe8d8;
+  --line: #e2d9c4;
+  --line-strong: #cfc4aa;
+
+  // Ink
+  --ink: #2a2a2a;
+  --ink-2: #47443c;
+  --muted: #5f5b50;
+  --faint: #c9c0a8; // decorative only
+
+  // Olive is the brand fill, bronze the second accent (numbers, small tags), night green the dark blocks.
+  --b-olive: #545c2b;
+  --b-olive-soft: #e3e3c9;
+  --b-olive-tint: #f1f0e0;
+  --b-bronze: #8d5722;
+  --b-bronze-soft: #f0e0cc;
+  --b-night: #1d2210;
+  --b-night-2: #272d17;
+  --b-night-line: rgb(240 234 220 / 0.12);
+  --n-ink: #f0eadc;
+  --n-muted: #a8a48f;
+
+  // CTA = olive fill with white text, as on bloomstone.pk.
+  --accent: #545c2b;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3e3c9;
+  --cta: #545c2b;
+  --cta-ink: #ffffff;
+  --focus: #545c2b;
+
+  // Dark blocks (code, command bar, featured cards) in the logo's night green.
+  --solid: #262c14;
+  --solid-ink: #f0eadc;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  // Glass + elevation: soft, warm, olive-tinted
+  --glass-edge: rgb(49 54 22 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.6);
+  --shadow: 0 1px 3px rgb(49 54 22 / 0.06), 0 6px 18px rgb(49 54 22 / 0.07);
+  --shadow-lg: 0 2px 6px rgb(49 54 22 / 0.06), 0 18px 40px rgb(49 54 22 / 0.14);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--b-olive);
+    color: #fff;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(84 92 43 / 0.09), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(141 87 34 / 0.06), transparent 70%);
+  }
+}

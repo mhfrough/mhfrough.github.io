@@ -1,0 +1,80 @@
+// Emlaak case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in Emlaak
+// Financials' colour scheme: the logo's blue #2e609b and green #3ab44a on the app's pale sky #ecf4f7.
+// Colour tokens only, like the other case-study themes: type, shape and components stay as on the rest of the site.
+// Applied by <html data-theme="emlaak"> (route data on /work/emlaak). Every rule is scoped to that attribute,
+// so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 15.1:1 on --bg, ink-2 9.0:1, muted 5.6:1 on --bg and 6.0:1 on white,
+// blue 6.4:1 on white and 5.3:1 on --e-blue-soft, white on the blue CTA 6.4:1, --e-green-text 5.4:1 on white
+// and 4.7:1 on --e-green-soft, --e-orange-text 5.6:1 on white and 4.7:1 on --e-orange-soft. The green fill
+// #3ab44a is decorative only (bars, dots, rings), never text. Night blocks: --n-ink 14.2:1, --n-muted 7.8:1.
+
+:root[data-theme='emlaak'] {
+  // Surfaces (the app's body is #f7f7f7 and its sky panels #ecf4f7; cards are white)
+  --bg: #f4f8fa;
+  --bg-2: #ecf3f7;
+  --bg-raise: #ecf3f7;
+  --surface: #ffffff;
+  --surface-2: #eef4f8;
+  --line: #dde7ee;
+  --line-strong: #c4d3de;
+
+  // Ink: the logo's grey, darkened for body text
+  --ink: #18222d;
+  --ink-2: #3a4652;
+  --muted: #586572;
+  --faint: #c6d2db; // decorative only
+
+  // Brand: blue is the fill and link colour, green the growth accent, orange the warning tone.
+  --e-blue: #2e609b;
+  --e-blue-dark: #234c7d;
+  --e-blue-soft: #dfeaf6;
+  --e-blue-tint: #f0f5fb;
+  --e-green: #3ab44a;
+  --e-green-text: #23793a;
+  --e-green-soft: #e1f3e4;
+  --e-orange: #da6232;
+  --e-orange-text: #b04714;
+  --e-orange-soft: #fbe6dc;
+  --e-night: #10233d;
+  --e-night-2: #16304f;
+  --e-night-line: rgb(236 244 247 / 0.12);
+  --n-ink: #ecf4f7;
+  --n-muted: #a6b8cb;
+
+  // CTA = the site's blue "Sign up" button with white text.
+  --accent: #2e609b;
+  --accent-ink: #ffffff;
+  --accent-soft: #dfeaf6;
+  --cta: #2e609b;
+  --cta-ink: #ffffff;
+  --focus: #2e609b;
+
+  // Dark blocks (code, command bar, featured cards) in deep navy.
+  --solid: #10233d;
+  --solid-ink: #ecf4f7;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  // Glass + elevation, cool and soft for a light page.
+  --glass-edge: rgb(16 35 61 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(16 35 61 / 0.05), 0 14px 34px -16px rgb(16 35 61 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(16 35 61 / 0.05), 0 36px 72px -28px rgb(16 35 61 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--e-blue);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b9cde0;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(46 96 155 / 0.1), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(58 180 74 / 0.08), transparent 70%);
+  }
+}

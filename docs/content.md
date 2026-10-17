@@ -18,7 +18,7 @@ Product names below are kept for internal reference only; on the site describe p
 - Nearly 7 years building production SaaS, fintech and enterprise platforms (full-time since Jan 2020).
 - Owns architecture for micro-frontend and multi-tenant Angular products; delivers across the stack with NestJS,
   PostgreSQL and Flutter.
-- Delivered 14+ products across banking, tax, investment and fleet management.
+- Delivered 30+ products across banking, tax, investment and fleet management.
 - A tax-filing flow embedded in 6 banking apps.
 - Leads and mentors a frontend team; sets conventions, reviews pull requests; owns AWS deployment decisions for UAT
   and production across 3 concurrent production platforms.

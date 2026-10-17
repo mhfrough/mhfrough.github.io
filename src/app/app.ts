@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { RouteTheme } from './core/route-theme.service';
+import { CookieNotice } from './layout/cookie-notice';
 import { Footer } from './layout/footer';
 import { LAYOUT_COPY } from './layout/layout.copy';
 import { Nav } from './layout/nav';
 
 @Component({
   selector: 'mh-root',
-  imports: [RouterOutlet, Nav, Footer],
+  imports: [RouterOutlet, Nav, Footer, CookieNotice],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="skip-link" href="#main">{{ t.skip }}</a>
@@ -17,6 +18,7 @@ import { Nav } from './layout/nav';
       <router-outlet />
     </main>
     <mh-footer />
+    <mh-cookie-notice />
   `,
   styles: `
     :host {

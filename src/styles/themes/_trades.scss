@@ -1,0 +1,76 @@
+// Trades case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the colours
+// the two Nottingham trades sites share: the template's navy #031071 and AK Heating's amber #fda417, with SOS24's
+// logo red and green as small accents. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="trades"> (route data on /work/trades). Every rule is scoped to that attribute,
+// so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.6:1 on --bg, ink-2 9.3:1, muted 5.7:1 on --bg and 5.4:1 on --surface-2, white on
+// the navy CTA 16.0:1, navy on the amber fill 8.0:1, --t-amber-text 6.3:1 on white and 5.7:1 on --t-amber-soft,
+// --t-red-text 6.0:1 and 4.9:1 on --t-red-soft, --t-green-text 5.4:1 and 4.7:1 on --t-green-soft. Night blocks:
+// --n-ink 16.6:1, --n-muted 8.4:1.
+
+:root[data-theme='trades'] {
+  --bg: #f5f6fb;
+  --bg-2: #eef0f7;
+  --bg-raise: #eef0f7;
+  --surface: #ffffff;
+  --surface-2: #eef0f7;
+  --line: #e1e4ef;
+  --line-strong: #c9cee0;
+
+  --ink: #0f1533;
+  --ink-2: #3a4060;
+  --muted: #5b6178;
+  --faint: #c9cee0; // decorative only
+
+  // Navy is the template's colour, amber AK's, red and green SOS24's logo. Fills carry no small text except navy.
+  --t-navy: #031071;
+  --t-navy-soft: #e3e6f6;
+  --t-amber: #fda417;
+  --t-amber-text: #8a5300;
+  --t-amber-soft: #fff1d6;
+  --t-red: #e43e2b;
+  --t-red-text: #b8321f;
+  --t-red-soft: #fde4df;
+  --t-green: #2ba24c;
+  --t-green-text: #1f7a39;
+  --t-green-soft: #e0f3e6;
+  --t-night: #0a1240;
+  --t-night-2: #111b52;
+  --t-night-line: rgb(245 246 251 / 0.12);
+  --n-ink: #f5f6fb;
+  --n-muted: #a9b0d0;
+
+  --accent: #031071;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3e6f6;
+  --cta: #031071;
+  --cta-ink: #ffffff;
+  --focus: #031071;
+
+  --solid: #0a1240;
+  --solid-ink: #f5f6fb;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(10 18 64 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(10 18 64 / 0.05), 0 14px 34px -16px rgb(10 18 64 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(10 18 64 / 0.05), 0 36px 72px -28px rgb(10 18 64 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--t-navy);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #c3c9e6;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(253 164 23 / 0.14), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(3 16 113 / 0.08), transparent 70%);
+  }
+}

@@ -7,8 +7,9 @@ import { Logo } from '../shared/ui/logo';
 import { LAYOUT_COPY } from './layout.copy';
 
 /**
- * Small but complete footer: identity + availability, three link groups, and a mono
- * meta row (year, Karachi local time, back to top). No big CTA, no vertical rules.
+ * Short footer, two rows. Top: identity, availability (with the live blip) and social icons.
+ * Bottom (mono): copyright, Karachi local time, Privacy, Sitemap and Back to top. Other legal pages link from /privacy.
+ * No big CTA, no vertical rules, no link columns: the nav already lists the pages.
  */
 @Component({
   selector: 'mh-footer',
@@ -17,44 +18,23 @@ import { LAYOUT_COPY } from './layout.copy';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="footer" role="contentinfo">
-      <div class="wrap grid">
-        <div class="id">
-          <a routerLink="/" class="home"><span class="brand-mark"><mh-logo [size]="20" /></span><span class="name">Mohammad Hamza</span><span class="handle mono">@mhfrough</span></a>
-          <p class="blurb">{{ t.footer.blurb }}</p>
-          <a class="status" routerLink="/hire">
-            <span class="status__mark" [class.is-on]="available" aria-hidden="true"></span>
+      <div class="wrap top">
+        <a routerLink="/" class="home" [attr.aria-label]="t.homeLabel">
+          <span class="brand-mark"><mh-logo [size]="18" /></span>
+          <span class="name" translate="no">{{ t.brand }}</span>
+        </a>
+        <p class="blurb">{{ t.footer.blurb }}</p>
+        <div class="right">
+          <a class="status-pill" routerLink="/hire">
+            <span class="blip" [class.is-on]="available" aria-hidden="true"></span>
             {{ available ? t.footer.available : t.footer.unavailable }}
           </a>
+          <ul class="social" role="list">
+            <li><a class="icon-btn" [href]="social.github" rel="me noopener" target="_blank" aria-label="GitHub"><ng-icon name="phosphorGithubLogo" aria-hidden="true" /></a></li>
+            <li><a class="icon-btn" [href]="social.linkedin" rel="me noopener" target="_blank" aria-label="LinkedIn"><ng-icon name="phosphorLinkedinLogo" aria-hidden="true" /></a></li>
+            <li><a class="icon-btn" [href]="social.dribbble" rel="me noopener" target="_blank" aria-label="Dribbble"><ng-icon name="phosphorDribbbleLogo" aria-hidden="true" /></a></li>
+          </ul>
         </div>
-
-        <nav class="col" [attr.aria-label]="t.footer.pages">
-          <h2 class="label">{{ t.footer.pages }}</h2>
-          <ul role="list">
-            <li><a routerLink="/work">{{ t.nav.work }}</a></li>
-            <li><a routerLink="/hire">Hire</a></li>
-            <li><a routerLink="/brand">{{ t.nav.brand }}</a></li>
-            <li><a routerLink="/contact">{{ t.nav.contact }}</a></li>
-          </ul>
-        </nav>
-
-        <nav class="col" [attr.aria-label]="t.footer.elsewhere">
-          <h2 class="label">{{ t.footer.elsewhere }}</h2>
-          <ul role="list">
-            <li><a [href]="social.github" rel="me noopener" target="_blank"><ng-icon name="phosphorGithubLogo" aria-hidden="true" /> GitHub</a></li>
-            <li><a [href]="social.linkedin" rel="me noopener" target="_blank"><ng-icon name="phosphorLinkedinLogo" aria-hidden="true" /> LinkedIn</a></li>
-            <li><a [href]="social.dribbble" rel="me noopener" target="_blank"><ng-icon name="phosphorDribbbleLogo" aria-hidden="true" /> Dribbble</a></li>
-          </ul>
-        </nav>
-
-        <nav class="col" [attr.aria-label]="t.footer.legal">
-          <h2 class="label">{{ t.footer.legal }}</h2>
-          <ul role="list">
-            <li><a routerLink="/privacy">{{ t.footer.privacy }}</a></li>
-            <li><a routerLink="/terms">{{ t.footer.terms }}</a></li>
-            <li><a routerLink="/cookies">{{ t.footer.cookies }}</a></li>
-            <li><a routerLink="/accessibility">{{ t.footer.accessibility }}</a></li>
-          </ul>
-        </nav>
       </div>
 
       <div class="wrap meta mono">
@@ -65,7 +45,9 @@ import { LAYOUT_COPY } from './layout.copy';
           <span class="muted" dir="ltr">UTC+5</span>
         </span>
         <span class="end">
-          <a href="#top" class="top" (click)="toTop($event)">{{ t.footer.top }} <ng-icon name="phosphorArrowUp" aria-hidden="true" /></a>
+          <a routerLink="/privacy">{{ t.footer.privacy }}</a>
+          <a routerLink="/sitemap">{{ t.footer.sitemap }}</a>
+          <a href="#top" (click)="toTop($event)">{{ t.footer.top }} <ng-icon name="phosphorArrowUp" aria-hidden="true" /></a>
         </span>
       </div>
     </footer>
@@ -73,105 +55,64 @@ import { LAYOUT_COPY } from './layout.copy';
   styles: `
     .footer {
       border-top: 1px solid var(--line);
-      margin-top: 40px;
-      padding: 56px 0 32px;
+      margin-top: 24px;
+      padding: 28px 0 22px;
       font-size: 14px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
-      gap: 32px 24px;
-    }
-    .id {
-      display: grid;
-      gap: 14px;
-      align-content: start;
-      justify-items: start;
+    .top {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px 20px;
     }
     .home {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       font-weight: 600;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
       border-radius: 999px;
     }
     .brand-mark {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: var(--cta);
-      color: var(--cta-ink);
-      display: grid;
-      place-items: center;
-    }
-    .handle {
-      color: var(--muted);
-      font-weight: 400;
-      font-size: 12.5px;
+      --tile: 30px;
+      border-radius: 999px;
     }
     .blurb {
       color: var(--muted);
-      max-width: 40ch;
+      font-size: 13.5px;
+      max-width: 52ch;
     }
-    .status {
-      display: inline-flex;
+    .right {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      height: 32px;
-      padding: 0 14px 0 12px;
-      border-radius: 999px;
+      gap: 14px;
+      margin-left: auto;
+    }
+    .social {
+      display: flex;
+      gap: 4px;
+    }
+    .social .icon-btn {
+      width: 36px;
+      height: 36px;
+      border-color: transparent;
+      background: transparent;
+      color: var(--ink-2);
+    }
+    .social .icon-btn:hover {
       background: var(--surface);
-      border: 1px solid var(--line);
-      color: var(--ink-2);
-      font-size: 13px;
-      font-weight: 500;
-      transition: border-color var(--t-base) var(--ease);
-    }
-    .status:hover {
-      border-color: color-mix(in oklab, var(--line) 50%, var(--ink));
-    }
-    .status__mark {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      border: 1px solid var(--muted);
-    }
-    .status__mark.is-on {
-      background: var(--ink);
-      border-color: var(--ink);
-      box-shadow: 0 0 0 3px rgb(255 255 255 / 0.12);
-    }
-    .col h2 {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .col ul {
-      display: grid;
-      gap: 8px;
-    }
-    .col a {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--ink-2);
-      transition: color var(--t-fast) var(--ease);
-    }
-    .col a:hover {
       color: var(--ink);
     }
     .meta {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 10px 24px;
-      margin-top: 40px;
-      padding-top: 20px;
+      gap: 8px 24px;
+      margin-top: 22px;
+      padding-top: 16px;
       border-top: 1px solid var(--line);
       color: var(--muted);
-      font-size: 12.5px;
+      font-size: 12px;
     }
     .time {
       display: inline-flex;
@@ -183,32 +124,52 @@ import { LAYOUT_COPY } from './layout.copy';
     }
     .end {
       display: inline-flex;
-      gap: 16px;
+      gap: 20px;
       margin-left: auto;
     }
     .end a {
       display: inline-flex;
       align-items: center;
       gap: 4px;
+      min-height: 24px;
       color: var(--ink-2);
+      transition: color var(--t-fast) var(--ease);
     }
     .end a:hover {
       color: var(--ink);
     }
-    @media (max-width: 860px) {
-      .grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .id {
-        grid-column: 1 / -1;
+    @media (max-width: 900px) {
+      .blurb {
+        display: none;
       }
     }
-    @media (max-width: 480px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    @media (max-width: 560px) {
+      .right {
+        margin-left: 0;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px 14px;
+      }
+      /* Touch: the icons are borderless, so a 44px box adds hit area without changing the look. */
+      .social {
+        gap: 0;
+        margin-right: -4px;
+      }
+      .social .icon-btn {
+        width: 44px;
+        height: 44px;
+      }
+      .meta {
+        row-gap: 0;
       }
       .end {
         margin-left: 0;
+        gap: 4px 20px;
+        flex-wrap: wrap;
+      }
+      .end a {
+        min-height: 44px;
       }
     }
   `,

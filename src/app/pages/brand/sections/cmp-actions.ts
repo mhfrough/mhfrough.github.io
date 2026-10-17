@@ -21,7 +21,7 @@ const TABS = [
   { id: 'keys', label: 'Keys', body: 'Arrow keys move between tabs, Home and End jump to the ends. Only the active tab is in the tab order.' },
   { id: 'aria', label: 'ARIA', body: 'role="tablist", role="tab" with aria-selected and aria-controls, role="tabpanel" with aria-labelledby.' },
 ];
-const CMD = 'git clone https://github.com/mhfrough/quorum';
+const CMD = 'npx ng build --configuration development';
 const CODE = `.card {
   background: var(--surface);
   border: 1px solid var(--line);
@@ -69,7 +69,7 @@ const CODE = `.card {
         <button type="button" class="icon-btn" aria-label="Back to top"><ng-icon name="phosphorArrowUp" aria-hidden="true" /></button>
       </mh-spec>
       <mh-spec name="Pill link" cls=".pill-link > b" class="span-all">
-        <a class="pill-link" routerLink="/work/quorum"><b>7 agents</b>A skill for Claude Code<ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="pill-link" routerLink="/work"><b>Since 2020</b>Angular and NestJS<ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
         <p class="note">Press any button: it drops 1px and scales to 0.98 while held.</p>
       </mh-spec>
     </div>

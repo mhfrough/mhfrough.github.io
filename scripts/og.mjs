@@ -9,9 +9,9 @@ import { ROOT, CACHE } from './_env.mjs';
 
 const { chromium } = await import('playwright');
 
-// Keep in sync with MARK_ARC / MARK_BAR in src/app/shared/ui/logo.ts (48-unit grid).
-const MARK_ARC = 'M30.36 15.14A9 9 0 1 0 24 30.5';
-const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 };
+// Keep in sync with MARK_ARC / MARK_TAIL in src/app/shared/ui/logo.ts (48-unit grid).
+const MARK_ARC = 'M30.16 15.34A8 8 0 1 0 24.5 29';
+const MARK_TAIL = 'M22.5 26.5H37V28.5L15.5 38V35Z';
 const MAX_BYTES = 150 * 1024;
 
 const font = (family, path, weight) => {
@@ -29,15 +29,15 @@ const FONTS = [
 ].join('\n');
 
 const glyph = (fill) =>
-  `<path d="${MARK_ARC}" fill="none" stroke="${fill}" stroke-width="5"/><rect x="${MARK_BAR.x}" y="${MARK_BAR.y}" width="${MARK_BAR.w}" height="${MARK_BAR.h}" fill="${fill}"/>`;
+  `<path d="${MARK_ARC}" fill="none" stroke="${fill}" stroke-width="5"/><path d="${MARK_TAIL}" fill="${fill}"/>`;
 
-/** Display mark inside the card: glyph, its construction circle (r 9 about 24, 21.5), centre and baseline. */
+/** Display mark inside the card: glyph, its construction circle (r 8 about 24.5, 21), centre and base line. */
 const MARK = `<div class="art"><svg viewBox="0 0 48 48" aria-hidden="true">
-  <circle cx="24" cy="21.5" r="9" fill="none" stroke="#3a3a3a" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="2 6"/>
-  <line x1="4" y1="30" x2="44" y2="30" stroke="#2c2c2c" stroke-width="1" vector-effect="non-scaling-stroke"/>
+  <circle cx="24.5" cy="21" r="8" fill="none" stroke="#3a3a3a" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="2 6"/>
+  <line x1="4" y1="26.5" x2="44" y2="26.5" stroke="#2c2c2c" stroke-width="1" vector-effect="non-scaling-stroke"/>
   ${glyph('#ededed')}
-  <circle cx="24" cy="21.5" r="0.5" fill="#9a9a9a"/>
-</svg></div><div class="cap"><span>the mark</span><span>48 grid, r 9, 225°</span></div>`;
+  <circle cx="24.5" cy="21" r="0.5" fill="#9a9a9a"/>
+</svg></div><div class="cap"><span>the mark</span><span>48 grid, r 8, 225°</span></div>`;
 
 const head = (path = '') =>
   `<div class="head"><span class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true">${glyph('#111111')}</svg></span><span class="wordmark">mhfrough</span>${path ? `<span class="path">${path}</span>` : ''}</div>`;
@@ -52,11 +52,12 @@ const CARDS = {
     <div class="body">
       <h1>Mohammad Hamza</h1>
       <p class="sub">Software Architect. Angular platforms, <span class="nw">multi-tenant</span> SaaS, design systems.</p>
-      ${chips(pill('@mhfrough', 'mhfrough.dev'), chip('Karachi, PK', true))}
+      ${chips(pill('@mhfrough', 'mhfrough.dev'), chip('Karāchi, PK', true))}
     </div>`,
   'og-work': page('/work', 'Selected work', 'Platforms, <span class="nw">multi-tenant</span> SaaS and the design systems behind them.'),
   'og-hire': page('/hire', 'Hire me', 'Freelance and contract work, from architecture to launch.'),
   'og-brand': page('/brand', 'Brand system', 'The mark, type, tokens and motion behind this site.'),
+  'og-about': page('/about', 'About me', 'Soft-spoken software architect from Karāchi. Pixel perfect, a little OCD.'),
 };
 
 function page(path, title, sub) {

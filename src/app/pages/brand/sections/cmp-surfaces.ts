@@ -4,7 +4,7 @@ import { phosphorBriefcase, phosphorCube, phosphorGauge, phosphorSignpost, phosp
 import { COPY } from '../brand.copy';
 import { Spec } from './spec';
 
-/** Components, part 2: cards, icon wells and a Quorum-style bento. Server-rendered. */
+/** Components, part 2: cards, icon wells and a bento grid. Server-rendered. */
 @Component({
   selector: 'mh-brand-cmp-surfaces',
   imports: [Spec, NgIcon],
@@ -19,13 +19,13 @@ import { Spec } from './spec';
       <mh-spec name="Card" cls=".card" layout="sunk">
         <article class="card">
           <h4 class="h3">Frame</h4>
-          <p>Surface, 1px line, 20px radius, 26px padding.</p>
+          <p>Surface, 1px line, 16px radius, 22px padding.</p>
         </article>
       </mh-spec>
       <mh-spec name="Hover card" cls=".card.card--hover" layout="sunk">
         <article class="card card--hover">
           <h4 class="h3">Debate</h4>
-          <p>Lifts 3px and gains a shadow on hover.</p>
+          <p>Lifts 2px and gains a shadow on hover.</p>
         </article>
       </mh-spec>
       <mh-spec name="Solid card" cls=".card.card--solid" layout="sunk">
@@ -46,11 +46,16 @@ import { Spec } from './spec';
         <span class="icon-tile"><ng-icon name="phosphorCube" aria-hidden="true" /></span>
         <span class="icon-tile"><ng-icon name="phosphorGauge" aria-hidden="true" /></span>
       </mh-spec>
+      <mh-spec name="Project mark tile" cls=".icon-tile.icon-tile--fav" class="span-all">
+        @for (m of marks; track m.src) {
+          <span class="icon-tile icon-tile--fav"><img [src]="m.src" width="28" height="28" [alt]="m.alt" loading="lazy" decoding="async" /></span>
+        }
+      </mh-spec>
       <mh-spec name="Bento" cls=".bento > .card.wide | .card--solid" layout="col sunk" class="span-all">
         <div class="bento">
           <article class="card card--hover wide">
             <span class="icon-tile"><ng-icon name="phosphorBriefcase" aria-hidden="true" /></span>
-            <h4 class="h3">14+ products</h4>
+            <h4 class="h3">30+ products</h4>
             <p>Banking, tax, investment and fleet management, shipped to production.</p>
           </article>
           <article class="card card--solid">
@@ -124,4 +129,13 @@ import { Spec } from './spec';
 })
 export class BrandCmpSurfaces {
   protected readonly g = COPY.components.groups.surfaces;
+  /** A few real project marks, as the home bento and /work cards show them. */
+  protected readonly marks = [
+    { src: '/images/o2chat/o2chat-mark.webp', alt: 'O2Chat' },
+    { src: '/images/epractise/epractise-mark.webp', alt: 'ePractise' },
+    { src: '/images/dmax/dmax-mark.webp', alt: 'DMAX' },
+    { src: '/images/tmf/tmf-mark.webp', alt: 'TMF' },
+    { src: '/images/finclore/finclore-mark.svg', alt: 'Finclore' },
+    { src: '/images/malik-transport/malik-transport-mark.webp', alt: 'Malik Transport' },
+  ];
 }

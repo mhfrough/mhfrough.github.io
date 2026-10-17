@@ -1,0 +1,344 @@
+<!-- Hero: copy left, profile card right, geometric field behind -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="about-title">
+  <mh-pattern [intensity]="0.8" />
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <a class="pill-link rise" routerLink="/about" fragment="story">
+        <b>{{ c.hero.tag }}</b>{{ c.hero.tagText }}<ng-icon name="phosphorArrowRight" aria-hidden="true" />
+      </a>
+      <h1 id="about-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line soft"><span>{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" routerLink="/work">{{ c.hero.primary }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/contact">{{ c.hero.secondary }}</a>
+      </div>
+    </div>
+    <mh-profile-card class="rise d2" />
+  </div>
+</section>
+
+<!-- Numbers: four dates and facts in one band -->
+<section class="numbers" aria-labelledby="numbers-title">
+  <div class="wrap">
+    <h2 id="numbers-title" class="sr-only">In short</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd class="mono">{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Story: long-form bio on the left, an at-a-glance card on the right -->
+<section class="section" id="story" aria-labelledby="story-title">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="story-title" class="title">{{ c.story.title }}</h2>
+      <p class="sub">{{ c.story.sub }}</p>
+    </header>
+    <div class="story">
+      <article class="story-body" mhReveal>
+        <p class="story-lead">{{ c.story.lead }}</p>
+        @for (p of c.story.paragraphs; track $index) {
+          <p>{{ p }}</p>
+        }
+        <blockquote class="story-quote">
+          <ng-icon name="phosphorQuotes" aria-hidden="true" />
+          <p>{{ c.story.quote }}</p>
+        </blockquote>
+        <p>{{ c.story.closing }}</p>
+        <footer class="sign">
+          <span class="brand-mark"><mh-logo [size]="22" /></span>
+          <span>
+            <b>{{ c.story.sign.name }}</b>
+            <span class="mono">{{ c.story.sign.meta }}</span>
+          </span>
+        </footer>
+      </article>
+
+      <aside class="card story-card" aria-labelledby="story-card-title" mhReveal [revealIndex]="1">
+        <h3 id="story-card-title" class="tag">{{ c.story.card.title }}</h3>
+        <dl class="glance">
+          @for (r of c.story.card.rows; track r.k) {
+            <div>
+              <span class="icon-well" aria-hidden="true"><ng-icon [name]="r.icon" /></span>
+              <dt>{{ r.k }}</dt>
+              <dd>{{ r.v }}</dd>
+            </div>
+          }
+        </dl>
+        <div class="now">
+          <span class="status-pill"><span class="blip is-on" aria-hidden="true"></span>{{ c.story.card.nowLabel }}</span>
+          <p>{{ c.story.card.now }}</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Journey: a horizontal rail, two rows of three -->
+<section class="section section--flush" id="journey" aria-labelledby="journey-title">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="journey-title" class="title">{{ c.journey.title }}</h2>
+      <p class="sub">{{ c.journey.sub }}</p>
+    </header>
+    <ol class="rail" role="list">
+      @for (s of c.journey.steps; track s.when; let i = $index; let last = $last) {
+        <li class="step" [class.now]="last" mhReveal [revealIndex]="i">
+          <span class="step-n mono">{{ s.when }}</span>
+          <span class="step-dot" aria-hidden="true"></span>
+          <h3><ng-icon [name]="s.icon" aria-hidden="true" /> {{ s.title }}</h3>
+          <p>{{ s.body }}</p>
+          @if ('links' in s) {
+            <ul class="cases" role="list" [attr.aria-label]="c.journey.casesLabel + ', ' + s.when">
+              @for (l of s.links; track l.href) {
+                <li>
+                  <a class="case" [routerLink]="l.href">
+                    @if ('mark' in l) {
+                      <span class="case__mark fav"><img [src]="l.mark" width="16" height="16" alt="" loading="lazy" decoding="async" /></span>
+                    } @else if ('icon' in l) {
+                      <span class="case__mark"><ng-icon [name]="l.icon" aria-hidden="true" /></span>
+                    }
+                    {{ l.label }}<span class="sr-only"> case study</span>
+                    <ng-icon class="case__arrow" name="phosphorArrowRight" aria-hidden="true" />
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Values: craft as the featured cell, then faith, family, loyalty -->
+@defer (hydrate on viewport) {
+<section class="section section--flush" aria-labelledby="values-title">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="values-title" class="title">{{ c.values.title }}</h2>
+      <p class="sub">{{ c.values.sub }}</p>
+    </header>
+    <ul class="bento values" role="list">
+      <li class="card card--solid cell wide craft" mhReveal>
+        <span class="tag">{{ c.values.craft.tag }}</span>
+        <h3>{{ c.values.craft.title }}</h3>
+        <p>{{ c.values.craft.body }}</p>
+        <a class="more" [href]="dribbble" target="_blank" rel="me noopener"
+          ><ng-icon name="phosphorDribbbleLogo" aria-hidden="true" /> {{ c.values.craft.link }}
+          <ng-icon name="phosphorArrowRight" aria-hidden="true"
+        /></a>
+      </li>
+      @for (v of c.values.items; track v.title; let i = $index) {
+        <li class="card cell" [class.span-2]="i === 2" mhReveal [revealIndex]="i + 1">
+          <span class="icon-well" aria-hidden="true"><ng-icon [name]="v.icon" /></span>
+          <h3>{{ v.title }}</h3>
+          <p>{{ v.body }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Hobbies: anime wide, films, games solid, travel and the rest; then sport, garden solid, faith and world -->
+@defer (hydrate on viewport) {
+<section class="section section--flush" id="hobbies" aria-labelledby="hobbies-title">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="hobbies-title" class="title">{{ c.hobbies.title }}</h2>
+      <p class="sub">{{ c.hobbies.sub }}</p>
+    </header>
+    <ul class="bento hobbies" role="list">
+      <li class="card card--hover cell wide" mhReveal>
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorTelevisionSimple" /></span>
+          <div>
+            <h3>{{ c.hobbies.anime.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.anime.tag }}</span>
+          </div>
+        </div>
+        <ol class="ranked" role="list">
+          @for (a of c.hobbies.anime.titles; track a; let i = $index) {
+            <li>
+              <span class="mono" aria-hidden="true">0{{ i + 1 }}</span>
+              @if (covers[a]; as src) {
+                <img class="cover" [src]="src" alt="" width="64" height="64" loading="lazy" decoding="async" />
+              }
+              {{ a }}
+            </li>
+          }
+        </ol>
+        <p class="note">{{ c.hobbies.anime.note }}</p>
+      </li>
+
+      <li class="card card--hover cell" mhReveal [revealIndex]="1">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorFilmSlate" /></span>
+          <div>
+            <h3>{{ c.hobbies.films.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.films.tag }}</span>
+          </div>
+        </div>
+        <ul class="badges" role="list">
+          @for (f of c.hobbies.films.titles; track f) {
+            <li class="tag tag--cover">
+              @if (covers[f]; as src) {
+                <img class="cover" [src]="src" alt="" width="64" height="64" loading="lazy" decoding="async" />
+              } @else {
+                <span class="cover cover--icon" aria-hidden="true"><ng-icon name="phosphorJoystick" /></span>
+              }
+              {{ f }}
+            </li>
+          }
+        </ul>
+        <p class="note">{{ c.hobbies.films.note }}</p>
+      </li>
+
+      <li class="card card--solid cell" mhReveal [revealIndex]="2">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorGameController" /></span>
+          <div>
+            <h3>{{ c.hobbies.games.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.games.tag }}</span>
+          </div>
+        </div>
+        <ul class="badges" role="list">
+          @for (g of c.hobbies.games.titles; track g) {
+            <li class="tag tag--cover">
+              @if (covers[g]; as src) {
+                <img class="cover" [src]="src" alt="" width="64" height="64" loading="lazy" decoding="async" />
+              } @else {
+                <span class="cover cover--icon" aria-hidden="true"><ng-icon name="phosphorJoystick" /></span>
+              }
+              {{ g }}
+            </li>
+          }
+        </ul>
+        <p class="note">{{ c.hobbies.games.note }}</p>
+      </li>
+
+      <li class="card card--hover cell wide travel" mhReveal [revealIndex]="3">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorAirplaneTilt" /></span>
+          <div>
+            <h3>{{ c.hobbies.travel.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.travel.tag }}</span>
+          </div>
+        </div>
+        <div class="extras">
+          <span class="label">{{ c.hobbies.travel.note }}</span>
+          <ul role="list">
+            @for (x of c.hobbies.travel.extras; track x) {
+              <li class="chip"><ng-icon [name]="extraIcons[x]" aria-hidden="true" /> {{ x }}</li>
+            }
+          </ul>
+        </div>
+        <ul class="outdoors" role="list">
+          @for (r of c.hobbies.travel.rows; track r.name) {
+            <li>
+              <ng-icon [name]="r.icon" aria-hidden="true" />
+              <span class="name">{{ r.name }}</span>
+              <span class="mono">{{ r.ctx }}</span>
+            </li>
+          }
+        </ul>
+      </li>
+
+      <li class="card card--hover cell" mhReveal [revealIndex]="4">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorPingPong" /></span>
+          <div>
+            <h3>{{ c.hobbies.sport.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.sport.tag }}</span>
+          </div>
+        </div>
+        <ul class="rows" role="list">
+          @for (r of c.hobbies.sport.rows; track r.name) {
+            <li>{{ r.name }} <span class="mono">{{ r.ctx }}</span></li>
+          }
+        </ul>
+      </li>
+
+      <li class="card card--solid cell garden" mhReveal [revealIndex]="5">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorPlant" /></span>
+          <div>
+            <h3>{{ c.hobbies.garden.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.garden.tag }}</span>
+          </div>
+        </div>
+        <ul class="rows" role="list">
+          @for (r of c.hobbies.garden.rows; track r.name) {
+            <li>{{ r.name }} <span class="mono">{{ r.ctx }}</span></li>
+          }
+        </ul>
+        <p class="note">{{ c.hobbies.garden.note }}</p>
+      </li>
+
+      <li class="card card--hover cell" mhReveal [revealIndex]="6">
+        <div class="cell-head">
+          <span class="icon-tile" aria-hidden="true"><ng-icon name="phosphorGlobeHemisphereEast" /></span>
+          <div>
+            <h3>{{ c.hobbies.world.title }}</h3>
+            <span class="cell-sub">{{ c.hobbies.world.tag }}</span>
+          </div>
+        </div>
+        <ul class="rows" role="list">
+          @for (r of c.hobbies.world.rows; track r.name) {
+            <li>{{ r.name }} <span class="mono">{{ r.ctx }}</span></li>
+          }
+        </ul>
+      </li>
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Gallery: only once photos exist (npm run about:photos) -->
+@if (gallery.length) {
+<section class="section section--flush" id="photos" aria-labelledby="photos-title">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="photos-title" class="title">{{ c.gallery.title }}</h2>
+      <p class="sub">{{ c.gallery.sub }}</p>
+    </header>
+    @defer (on viewport) {
+      <mh-photo-gallery [photos]="gallery" />
+    } @placeholder (minimum 300ms) {
+      <div class="gallery-skel" aria-hidden="true">
+        @for (h of [280, 200, 240]; track $index) {
+          <mh-skeleton shape="block" [height]="h + 'px'" />
+        }
+      </div>
+    }
+  </div>
+</section>
+}
+
+<!-- Close: one band, the field again behind it -->
+@defer (hydrate on viewport) {
+<section class="section close-section" aria-labelledby="close-title">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <mh-pattern class="band-art" [cell]="36" [intensity]="1.5" />
+      <div>
+        <h2 id="close-title" class="title">{{ c.close.title }}</h2>
+        <p class="sub">{{ c.close.sub }}</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-solid" routerLink="/contact">{{ c.close.primary }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.close.secondary }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

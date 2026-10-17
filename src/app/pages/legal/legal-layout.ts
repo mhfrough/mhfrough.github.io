@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  ElementRef,
-  afterNextRender,
-  inject,
-  input,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, afterNextRender, input, viewChild } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -57,7 +47,8 @@ export const LEGAL_LINKS = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-head glow head" [attr.aria-labelledby]="'legal-title'">
-      <div #hero class="wrap hero-anim">
+      <div #hero class="wrap col hero-anim">
+        <p class="kicker mono rise">Legal</p>
         <h1 id="legal-title" class="display">
           <span class="line"
             ><span>{{ doc().title }}</span></span
@@ -72,8 +63,8 @@ export const LEGAL_LINKS = [
       </div>
     </section>
 
-    <div class="wrap layout">
-      <section class="card summary" aria-labelledby="summary-title">
+    <div class="wrap col">
+      <section class="summary" aria-labelledby="summary-title">
         <h2 id="summary-title" class="summary__title">In plain words</h2>
         <ul role="list">
           @for (item of doc().summary; track $index) {
@@ -87,36 +78,10 @@ export const LEGAL_LINKS = [
         </ul>
       </section>
 
-      <aside class="toc-col">
-        <nav class="card toc" aria-labelledby="toc-title">
-          <h2 id="toc-title" class="toc__title">On this page</h2>
-          <ol role="list">
-            @for (s of doc().sections; track s.id) {
-              <li>
-                <a
-                  [routerLink]="[]"
-                  [fragment]="s.id"
-                  [attr.aria-current]="active() === s.id ? 'location' : null"
-                  >{{ s.title }}</a
-                >
-              </li>
-            }
-          </ol>
-          <h2 class="toc__title toc__title--other">Other policies</h2>
-          <ul role="list" class="others">
-            @for (l of others(); track l.path) {
-              <li>
-                <a class="chip" [routerLink]="l.path">{{ l.label }}</a>
-              </li>
-            }
-          </ul>
-        </nav>
-      </aside>
-
-      <article #article class="prose">
-        @for (s of doc().sections; track s.id) {
+      <article class="prose">
+        @for (s of doc().sections; track s.id; let i = $index) {
           <section class="part" [id]="s.id" [attr.aria-labelledby]="s.id + '-h'" mhReveal>
-            <h2 [id]="s.id + '-h'">{{ s.title }}</h2>
+            <h2 [id]="s.id + '-h'"><span class="num mono" aria-hidden="true">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>{{ s.title }}</h2>
             @for (b of s.blocks; track $index) {
               @if (isList(b)) {
                 <ul>
@@ -130,14 +95,22 @@ export const LEGAL_LINKS = [
             }
           </section>
         }
-
-        <div class="card end">
-          <p>Questions about this page?</p>
-          <a class="btn btn-ghost btn-sm" routerLink="/contact"
-            >Get in touch<ng-icon name="phosphorArrowRight" aria-hidden="true"
-          /></a>
-        </div>
       </article>
+
+      <footer class="end">
+        <nav aria-label="Other policies">
+          <ul role="list" class="others">
+            @for (l of others(); track l.path) {
+              <li>
+                <a class="chip" [routerLink]="l.path">{{ l.label }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+        <a class="btn btn-ghost btn-sm" routerLink="/contact"
+          >Get in touch<ng-icon name="phosphorArrowRight" aria-hidden="true"
+        /></a>
+      </footer>
     </div>
 
     <ng-template #rich let-value>
@@ -163,160 +136,110 @@ export const LEGAL_LINKS = [
   styles: `
     :host {
       display: block;
-      padding-bottom: 120px;
+      padding-bottom: 80px;
+    }
+    /* One reading column, no sidebar. Small type: these pages are reference, not marketing. */
+    .col {
+      max-width: calc(680px + 2 * var(--gutter));
     }
     .head {
-      padding-bottom: 56px;
+      padding-bottom: 36px;
     }
     /* Fade the global glow out at the bottom so it never ends on a hard edge. */
     .head::before {
       mask-image: linear-gradient(to bottom, black 55%, transparent);
     }
+    .kicker {
+      color: var(--muted);
+      font-size: 12px;
+    }
     .display {
-      margin-bottom: 18px;
+      font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+      margin: 10px 0 12px;
     }
     .updated {
       color: var(--muted);
+      font-size: 12px;
     }
     .updated time {
       color: var(--ink-2);
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 260px minmax(0, 65ch);
-      grid-template-areas:
-        'toc summary'
-        'toc article';
-      column-gap: 56px;
-      align-items: start;
-    }
     .summary {
-      grid-area: summary;
+      padding: 16px 18px;
+      border-radius: var(--r-inner);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      margin-bottom: 36px;
     }
-    .toc-col {
-      grid-area: toc;
-      align-self: stretch;
-    }
-    .prose {
-      grid-area: article;
-    }
-
-    /* TOC */
-    .toc {
-      position: sticky;
-      top: calc(var(--nav-h) + var(--nav-top) + 24px);
-      padding: 20px;
-    }
-    .toc__title {
+    .summary__title {
       font-size: 13px;
       font-weight: 500;
       color: var(--muted);
       margin-bottom: 10px;
     }
-    .toc__title--other {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-    }
-    .toc ol {
-      display: grid;
-      gap: 2px;
-      counter-reset: toc;
-    }
-    .toc ol a {
-      display: flex;
-      gap: 10px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      line-height: 1.4;
-      color: var(--ink-2);
-      transition:
-        background var(--t-base) var(--ease),
-        color var(--t-base) var(--ease);
-    }
-    .toc ol a::before {
-      counter-increment: toc;
-      content: counter(toc, decimal-leading-zero);
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--muted);
-      padding-top: 1px;
-    }
-    .toc ol a:hover {
-      color: var(--ink);
-      background: var(--surface-2);
-    }
-    .toc ol a[aria-current] {
-      color: var(--ink);
-      background: var(--accent-soft);
-    }
-    .others {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    /* Prose */
-    .prose {
-      max-width: 65ch;
-      color: var(--ink-2);
-      font-size: 16.5px;
-      line-height: 1.7;
-    }
-    .summary {
-      margin-bottom: 48px;
-      color: var(--ink);
-      max-width: 65ch;
-    }
-    .summary__title {
-      font-size: 1.1rem;
-      letter-spacing: -0.015em;
-      margin-bottom: 14px;
-    }
     .summary ul {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
     .summary li {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: baseline;
-      font-size: 15.5px;
+      font-size: 14px;
       line-height: 1.6;
       color: var(--ink-2);
     }
     .tick {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
       background: var(--ink);
       flex-shrink: 0;
       transform: translateY(-2px);
     }
+
+    .prose {
+      color: var(--ink-2);
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
     .part {
-      padding-top: 8px;
-      margin-bottom: 40px;
+      padding-top: 22px;
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
       scroll-margin-top: calc(var(--nav-h) + var(--nav-top) + 24px);
     }
+    .part:first-child {
+      border-top: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
     .part h2 {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
       color: var(--ink);
-      font-size: 1.5rem;
-      line-height: 1.25;
-      letter-spacing: -0.025em;
-      margin-bottom: 14px;
+      font-size: 1.05rem;
+      line-height: 1.35;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+    }
+    .num {
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--muted);
     }
     .part p + p,
     .part p + ul,
     .part ul + p {
-      margin-top: 14px;
+      margin-top: 10px;
     }
     .part ul {
       margin: 0;
       padding-left: 1.2em;
       display: grid;
-      gap: 6px;
+      gap: 5px;
     }
     .part li::marker {
       color: var(--muted);
@@ -326,63 +249,35 @@ export const LEGAL_LINKS = [
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px 20px;
-      margin-top: 56px;
-      color: var(--ink);
+      gap: 14px 20px;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+    .others {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    @media (max-width: 960px) {
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-areas: 'summary' 'toc' 'article';
-      }
-      .summary {
-        margin-bottom: 12px;
-      }
-      .toc {
-        position: static;
-        margin-bottom: 48px;
-      }
-    }
     @media (max-width: 640px) {
       :host {
-        padding-bottom: 80px;
+        padding-bottom: 56px;
       }
       .head {
-        padding-bottom: 40px;
-      }
-      .prose {
-        font-size: 16px;
+        padding-bottom: 28px;
       }
     }
   `,
 })
 export class LegalLayout {
   readonly doc = input.required<LegalDoc>();
-  protected readonly active = signal<string | null>(null);
   protected readonly others = () => LEGAL_LINKS.filter((l) => l.path !== this.doc().path);
 
   private readonly hero = viewChild.required<ElementRef<HTMLElement>>('hero');
-  private readonly article = viewChild.required<ElementRef<HTMLElement>>('article');
 
   constructor() {
-    const destroyRef = inject(DestroyRef);
-    afterNextRender(() => {
-      this.hero().nativeElement.classList.add('ready');
-      if (typeof IntersectionObserver === 'undefined') return;
-      // Highlight the section being read in the table of contents.
-      const parts = Array.from(
-        this.article().nativeElement.querySelectorAll<HTMLElement>('section.part'),
-      );
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) if (e.isIntersecting) this.active.set(e.target.id);
-        },
-        { rootMargin: '-20% 0px -70% 0px' },
-      );
-      parts.forEach((p) => io.observe(p));
-      destroyRef.onDestroy(() => io.disconnect());
-    });
+    afterNextRender(() => this.hero().nativeElement.classList.add('ready'));
   }
 
   protected segs(v: Rich): readonly Inline[] {

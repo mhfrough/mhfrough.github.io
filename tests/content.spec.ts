@@ -8,6 +8,9 @@ test.beforeEach(({}, info) => {
 
 /** Employers are never named (owner's rule). "Nearby" is matched case-sensitively so the plain word "nearby" passes. */
 const EMPLOYERS = [/arittek/i, /\bNearby\b/, /malik\s*tech/i];
+/** Owner's exception (2026-10-11): Arittek is named as the client of its own site, on its case study and in the
+ *  two indexes that list that case study. Everywhere else the rule above holds. */
+const ARITTEK_OK = new Set<string>(['/work/arittek', '/work', '/sitemap']);
 
 for (const route of ROUTES) {
   test.describe(`content ${route}`, () => {
@@ -32,6 +35,7 @@ for (const route of ROUTES) {
     test('never names an employer', async ({ request }) => {
       const html = await (await request.get(route)).text();
       for (const re of EMPLOYERS) {
+        if (re.source === 'arittek' && ARITTEK_OK.has(route)) continue;
         const m = html.match(re);
         expect(m?.[0] ?? null, `employer name ${re} found near: ${m ? html.slice(Math.max(0, m.index! - 60), m.index! + 60) : ''}`).toBeNull();
       }

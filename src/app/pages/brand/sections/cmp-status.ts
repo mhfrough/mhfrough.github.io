@@ -1,33 +1,17 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
-import { Avatar } from '../../../shared/ui/avatar';
 import { Skeleton } from '../../../shared/ui/skeleton';
 import { Spec } from './spec';
 
 const MARQUEE = ['Angular', 'NestJS', 'PostgreSQL', 'Micro-frontends', 'Multi-tenant SaaS', 'WCAG 2.1 AA', 'Flutter', 'Socket.io', 'Stripe', 'WebAuthn'];
 
-/** Components, part 4 (deferred): avatar, skeletons, loading vs loaded card, reel frame, the page's one marquee. */
+/** Components, part 4 (deferred): skeletons, loading vs loaded card, reel frame, the page's one marquee. */
 @Component({
   selector: 'mh-brand-cmp-status',
-  imports: [Spec, Avatar, Skeleton],
+  imports: [Spec, Skeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="bp-grid">
-      <mh-spec name="Avatar" cls="mh-avatar [size] [src]" layout="center" [markup]="avatarMarkup">
-        <figure class="av">
-          <mh-avatar [size]="72" />
-          <figcaption class="mono">photo slot</figcaption>
-        </figure>
-        <figure class="av">
-          <mh-avatar [size]="56" [src]="null" />
-          <figcaption class="mono">monogram 56</figcaption>
-        </figure>
-        <figure class="av">
-          <mh-avatar [size]="40" [src]="null" />
-          <figcaption class="mono">40</figcaption>
-        </figure>
-      </mh-spec>
-
-      <mh-spec name="Skeletons" cls="mh-skeleton shape text | block | circle" layout="col" [markup]="skelMarkup">
+      <mh-spec name="Skeletons" cls="mh-skeleton shape text | block | circle" layout="col" class="span-all" [markup]="skelMarkup">
         <div class="sk-row">
           <mh-skeleton shape="circle" [size]="40" />
           <mh-skeleton class="grow" shape="text" [lines]="2" />
@@ -86,18 +70,6 @@ const MARQUEE = ['Angular', 'NestJS', 'PostgreSQL', 'Micro-frontends', 'Multi-te
     </div>
   `,
   styles: `
-    .av {
-      display: grid;
-      justify-items: center;
-      align-content: end;
-      gap: 10px;
-      height: 106px;
-      margin: 0 12px;
-    }
-    .av figcaption {
-      font-size: 12px;
-      color: var(--muted);
-    }
     .sk-row {
       display: flex;
       align-items: center;
@@ -179,7 +151,6 @@ export class BrandCmpStatus {
   protected readonly items = [...MARQUEE, ...MARQUEE];
   protected readonly half = MARQUEE.length;
   protected readonly onScreen = signal(false);
-  protected readonly avatarMarkup = `<mh-avatar [size]="40" />\n<mh-avatar [size]="40" [src]="null" />`;
   protected readonly skelMarkup = `<mh-skeleton shape="circle" [size]="40" />\n<mh-skeleton shape="text" [lines]="2" />\n<mh-skeleton shape="block" ratio="16/9" />`;
   protected readonly deferMarkup = `@defer (on viewport) {\n  <mh-project-card [project]="p" />\n} @placeholder (minimum 300ms) {\n  <mh-skeleton shape="block" ratio="1200/630" />\n}`;
   private readonly marquee = viewChild.required<ElementRef<HTMLElement>>('marquee');

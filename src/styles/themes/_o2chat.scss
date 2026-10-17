@@ -1,0 +1,91 @@
+// O2Chat case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in O2Chat's
+// colours: the speech-bubble mark's blue gradient (#35b7fc to #0857e9), the product's own button blue #0d6efd and
+// the pale blue-grey its pages and inbox sit on. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="o2chat"> (route data on /work/o2chat). Every rule is scoped to that attribute, so
+// nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.0:1 on --bg, ink-2 9.6:1, muted 5.7:1 on --bg, 5.3:1 on --surface-2 and 6.1:1 on
+// white, white on the CTA #0a58ca 6.4:1 (the product's #0d6efd is 4.5:1, so it fills shapes and large type only),
+// --o-blue-text 6.4:1 on white and 5.6:1 on --o-blue-soft, --o-green-text 5.4:1 on white and 4.8:1 on
+// --o-green-soft, --o-amber-text 4.7:1 on --o-amber-soft, --o-red-text 5.9:1 on white and 5.0:1 on --o-red-soft.
+// Channel colours (WhatsApp, Messenger, Instagram) are fills behind white icons only. Night blocks: --n-ink 15.9:1,
+// --n-muted 8.9:1 on --o-night.
+
+:root[data-theme='o2chat'] {
+  // Surfaces
+  --bg: #f3f6fb;
+  --bg-2: #e8eef8;
+  --bg-raise: #e8eef8;
+  --surface: #ffffff;
+  --surface-2: #e8eef8;
+  --line: #dce4ef;
+  --line-strong: #c3cfe0;
+
+  // Ink, tinted towards the mark's navy end
+  --ink: #111a2e;
+  --ink-2: #34405a;
+  --muted: #56627a;
+  --faint: #c3cfe0; // decorative only
+
+  // Brand: the bubble's gradient and the product's button blue. One family, so the page reads as O2Chat.
+  --o-blue: #0d6efd; // fills and large type
+  --o-blue-text: #0a58ca;
+  --o-blue-soft: #e5f0ff;
+  --o-sky: #35b7fc; // fills only
+  --o-deep: #0857e9; // fills only
+  --o-grad: linear-gradient(135deg, #35b7fc, #0857e9);
+  --o-green-text: #0f7a43;
+  --o-green-soft: #e3f6ea;
+  --o-amber-text: #a15c00;
+  --o-amber-soft: #fff3d6;
+  --o-red-text: #c0263f;
+  --o-red-soft: #fde7eb;
+
+  // Channels: fills behind white glyphs only.
+  --o-ch-web: #4a5c79;
+  --o-ch-wa: #1fa855;
+  --o-ch-ms: #0a7cff;
+  --o-ch-ig: #c72a7c;
+  --o-ch-mail: #7a5af8;
+  --o-ch-app: #3d8c40;
+
+  --o-night: #0a1733;
+  --o-night-2: #11224a;
+  --o-night-line: rgb(238 243 251 / 0.12);
+  --o-night-line-strong: rgb(238 243 251 / 0.22);
+  --n-ink: #eef3fb;
+  --n-muted: #a9b8d6;
+
+  --accent: #0a58ca;
+  --accent-ink: #ffffff;
+  --accent-soft: #e5f0ff;
+  --cta: #0a58ca;
+  --cta-ink: #ffffff;
+  --focus: #0a58ca;
+
+  --solid: #0a1733;
+  --solid-ink: #eef3fb;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(10 23 51 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(10 23 51 / 0.05), 0 14px 34px -16px rgb(10 40 110 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(10 23 51 / 0.05), 0 36px 72px -28px rgb(10 40 110 / 0.3);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--o-blue-text);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b6c8e6;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(53 183 252 / 0.16), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(8 87 233 / 0.08), transparent 70%);
+  }
+}

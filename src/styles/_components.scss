@@ -11,19 +11,19 @@
 
 .section,
 section.block {
-  padding: 120px 0;
+  padding: 88px 0;
 }
 
 @media (max-width: 768px) {
   .section,
   section.block {
-    padding: 80px 0;
+    padding: 64px 0;
   }
 }
 
 // First section of a page: clears the floating nav (main sits under it).
 .page-head {
-  padding-top: calc(var(--nav-h) + var(--nav-top) + 72px);
+  padding-top: calc(var(--nav-h) + var(--nav-top) + 56px);
 }
 
 @media (max-width: 640px) {
@@ -65,11 +65,11 @@ section.block {
 // ---------- Type ----------
 // Hero headline: two lines, the second softened (Quorum: "One decision. / Seven minds.")
 .display {
-  font-size: clamp(2.4rem, 5.6vw, 4.2rem);
-  line-height: 1.04;
-  letter-spacing: -0.045em;
+  font-size: clamp(2.1rem, 4.4vw, 3.35rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
   font-weight: 600;
-  margin: 24px 0 20px;
+  margin: 20px 0 16px;
 
   .line {
     display: block;
@@ -89,17 +89,17 @@ section.block {
 // Section title + sub (Quorum: h2.title / p.sub)
 .title,
 .h2 {
-  font-size: clamp(2rem, 4vw, 3.1rem);
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   font-weight: 600;
-  margin: 0 0 16px;
-  max-width: 18ch;
+  margin: 0 0 12px;
+  max-width: 22ch;
 }
 
 .h1 {
-  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
-  line-height: 1.04;
+  font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+  line-height: 1.06;
   letter-spacing: -0.04em;
   font-weight: 600;
 }
@@ -114,14 +114,14 @@ section.block {
 .sub,
 .lede {
   color: var(--ink-2);
-  font-size: 1.075rem;
+  font-size: 1rem;
   max-width: 56ch;
   margin: 0;
 }
 
 .lede {
-  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-  max-width: 34ch;
+  font-size: clamp(1rem, 1.2vw, 1.09rem);
+  max-width: 40ch;
 }
 
 .body {
@@ -173,10 +173,10 @@ section.block {
   gap: 8px;
   white-space: nowrap;
   height: 44px;
-  padding: 0 20px;
+  padding: 0 18px;
   border-radius: 999px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 14.5px;
   border: 1px solid transparent;
   cursor: pointer;
   transition:
@@ -378,7 +378,7 @@ section.block {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-card);
-  padding: 26px;
+  padding: 22px;
 }
 
 .card--hover {
@@ -388,7 +388,8 @@ section.block {
     border-color 0.35s var(--ease);
 
   &:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
     box-shadow: var(--shadow);
   }
 }
@@ -406,8 +407,8 @@ section.block {
 
 // Icon well inside cards (Quorum .how-ic)
 .icon-well {
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--ink);
@@ -416,22 +417,33 @@ section.block {
   flex-shrink: 0;
 
   ng-icon {
-    font-size: 24px;
+    font-size: 19px;
   }
 }
 
 // Square-ish well (Quorum .s-e)
 .icon-tile {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   background: var(--surface-2);
   display: grid;
   place-items: center;
   flex-shrink: 0;
 
   ng-icon {
-    font-size: 26px;
+    font-size: 20px;
+  }
+}
+// A project's own favicon replaces the Phosphor icon when we have one (light tile, like a browser tab).
+.icon-tile--fav {
+  background: var(--cta);
+  padding: 7px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 
@@ -557,6 +569,8 @@ section.block {
 // ---------- Forms ----------
 .field {
   display: grid;
+  // One column that never grows past its container (a long value or select would otherwise widen the form).
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
 }
 
@@ -812,5 +826,111 @@ section.block {
     // fade out so short heroes never end on a hard edge
     -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent);
     mask-image: linear-gradient(to bottom, #000 60%, transparent);
+  }
+}
+
+// ---------- Status pill + blip ----------
+// "Taking on new projects": a live dot that sends out a soft sonar ring. Off state is a hollow dot.
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    border-color var(--t-base) var(--ease),
+    color var(--t-base) var(--ease);
+
+  &:is(a):hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+}
+
+.blip {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--muted);
+
+  &.is-on {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .blip.is-on::before,
+  .blip.is-on::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: var(--ink);
+    animation: blip 2.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  }
+
+  .blip.is-on::after {
+    animation-delay: 1.3s;
+  }
+}
+
+@keyframes blip {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  70%,
+  100% {
+    transform: scale(3.6);
+    opacity: 0;
+  }
+}
+
+// ---------- Icon nudge ----------
+// An icon inside a link or button travels a few pixels the way it points when the control is hovered or focused:
+// arrows go where they lead, downloads dip, social logos lift. Transform only, off under reduced motion.
+// Matches the icon by name, so any button or link that carries one of these icons gets it with no extra class.
+@media (prefers-reduced-motion: no-preference) {
+  :is(a, button) ng-icon {
+    transition: transform var(--t-base) var(--ease);
+  }
+
+  :is(a, button):is(:hover, :focus-visible) ng-icon {
+    &[name*='ArrowRight'],
+    &[name*='CaretRight'] {
+      transform: translateX(3px);
+    }
+
+    &[name*='ArrowUpRight'] {
+      transform: translate(2px, -2px);
+    }
+
+    &[name*='ArrowLeft'],
+    &[name*='CaretLeft'] {
+      transform: translateX(-3px);
+    }
+
+    &[name='phosphorArrowUp'] {
+      transform: translateY(-3px);
+    }
+
+    &[name*='Download'] {
+      transform: translateY(2px);
+    }
+
+    &[name$='Logo'] {
+      transform: translateY(-2px);
+    }
   }
 }

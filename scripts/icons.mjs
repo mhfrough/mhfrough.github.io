@@ -7,9 +7,9 @@ import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { ROOT } from './_env.mjs';
 
-// Keep in sync with MARK_ARC / MARK_BAR in src/app/shared/ui/logo.ts (48-unit grid).
-const MARK_ARC = 'M30.36 15.14A9 9 0 1 0 24 30.5';
-const MARK_BAR = { x: 12, y: 30, w: 25, h: 5 };
+// Keep in sync with MARK_ARC / MARK_TAIL in src/app/shared/ui/logo.ts (48-unit grid).
+const MARK_ARC = 'M30.16 15.34A8 8 0 1 0 24.5 29';
+const MARK_TAIL = 'M22.5 26.5H37V28.5L15.5 38V35Z';
 // Monochrome palette shared with the site (Quorum system, black and white re-skin).
 const INK = '#ededed';
 const BG = '#111111';
@@ -20,15 +20,15 @@ const BG = '#111111';
  * @param {number} o.radius  corner radius in grid units (0 = full bleed square)
  */
 function markSvg({ scale = 1, radius = 0 } = {}) {
-  // Scale around the optical centre of the mark (bbox x 12..37, y 10..35), so padding is even.
-  const cx = 24.5;
-  const cy = 22.5;
+  // The mark is drawn optically centred on the 48 grid, so scale around the grid centre.
+  const cx = 24;
+  const cy = 24;
   const t = `translate(24 24) scale(${scale}) translate(${-cx} ${-cy})`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <rect width="48" height="48" rx="${radius}" fill="${BG}"/>
   <g transform="${t}">
     <path d="${MARK_ARC}" fill="none" stroke="${INK}" stroke-width="5"/>
-    <rect x="${MARK_BAR.x}" y="${MARK_BAR.y}" width="${MARK_BAR.w}" height="${MARK_BAR.h}" fill="${INK}"/>
+    <path d="${MARK_TAIL}" fill="${INK}"/>
   </g>
 </svg>`;
 }
@@ -81,7 +81,7 @@ writeFileSync(resolve(icons, 'icon-192.png'), await png(any, 192));
 writeFileSync(resolve(icons, 'icon-512.png'), await png(any, 512));
 
 // Maskable: full-bleed background, mark kept inside the 80% safe circle (radius 0.4 * 48 = 19.2).
-// Mark bbox is ~25 units square, half-diagonal ~17.7 at scale 1, so 0.9 leaves clear margin.
+// Farthest mark corner from the centre is ~19.1 units at scale 1, so 0.9 (17.2) leaves clear margin.
 writeFileSync(resolve(icons, 'icon-maskable-512.png'), await png(markSvg({ scale: 0.9, radius: 0 }), 512));
 
 // Apple touch: iOS rounds the corners itself, so full bleed square.

@@ -86,6 +86,9 @@ export function startServer(dist, port = 0, host = '127.0.0.1') {
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const i = process.argv.indexOf('--port');
   const port = i > -1 ? Number(process.argv[i + 1]) : 4400;
-  const s = await startServer(distArg(), port);
-  console.log(`serving ${distArg()} at http://127.0.0.1:${s.address().port}`);
+  // --host 0.0.0.0 to reach the build from other devices on the network.
+  const h = process.argv.indexOf('--host');
+  const host = h > -1 ? process.argv[h + 1] : '127.0.0.1';
+  const s = await startServer(distArg(), port, host);
+  console.log(`serving ${distArg()} at http://${host}:${s.address().port}`);
 }

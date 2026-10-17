@@ -857,6 +857,12 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  // Stacked above the card, the chips read as a row, not a column
+  .shape__chips {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .cell,
   .step,
   .fact,

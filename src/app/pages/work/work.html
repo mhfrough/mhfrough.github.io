@@ -53,21 +53,25 @@
       </div>
     }
 
-    @if (cells().length) {
+    @if (cells().length || minor().length) {
       <div class="grid-head">
         <div>
           <h2 class="grid-title" id="work-grid-title">{{ t.grid.title }}</h2>
           <p class="grid-note">{{ t.grid.note }}</p>
         </div>
-        <p class="mono muted grid-count">{{ t.grid.count(cells().length) }}</p>
+        <p class="mono muted grid-count">{{ t.grid.count(cells().length + minor().length) }}</p>
       </div>
 
       <ul class="bento" role="list">
         @for (c of cells(); track c.p.id; let i = $index) {
           <li class="slot" [class.wide]="c.span === 2" [class.full]="c.span === 3" mhReveal [revealIndex]="i % 3">
-            <article class="card card--hover cell" [class.card--solid]="c.solid">
+            <article class="card card--hover cell" [class.card--solid]="c.solid" [class.is-link]="!!c.p.caseStudy" [class.has-cover]="c.span > 1 && !!c.p.cover">
               <div class="cell__head">
-                <span class="icon-tile" aria-hidden="true"><ng-icon [name]="c.p.icon" /></span>
+                @if (c.p.favicon) {
+                  <span class="icon-tile icon-tile--fav" aria-hidden="true"><img [src]="c.p.favicon" width="28" height="28" alt="" loading="lazy" decoding="async" /></span>
+                } @else {
+                  <span class="icon-tile" aria-hidden="true"><ng-icon [name]="c.p.icon" /></span>
+                }
                 <div class="cell__id">
                   <h3 class="cell__title">{{ c.p.title }}</h3>
                   <p class="cell__meta">
@@ -99,7 +103,11 @@
                     <li class="tag">{{ s }}</li>
                   }
                 </ul>
-                @if (c.p.link; as l) {
+                @if (c.p.caseStudy; as cs) {
+                  <a class="more cell__link cell__link--card" [routerLink]="cs">
+                    {{ t.grid.caseStudy }}<ng-icon name="phosphorArrowRight" aria-hidden="true" />
+                  </a>
+                } @else if (c.p.link; as l) {
                   <a class="link cell__link" [href]="l.href" target="_blank" rel="noopener">
                     {{ l.label }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
                     <span class="sr-only">{{ t.grid.externalHint }}</span>
@@ -108,13 +116,58 @@
                   <p class="cell__status">{{ t.grid.status }}</p>
                 }
               </div>
+
+              @if (c.p.cover; as cv) {
+                @if (shots(c.p); as sh) {
+                  @if (c.span === 1) {
+                    <mh-card-slider class="cell__slider" [shots]="firstShots(c.p)!" [link]="c.p.caseStudy!" [label]="c.p.title" />
+                  } @else {
+                    <mh-card-deck class="cell__deck" [shots]="sh" [link]="c.p.caseStudy!" [label]="c.p.title" />
+                  }
+                } @else {
+                  <a class="cell__cover" [routerLink]="c.p.caseStudy" tabindex="-1" aria-hidden="true">
+                    <img [src]="cv.src" [width]="cv.width" [height]="cv.height" [alt]="cv.alt" loading="lazy" decoding="async" />
+                  </a>
+                }
+              }
             </article>
           </li>
         }
       </ul>
+
+      @if (minor().length) {
+        <ul class="minor" role="list" aria-label="Smaller work">
+          @for (p of minor(); track p.id; let i = $index) {
+            <li class="card minor__item" mhReveal [revealIndex]="i">
+              <span class="icon-tile" aria-hidden="true"><ng-icon [name]="p.icon" /></span>
+              <div class="minor__body">
+                <h3>{{ p.title }}</h3>
+                <p>{{ p.outcome }}</p>
+                @if (p.link; as l) {
+                  <a class="more" [href]="l.href" target="_blank" rel="noopener">
+                    {{ l.label }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+                    <span class="sr-only">{{ t.grid.externalHint }}</span>
+                  </a>
+                } @else {
+                  <p class="cell__status">{{ p.domain }}{{ p.freelance ? ' · freelance' : '' }}</p>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      }
     }
   </div>
 </section>
+
+@if (showIcons()) {
+  <mh-weather-icons mhReveal />
+}
+
+@if (showPackage()) {
+  <mh-star-rating-pkg mhReveal />
+  <mh-faaa-card mhReveal />
+}
 
 <section class="section close center">
   <div class="wrap" mhReveal>

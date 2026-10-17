@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en" data-format="vertical">
+<head>
+<meta charset="utf-8">
+<title>Hire Reel</title>
+<script>
+  // ?format=vertical (1080x1920, default) | square (1080x1080). Set before CSS so the first paint is right.
+  document.documentElement.dataset.format = new URLSearchParams(location.search).get('format') === 'square' ? 'square' : 'vertical';
+</script>
+<style>
+@font-face{font-family:"Geist Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2) format("woff2-variations")}
+@font-face{font-family:"Geist Mono Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2) format("woff2-variations")}
+
+/* Site tokens (src/styles/_tokens.scss). Sizes below are written in site pixels times --u. */
+:root{
+  --bg:#111111;--bg-2:#151515;--surface:#1a1a1a;--surface-2:#222222;
+  --ink:#ededed;--ink-2:#c9c9c9;--muted:#9a9a9a;--line:#2c2c2c;--line-strong:#3a3a3a;
+  --accent-soft:#232323;--solid:#262626;--solid-ink:#ededed;--solid-edge:rgb(255 255 255 / .08);
+  --cta:#ededed;--cta-ink:#111111;--glass-edge:rgb(255 255 255 / .09);--glass-hi:rgb(255 255 255 / .07);
+  --shadow-lg:0 2px 4px rgb(0 0 0 / .3),0 40px 80px -30px rgb(0 0 0 / .7);
+  --sans:"Geist Variable",system-ui,sans-serif;--mono:"Geist Mono Variable",monospace;
+  --ease:cubic-bezier(.16,1,.3,1);--in:cubic-bezier(.55,0,.75,.2);
+  color-scheme:dark;
+}
+html[data-format=vertical]{--W:1080px;--H:1920px;--u:2.9px;--top:250px;--bottom:380px;--side:90px}
+html[data-format=square]{--W:1080px;--H:1080px;--u:1.95px;--top:80px;--bottom:80px;--side:80px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:var(--W);height:var(--H);overflow:hidden;background:var(--bg)}
+body{position:relative;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+/* Nothing moves until fonts are in; then every animation starts from 0 together */
+body.hold *,body.hold *::before,body.hold *::after{animation-play-state:paused !important}
+
+@keyframes lineIn{from{transform:translateY(110%)}to{transform:none}}
+@keyframes lineOut{from{transform:none}to{transform:translateY(-110%)}}
+@keyframes rise{from{opacity:0;transform:translateY(calc(var(--u) * 14))}to{opacity:1;transform:none}}
+@keyframes riseOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(calc(var(--u) * -10))}}
+@keyframes pop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-14%,9%)}}
+@keyframes blip{0%{transform:scale(1);opacity:.5}70%,100%{transform:scale(3.6);opacity:0}}
+@keyframes press{0%,100%{transform:none}35%{transform:scale(.94)}}
+@keyframes ring{from{opacity:.55;transform:scale(1)}to{opacity:0;transform:scale(1.35,1.9)}}
+@keyframes type{from{width:0}to{width:var(--w)}}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+/* ---------- background ---------- */
+#field{position:absolute;inset:0;width:100%;height:100%;
+  -webkit-mask-image:radial-gradient(ellipse 85% 70% at 78% 30%,#000 15%,transparent 80%);
+          mask-image:radial-gradient(ellipse 85% 70% at 78% 30%,#000 15%,transparent 80%)}
+.glow{position:absolute;width:120%;aspect-ratio:1;right:-45%;top:-35%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(237 237 237 / .075),transparent);animation:drift 24s linear both}
+.vignette{position:absolute;inset:0;background:radial-gradient(120% 85% at 50% 45%,transparent 55%,rgb(0 0 0 / .5));pointer-events:none}
+
+/* ---------- shared bits ---------- */
+.a{animation:rise .9s var(--ease) var(--d) both,riseOut .45s var(--in) var(--o) forwards}
+.line{display:block;overflow:hidden;padding-bottom:.08em}
+.line>span{display:inline-block;white-space:nowrap;animation:lineIn 1s var(--ease) var(--d) both,lineOut .45s var(--in) var(--o) forwards}
+.soft{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.tile{display:grid;place-items:center;background:var(--cta);color:var(--cta-ink);flex-shrink:0}
+.tile svg{width:62%;height:62%}
+.ic{display:block;width:100%;height:100%}
+.ic svg{display:block;width:100%;height:100%}
+
+.status{display:inline-flex;align-items:center;gap:calc(var(--u) * 10);height:calc(var(--u) * 32);padding:0 calc(var(--u) * 14) 0 calc(var(--u) * 12);
+  border-radius:999px;background:var(--surface);border:calc(var(--u) * 1) solid var(--line);color:var(--ink-2);font-size:calc(var(--u) * 13);font-weight:500;white-space:nowrap}
+.blip{position:relative;width:calc(var(--u) * 7);height:calc(var(--u) * 7);border-radius:50%;background:var(--ink)}
+.blip::before,.blip::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ink);animation:blip 2.6s cubic-bezier(.2,.6,.3,1) infinite}
+.blip::after{animation-delay:1.3s}
+.card{background:var(--surface);border:calc(var(--u) * 1) solid var(--line);border-radius:calc(var(--u) * 16);padding:calc(var(--u) * 22)}
+.card.solid{background:var(--solid);border-color:var(--solid-edge)}
+.well{display:grid;place-items:center;width:calc(var(--u) * 40);height:calc(var(--u) * 40);border-radius:50%;background:var(--accent-soft);flex-shrink:0}
+.well .ic{width:calc(var(--u) * 20);height:calc(var(--u) * 20)}
+.tag{display:inline-flex;align-items:center;height:calc(var(--u) * 24);padding:0 calc(var(--u) * 10);border-radius:999px;border:calc(var(--u) * 1) solid var(--line);
+  font-family:var(--mono);font-size:calc(var(--u) * 11.5);color:var(--ink-2);white-space:nowrap}
+
+/* ---------- brand pill (persistent) ---------- */
+.brand{position:absolute;top:var(--top);left:var(--side);display:flex;align-items:center;gap:calc(var(--u) * 10);
+  padding:calc(var(--u) * 5) calc(var(--u) * 16) calc(var(--u) * 5) calc(var(--u) * 5);border-radius:999px;
+  background:rgb(26 26 26 / .72);border:calc(var(--u) * 1) solid var(--glass-edge);box-shadow:inset 0 calc(var(--u) * 1) 0 var(--glass-hi);
+  font-weight:600;font-size:calc(var(--u) * 15);letter-spacing:-.01em;z-index:3}
+.brand .tile{width:calc(var(--u) * 30);height:calc(var(--u) * 30);border-radius:50%}
+
+/* ---------- scenes ---------- */
+.scene{position:absolute;left:var(--side);right:var(--side);top:calc(var(--top) + var(--u) * 64);bottom:var(--bottom);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.display{font-size:calc(var(--u) * 50);line-height:1.04;letter-spacing:-.045em;font-weight:600;margin:calc(var(--u) * 18) 0 calc(var(--u) * 14)}
+.lede{font-size:calc(var(--u) * 16.5);line-height:1.5;color:var(--ink-2);max-width:34ch}
+.title{font-size:calc(var(--u) * 38);line-height:1.06;letter-spacing:-.04em;font-weight:600;margin-bottom:calc(var(--u) * 22)}
+.kicker{font-family:var(--mono);font-size:calc(var(--u) * 13);color:var(--muted);margin-bottom:calc(var(--u) * 12)}
+.chips{display:flex;flex-wrap:wrap;gap:calc(var(--u) * 7);margin-top:calc(var(--u) * 22)}
+
+/* s2: stats */
+.stats{display:grid;gap:calc(var(--u) * 10);width:100%}
+.stat{display:flex;align-items:baseline;gap:calc(var(--u) * 18)}
+.stat b{font-size:calc(var(--u) * 52);font-weight:600;letter-spacing:-.05em;line-height:1;min-width:3.1ch;font-variant-numeric:tabular-nums}
+.stat span{font-size:calc(var(--u) * 16);color:var(--ink-2);line-height:1.35}
+html[data-format=square] .stats{grid-template-columns:repeat(3,1fr)}
+html[data-format=square] .stat{flex-direction:column;gap:calc(var(--u) * 12)}
+
+/* s3: ways */
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u) * 10);width:100%}
+.way{display:flex;flex-direction:column;gap:calc(var(--u) * 10)}
+.way h3{font-size:calc(var(--u) * 19);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-top:calc(var(--u) * 6)}
+.way.solid .well{background:rgb(255 255 255 / .08)}
+/* vertical: tighter cards so scenes 2 and 4 stay inside their area; row tags drop out so the promises fit one line */
+html[data-format=vertical] .stat,html[data-format=vertical] .row{padding:calc(var(--u) * 17) calc(var(--u) * 20)}
+html[data-format=vertical] .stat b{font-size:calc(var(--u) * 44)}
+html[data-format=vertical] .row .tag{display:none}
+html[data-format=vertical] .cta h2{font-size:calc(var(--u) * 34)}
+/* vertical: half-width cards are too narrow for the mono tags at this size, so they show icon + title only */
+html[data-format=vertical] .way{padding:calc(var(--u) * 18);gap:calc(var(--u) * 12)}
+html[data-format=vertical] .way .tag{display:none}
+html[data-format=vertical] .way h3{margin:0;font-size:calc(var(--u) * 18)}
+html[data-format=square] .way{flex-direction:row;align-items:center;flex-wrap:wrap}
+html[data-format=square] .way h3{margin:0;flex:1}
+html[data-format=square] .way .tag{flex-basis:auto}
+
+/* s4: style rows */
+.rows{display:grid;gap:calc(var(--u) * 10);width:100%}
+.row{display:flex;align-items:center;gap:calc(var(--u) * 16)}
+.row strong{font-size:calc(var(--u) * 19);font-weight:600;letter-spacing:-.02em}
+.row .tag{margin-left:auto}
+
+/* s5: CTA */
+.cta{align-items:center;text-align:center;top:var(--top)}
+.cta .tile{width:calc(var(--u) * 84);height:calc(var(--u) * 84);border-radius:calc(var(--u) * 22);margin-bottom:calc(var(--u) * 22)}
+.cta h2{font-size:calc(var(--u) * 40);font-weight:600;letter-spacing:-.045em;line-height:1.04}
+.cta .role{font-size:calc(var(--u) * 19);color:var(--muted);margin:calc(var(--u) * 8) 0 calc(var(--u) * 28)}
+.btn{position:relative;display:inline-flex;align-items:center;gap:calc(var(--u) * 10);height:calc(var(--u) * 52);padding:0 calc(var(--u) * 28);
+  border-radius:999px;background:var(--cta);color:var(--cta-ink);font-size:calc(var(--u) * 19);font-weight:600;
+  animation:rise .9s var(--ease) var(--d) both,press .5s var(--ease) var(--press) both}
+.btn .ic{width:calc(var(--u) * 20);height:calc(var(--u) * 20)}
+.btn::after{content:"";position:absolute;inset:0;border-radius:inherit;border:calc(var(--u) * 1.5) solid var(--ink);opacity:0;
+  animation:ring 1s var(--ease) calc(var(--press) + .12s) both}
+.url{display:flex;align-items:center;gap:calc(var(--u) * 10);margin-top:calc(var(--u) * 14);height:calc(var(--u) * 44);padding:0 calc(var(--u) * 22);
+  border-radius:999px;background:var(--solid);border:calc(var(--u) * 1) solid var(--solid-edge);font-family:var(--mono);font-size:calc(var(--u) * 16)}
+.url .prompt{opacity:.62}
+.url code{font-family:inherit;display:inline-block;overflow:hidden;white-space:nowrap;width:0;--w:17ch;
+  animation:type .9s steps(17) var(--type) forwards}
+.url i{display:inline-block;width:calc(var(--u) * 2);height:1.15em;background:var(--ink);animation:caret 1s steps(1) infinite}
+.cta .status{margin-top:calc(var(--u) * 26)}
+</style>
+</head>
+<body class="hold">
+<canvas id="field"></canvas>
+<div class="glow"></div>
+<div class="vignette"></div>
+
+<div class="brand a" data-in="brand" data-out="cta-.4">
+  <span class="tile mark"></span>mhfrough
+</div>
+
+<!-- 1: who -->
+<section class="scene s1">
+  <span class="status a" data-in="s1" data-out="s2-.45"><span class="blip"></span>Taking on new projects</span>
+  <h1 class="display">
+    <span class="line"><span data-in="s1+.15" data-out="s2-.4">Built right,</span></span>
+    <span class="line soft"><span data-in="s1+.3" data-out="s2-.35">from day one.</span></span>
+  </h1>
+  <p class="lede a" data-in="lede" data-out="s2-.3">Software architect. Angular, NestJS, SaaS.</p>
+  <div class="chips">
+    <span class="tag a" data-in="chips" data-out="s2-.3">Freelance builds</span>
+    <span class="tag a" data-in="chips+.08" data-out="s2-.28">Contract work</span>
+    <span class="tag a" data-in="chips+.16" data-out="s2-.26">Architecture reviews</span>
+    <span class="tag a" data-in="chips+.24" data-out="s2-.24">Frontend rescues</span>
+  </div>
+</section>
+
+<!-- 2: proof -->
+<section class="scene s2">
+  <p class="kicker a" data-in="s2" data-out="s3-.45">Nearly 7 years in production</p>
+  <div class="stats">
+    <div class="card stat a" data-in="s2+.1" data-out="s3-.4"><b data-count="7" data-suffix=" yrs">0</b><span>in production SaaS</span></div>
+    <div class="card stat a" data-in="s2+.2" data-out="s3-.36"><b data-count="14" data-suffix="+">0</b><span>products delivered</span></div>
+    <div class="card stat solid a" data-in="s2+.3" data-out="s3-.32"><b data-count="6">0</b><span>banking apps embed my tax&#8209;filing flow</span></div>
+  </div>
+</section>
+
+<!-- 3: ways -->
+<section class="scene s3">
+  <h2 class="title">
+    <span class="line"><span data-in="s3" data-out="s4-.45">Build, join,</span></span>
+    <span class="line soft"><span data-in="s3+.12" data-out="s4-.42">review or rescue.</span></span>
+  </h2>
+  <div class="ways">
+    <div class="card way solid a" data-in="s3+.25" data-out="s4-.4"><span class="well"><span class="ic" data-icon="cube"></span></span><h3>Project build</h3><span class="tag">Fixed scope</span></div>
+    <div class="card way a" data-in="s3+.33" data-out="s4-.37"><span class="well"><span class="ic" data-icon="calendarblank"></span></span><h3>Contract or retainer</h3><span class="tag">Part-time</span></div>
+    <div class="card way a" data-in="s3+.41" data-out="s4-.34"><span class="well"><span class="ic" data-icon="magnifyingglass"></span></span><h3>Architecture review</h3><span class="tag">Written report</span></div>
+    <div class="card way a" data-in="s3+.49" data-out="s4-.31"><span class="well"><span class="ic" data-icon="lifebuoy"></span></span><h3>Frontend rescue</h3><span class="tag">Existing Angular app</span></div>
+  </div>
+</section>
+
+<!-- 4: working style -->
+<section class="scene s4">
+  <h2 class="title">
+    <span class="line"><span data-in="s4" data-out="cta-.45">Your morning,</span></span>
+    <span class="line soft"><span data-in="s4+.12" data-out="cta-.42">my afternoon.</span></span>
+  </h2>
+  <div class="rows">
+    <div class="card row a" data-in="s4+.3" data-out="cta-.4"><span class="well"><span class="ic" data-icon="globe"></span></span><strong>Overlaps UK and EU</strong><span class="tag">UTC+5</span></div>
+    <div class="card row a" data-in="s4+.4" data-out="cta-.37"><span class="well"><span class="ic" data-icon="chatcircletext"></span></span><strong>Written updates, daily</strong><span class="tag">async</span></div>
+    <div class="card row a" data-in="s4+.5" data-out="cta-.34"><span class="well"><span class="ic" data-icon="key"></span></span><strong>You own the code</strong><span class="tag">your repo</span></div>
+  </div>
+</section>
+
+<!-- 5: CTA -->
+<section class="scene cta">
+  <span class="tile mark a" data-in="cta" data-out="end+9"></span>
+  <h2><span class="line"><span data-in="cta+.1" data-out="end+9">Mohammad Hamza</span></span></h2>
+  <p class="role a" data-in="cta+.25" data-out="end+9">Software architect</p>
+  <span class="btn" data-in="cta+.45">Hire me <span class="ic" data-icon="arrowupright"></span></span>
+  <div class="url a" data-in="cta+.65" data-out="end+9"><span class="prompt">https://</span><code>mhfrough.dev/hire</code><i></i></div>
+  <span class="status a" data-in="cta+.85" data-out="end+9"><span class="blip"></span>Taking on new projects</span>
+</section>
+
+<script src="icons.js"></script>
+<script>
+/*
+  Timeline in seconds. The music (music.py) is 120 BPM, so one bar = 2 s and every scene starts on a bar.
+  Retime the whole reel by editing CUES only.
+*/
+var CUES = {
+  brand: .15,
+  s1: .3,       // status, headline
+  lede: 2.0,    // bar 2: pad + arp
+  chips: 4.0,   // bar 3: kick and sub enter
+  s2: 6.0,      // proof
+  s3: 10.0,     // ways (full groove from 8 s)
+  s4: 14.0,     // working style
+  cta: 18.0,    // the drop
+  press: 19.6,
+  type: 20.1,
+  end: 24.0
+};
+var SEED = 11;
+
+(function(){
+  var c = CUES, root = document.documentElement.style;
+  root.setProperty('--press', c.press + 's');
+  root.setProperty('--type', c.type + 's');
+  function at(expr){ var m = expr.match(/^([a-z0-9]+)([+-][.\d]+)?$/); return (isNaN(+m[1]) ? c[m[1]] : +m[1]) + (m[2] ? +m[2] : 0) }
+  document.querySelectorAll('[data-in]').forEach(function(el){
+    el.style.setProperty('--d', at(el.dataset.in).toFixed(2) + 's');
+    el.style.setProperty('--o', at(el.dataset.out || 'end+9').toFixed(2) + 's');
+  });
+  var MARK = '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30.16 15.34A8 8 0 1 0 24.5 29" fill="none" stroke="currentColor" stroke-width="5"/><path d="M22.5 26.5H37V28.5L15.5 38V35Z" fill="currentColor"/></svg>';
+  document.querySelectorAll('.mark').forEach(function(el){ el.innerHTML = MARK });
+  document.querySelectorAll('[data-icon]').forEach(function(el){ el.innerHTML = window.ICONS[el.dataset.icon] });
+
+  var s = +new URLSearchParams(location.search).get('seed') || SEED;
+  Math.random = function(){
+    s |= 0; s = s + 0x6D2B79F5 | 0;
+    var t = Math.imul(s ^ s >>> 15, 1 | s);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+})();
+
+/* Truchet field, ported from src/app/shared/ui/pattern.ts: quarter arcs of the mark, whole tiles only,
+   ripples turn tiles by 90 degrees, tiles near a scripted "pointer" brighten. */
+var Field = (function(){
+  var canvas = document.getElementById('field'), ctx = canvas.getContext('2d');
+  var W = innerWidth, H = innerHeight, dpr = devicePixelRatio || 1, Q = Math.PI / 2;
+  var size = 58, cols = Math.round(W / size), rows = Math.round(H / size), sx = W / cols / size, sy = H / rows / size;
+  canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var tiles = [];
+  for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+    var a = Math.random() < .5 ? 0 : Q;
+    tiles.push({ x: (i + .5) * size * sx, y: (j + .5) * size * sy, a: a, to: a, at: 0 });
+  }
+  var t0 = 0;
+  function ripple(now, ox, oy, reach){
+    var o = ox == null ? tiles[(Math.random() * tiles.length) | 0] : { x: ox, y: oy };
+    reach = reach || size * 7;
+    tiles.forEach(function(t){
+      var d = Math.hypot(t.x - o.x, t.y - o.y);
+      if (d < reach && Math.random() < .72) t.at = now + d * 1.4;
+    });
+  }
+  function draw(now){
+    var T = (now - t0) / 1000;
+    var px = W * (.62 + .26 * Math.sin(T * .42)), py = H * (.34 + .2 * Math.sin(T * .29 + 1.2));
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#ededed'; ctx.lineWidth = 1.6; ctx.lineCap = 'round';
+    var half = size / 2, light = size * 5;
+    tiles.forEach(function(t){
+      if (t.at && now >= t.at) { t.to += Q; t.at = 0 }
+      var gap = t.to - t.a;
+      t.a = gap > .001 ? t.a + gap * .1 : t.to;
+      var d = Math.hypot(t.x - px, t.y - py), near = d < light ? 1 - d / light : 0, turning = Math.min(1, gap / Q);
+      ctx.globalAlpha = Math.min(.6, .1 + near * near * .3 + turning * .32);
+      ctx.save(); ctx.translate(t.x, t.y); ctx.scale(sx, sy); ctx.rotate(t.a);
+      ctx.beginPath(); ctx.arc(-half, -half, half, 0, Q); ctx.moveTo(0, half); ctx.arc(half, half, half, Math.PI, Math.PI + Q);
+      ctx.stroke(); ctx.restore();
+    });
+    ctx.globalAlpha = 1;
+  }
+  function loop(now){ draw(now); requestAnimationFrame(loop) }
+  return {
+    start: function(){ t0 = performance.now(); requestAnimationFrame(loop) },
+    ripple: function(ox, oy, reach){ ripple(performance.now(), ox, oy, reach) },
+    W: W, H: H
+  };
+})();
+
+/* Numbers count up from 0 */
+function countUp(){
+  document.querySelectorAll('[data-count]').forEach(function(el, i){
+    var to = +el.dataset.count, suf = el.dataset.suffix || '', start = performance.now() + i * 100, dur = 1100;
+    (function tick(now){
+      var p = Math.min(1, Math.max(0, (now - start) / dur)), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(to * e) + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    })(performance.now());
+  });
+}
+
+var BEATS = [[CUES.s2 + .15, countUp], [CUES.cta, function(){ Field.ripple(Field.W / 2, Field.H * .42, Field.W * 1.2) }]];
+for (var b = 2; b < 22; b += 2) if (b !== CUES.cta) BEATS.push([b, function(){ Field.ripple() }]);
+
+var fontsReady = Promise.all(['400 40px "Geist Variable"', '600 40px "Geist Variable"', '400 40px "Geist Mono Variable"']
+  .map(function(f){ return document.fonts.load(f) })).then(function(){ return document.fonts.ready });
+window.reelReady = fontsReady.then(function(){
+  window.REEL = { cues: CUES, duration: CUES.end, format: document.documentElement.dataset.format };
+});
+window.startReel = function(){
+  document.body.classList.remove('hold');
+  Field.start();
+  BEATS.forEach(function(b){ setTimeout(b[1], b[0] * 1000) });
+};
+// Live preview plays on its own; the renderer passes ?render and calls startReel itself
+if (!new URLSearchParams(location.search).has('render')) window.reelReady.then(window.startReel);
+</script>
+</body>
+</html>

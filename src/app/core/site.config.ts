@@ -9,14 +9,12 @@ export const SITE = {
   origin: 'https://mhfrough.dev',
   role: 'Software Architect',
   locality: 'Karachi',
+  localityLabel: 'Karāchi',
   country: 'Pakistan',
   countryCode: 'PK',
   timeZone: 'Asia/Karachi',
   // Public contact address. Suggested: route hello@mhfrough.dev to this inbox (e.g. Cloudflare Email Routing).
   email: 'mhfrough@yahoo.com',
-  // Drop a square photo at public/images/avatar.webp (min 256x256) and set this to '/images/avatar.webp'.
-  // Until then the avatar renders the ء monogram.
-  avatar: null as string | null,
   // Shown in the footer status link and on /hire. Keep honest.
   availableForWork: true,
   social: {

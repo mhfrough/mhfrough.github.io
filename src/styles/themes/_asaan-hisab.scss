@@ -1,0 +1,78 @@
+// Asaan Hisab case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// accounting app's colours: its brand blue #0077c5, the logo's sky gradient (#1565c0 to #64b5f6), the slate
+// #4d6575 and the cool greys #ebeff4 / #d7e0ea of its forms, and the dark #343a40 of its sidebar.
+// Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="asaan-hisab"> (route data on /work/asaan-hisab). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.0:1 on --bg, ink-2 7.6:1, muted 5.5:1 on --bg, 5.2:1 on --surface-2 and 5.9:1 on
+// white. White on the brand blue CTA #0077c5 4.7:1 (normal text passes, so the button keeps the real brand blue);
+// --a-blue-text 6.6:1 on white and 5.7:1 on --a-blue-soft; --a-green-text 5.4:1 on white and 4.7:1 on
+// --a-green-soft; --a-red-text 6.6:1 on white and 5.6:1 on --a-red-soft; --a-amber-text 5.3:1 on --a-amber-soft.
+// The sky #64b5f6 is decorative only (gradients, bars, dots). Night blocks: --n-ink 13.6:1, --n-muted 7.0:1 on
+// --a-night and 5.9:1 on --a-night-2.
+
+:root[data-theme='asaan-hisab'] {
+  --bg: #f4f6f9;
+  --bg-2: #ebeff4;
+  --bg-raise: #ebeff4;
+  --surface: #ffffff;
+  --surface-2: #ebeff4;
+  --line: #dbe2ea;
+  --line-strong: #c2cdd9;
+
+  --ink: #1c2733;
+  --ink-2: #3d5166;
+  --muted: #586575;
+  --faint: #c2cdd9; // decorative only
+
+  --a-blue: #0077c5;
+  --a-blue-deep: #1565c0;
+  --a-blue-text: #00609f;
+  --a-blue-soft: #e3f0fa;
+  --a-sky: #64b5f6;
+  --a-green-text: #1a7a43;
+  --a-green-soft: #e1f3e8;
+  --a-red-text: #b42318;
+  --a-red-soft: #fde8e6;
+  --a-amber-text: #8a5a00;
+  --a-amber-soft: #fff2d1;
+  --a-night: #22292f;
+  --a-night-2: #2d353c;
+  --a-night-line: rgb(244 246 249 / 0.12);
+  --n-ink: #f4f6f9;
+  --n-muted: #aab4bf;
+
+  --accent: #0077c5;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3f0fa;
+  --cta: #0077c5;
+  --cta-ink: #ffffff;
+  --focus: #0077c5;
+
+  --solid: #22292f;
+  --solid-ink: #f4f6f9;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(28 39 51 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(28 39 51 / 0.05), 0 14px 34px -16px rgb(21 60 110 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(28 39 51 / 0.05), 0 36px 72px -28px rgb(21 60 110 / 0.3);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--a-blue);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #a9cdea;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(0 119 197 / 0.12), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(100 181 246 / 0.12), transparent 70%);
+  }
+}

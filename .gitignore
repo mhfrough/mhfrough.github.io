@@ -48,3 +48,7 @@ Thumbs.db
 /test-results
 /playwright-report
 /reports
+
+# Reels: 4K masters and generated music (rebuild with promo/reels/tools/reel.py)
+/promo/reels/out/
+/promo/reels/*/music.wav

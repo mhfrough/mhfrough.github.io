@@ -1,0 +1,78 @@
+// Fleet case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in a neutral
+// "depot" palette of my own: cool mist surfaces, a petrol teal for actions, amber for "due soon" and asphalt for
+// the dark blocks. The client's own colours are deliberately not used, so nothing on the page identifies it.
+// Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="fleet"> (route data on /work/fleet). Every rule is scoped to that attribute, so
+// nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 15.7:1 on --bg, ink-2 9.8:1, muted 5.7:1 on --bg and 5.4:1 on --surface-2, white on the
+// teal CTA 7.8:1, --f-teal 7.1:1 on --bg and 6.3:1 on --f-teal-soft, --f-amber 5.7:1 on --bg and 5.2:1 on
+// --f-amber-soft, --f-red 7.0:1 on white and 5.6:1 on --f-red-soft. Night blocks: --n-ink 15.2:1, --n-muted 7.3:1
+// (6.7:1 on --f-night-2), --n-teal 9.9:1, --n-amber 10.4:1.
+
+:root[data-theme='fleet'] {
+  --bg: #f2f4f3;
+  --bg-2: #e8ecea;
+  --bg-raise: #e8ecea;
+  --surface: #fbfcfb;
+  --surface-2: #eaeeec;
+  --line: #dbe1de;
+  --line-strong: #c3ccc8;
+
+  --ink: #141c1b;
+  --ink-2: #33403d;
+  --muted: #56625f;
+  --faint: #c3ccc8; // decorative only
+
+  // Teal is the action colour, amber the "due soon" signal, red only for "not safe" and overdue.
+  --f-teal: #0d5c57;
+  --f-teal-2: #12827a; // fills and strokes only
+  --f-teal-soft: #d8ebe7;
+  --f-teal-tint: #ecf5f3;
+  --f-amber: #8a5300;
+  --f-amber-fill: #e8a33a; // fills only
+  --f-amber-soft: #f7e6c8;
+  --f-red: #a3302a;
+  --f-red-soft: #f8e1de;
+  --f-night: #111918;
+  --f-night-2: #19221f;
+  --f-night-3: #232e2b;
+  --f-night-line: rgb(232 238 236 / 0.12);
+  --n-ink: #e8eeec;
+  --n-muted: #9aa9a5;
+  --n-teal: #6fd1c4;
+  --n-amber: #f2bd62;
+
+  --accent: #0d5c57;
+  --accent-ink: #ffffff;
+  --accent-soft: #d8ebe7;
+  --cta: #0d5c57;
+  --cta-ink: #ffffff;
+  --focus: #0d5c57;
+
+  --solid: #111918;
+  --solid-ink: #e8eeec;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(17 25 24 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(17 25 24 / 0.05), 0 14px 34px -16px rgb(17 25 24 / 0.2);
+  --shadow-lg: 0 2px 4px rgb(17 25 24 / 0.05), 0 36px 72px -28px rgb(17 25 24 / 0.3);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--f-teal);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #a9cbc5;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(18 130 122 / 0.11), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(232 163 58 / 0.08), transparent 70%);
+  }
+}

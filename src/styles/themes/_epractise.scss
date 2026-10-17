@@ -1,0 +1,76 @@
+// ePractise case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in ePractise's
+// colours: the blue of its "e" mark and buttons, #2563eb, and its charcoal text #303437, on the cool white the
+// product's pages use. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="epractise"> (route data on /work/epractise). Every rule is scoped to that attribute,
+// so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 14.8:1 on --bg, ink-2 (the product's charcoal) 11.7:1, muted 5.7:1 on --bg, 5.3:1 on
+// --surface-2 and 6.1:1 on white, white on the brand blue CTA #2563eb 5.2:1, --e-blue-text 6.7:1 on white and
+// 5.7:1 on --e-blue-soft, --e-green-text 5.4:1 on white and 4.6:1 on --e-green-soft, --e-amber-text 5.3:1 on
+// --e-amber-soft, --e-red-text 5.6:1 on --e-red-soft. Night blocks: --n-ink 16.1:1, --n-muted 8.6:1.
+
+:root[data-theme='epractise'] {
+  // Surfaces
+  --bg: #f5f7fb;
+  --bg-2: #e9eef6;
+  --bg-raise: #e9eef6;
+  --surface: #ffffff;
+  --surface-2: #e9eef6;
+  --line: #dde3ee;
+  --line-strong: #c3ccdb;
+
+  // Ink, tinted towards the brand blue
+  --ink: #1c2230;
+  --ink-2: #303437;
+  --muted: #5a6272;
+  --faint: #c3ccdb; // decorative only
+
+  // Brand: one blue carries buttons, links and the active state; green, amber and red are statuses only.
+  --e-blue: #2563eb;
+  --e-blue-text: #1d4ed8;
+  --e-blue-soft: #e5edfd;
+  --e-green-text: #0f7a4c;
+  --e-green-soft: #dcf3e7;
+  --e-amber-text: #8a5a00;
+  --e-amber-soft: #fff2d1;
+  --e-red-text: #b42318;
+  --e-red-soft: #fde7e5;
+  --e-night: #0d1530;
+  --e-night-2: #16204a;
+  --e-night-line: rgb(238 242 255 / 0.12);
+  --n-ink: #eef2ff;
+  --n-muted: #a8b3cf;
+
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --accent-soft: #e5edfd;
+  --cta: #2563eb;
+  --cta-ink: #ffffff;
+  --focus: #1d4ed8;
+
+  --solid: #0d1530;
+  --solid-ink: #eef2ff;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(13 21 48 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(13 21 48 / 0.05), 0 14px 34px -16px rgb(13 21 48 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(13 21 48 / 0.05), 0 36px 72px -28px rgb(13 21 48 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--e-blue);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b9cdf7;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(37 99 235 / 0.12), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(37 99 235 / 0.06), transparent 70%);
+  }
+}

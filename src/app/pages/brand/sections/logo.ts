@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { phosphorDownloadSimple } from '@ng-icons/phosphor-icons/regular';
 import { Reveal } from '../../../shared/directives/reveal.directive';
-import { Logo, MARK_ARC, MARK_BAR } from '../../../shared/ui/logo';
+import { Logo, MARK_ARC, MARK_TAIL } from '../../../shared/ui/logo';
 import { COPY } from '../brand.copy';
 import { Spec } from './spec';
 import { TkPipe } from './tk.pipe';
@@ -49,6 +49,7 @@ const LOCKUP_MARKUP = `<a class="brand" routerLink="/" aria-label="Mohammad Hamz
           <span class="lockup__t"><b>Mohammad Hamza</b><span class="mono">@mhfrough</span></span>
         </span>
       </mh-spec>
+
     </div>
 
     <div class="bp-subhead">
@@ -80,26 +81,30 @@ const LOCKUP_MARKUP = `<a class="brand" routerLink="/" aria-label="Mohammad Hamz
             </g>
           }
           @if (layers().space) {
-            <rect class="g-space" x="2" y="0" width="45" height="45" />
-            <rect class="g-bounds" x="12" y="10" width="25" height="25" />
+            <rect class="g-space" x="4" y="0.5" width="43" height="47.5" />
+            <rect class="g-bounds" x="14" y="10.5" width="23" height="27.5" />
           }
           <g class="g-mark">
             <path [attr.d]="arc" fill="none" stroke-width="5" />
-            <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.w" [attr.height]="bar.h" />
+            <path class="tail" [attr.d]="tail" />
           </g>
           @if (layers().geo) {
             <g class="g-geo">
-              <circle cx="24" cy="21.5" r="9" class="g-circle" />
-              <line x1="24" y1="21.5" x2="30.36" y2="15.14" />
-              <line x1="24" y1="21.5" x2="24" y2="30.5" />
-              <circle cx="24" cy="21.5" r="0.7" class="g-dot" />
-              <circle cx="30.36" cy="15.14" r="0.7" class="g-dot" />
-              <circle cx="24" cy="30.5" r="0.7" class="g-dot" />
-              <text x="21.4" y="21.9">c</text>
-              <text x="24.4" y="17.4">r 9</text>
-              <text x="31.6" y="14.6">-45</text>
-              <text x="25.2" y="29.4">90</text>
-              <text x="12" y="38.8">x 12, y 30, 25 x 5</text>
+              <circle cx="24.5" cy="21" r="8" class="g-circle" />
+              <line x1="24.5" y1="21" x2="30.16" y2="15.34" />
+              <line x1="24.5" y1="21" x2="24.5" y2="29" />
+              <line x1="10" y1="26.5" x2="40" y2="26.5" class="g-base" />
+              <circle cx="24.5" cy="21" r="0.7" class="g-dot" />
+              <circle cx="30.16" cy="15.34" r="0.7" class="g-dot" />
+              <circle cx="24.5" cy="29" r="0.7" class="g-dot" />
+              <circle cx="37" cy="26.5" r="0.7" class="g-dot" />
+              <circle cx="15.5" cy="38" r="0.7" class="g-dot" />
+              <text x="21.9" y="21.4">c</text>
+              <text x="24.9" y="16.9">r 8</text>
+              <text x="31.4" y="14.8">-45</text>
+              <text x="38" y="25.6">y 26.5</text>
+              <text x="38" y="29.6">x 37</text>
+              <text x="7.4" y="39.6">15.5, 38</text>
             </g>
           }
         </svg>
@@ -225,7 +230,7 @@ const LOCKUP_MARKUP = `<a class="brand" routerLink="/" aria-label="Mohammad Hamz
     .g-mark path {
       stroke: currentColor;
     }
-    .g-mark rect {
+    .g-mark .tail {
       fill: currentColor;
     }
     .g-space,
@@ -244,7 +249,8 @@ const LOCKUP_MARKUP = `<a class="brand" routerLink="/" aria-label="Mohammad Hamz
       stroke: var(--ink);
       stroke-width: 0.14;
     }
-    .g-circle {
+    .g-circle,
+    .g-geo .g-base {
       stroke-dasharray: 0.5 0.4;
     }
     .g-dot {
@@ -310,7 +316,7 @@ export class BrandLogo {
   protected readonly t = COPY.logo;
   protected readonly sizes = SIZES;
   protected readonly arc = MARK_ARC;
-  protected readonly bar = MARK_BAR;
+  protected readonly tail = MARK_TAIL;
   protected readonly tileMarkup = TILE_MARKUP;
   protected readonly lockupMarkup = LOCKUP_MARKUP;
   protected readonly grid = Array.from({ length: 49 }, (_, i) => i).filter((i) => i % 12);

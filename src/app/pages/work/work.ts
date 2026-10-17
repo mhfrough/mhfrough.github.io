@@ -13,20 +13,43 @@ import {
   phosphorChatsCircle,
   phosphorDatabase,
   phosphorForkKnife,
+  phosphorGift,
   phosphorGlobe,
   phosphorHandCoins,
+  phosphorHeadset,
   phosphorHouseLine,
+  phosphorIdentificationBadge,
   phosphorInvoice,
   phosphorPackage,
   phosphorPenNib,
+  phosphorPencilSimpleLine,
   phosphorReceipt,
   phosphorTreePalm,
   phosphorTruck,
+  phosphorWrench,
 } from '@ng-icons/phosphor-icons/regular';
 import { PERSON_ID, Seo, abs } from '../../core/seo/seo.service';
 import { Reveal } from '../../shared/directives/reveal.directive';
 import { COPY } from './work.copy';
-import { CATEGORIES, FEATURED, PROJECTS, WorkCategory, WorkProject } from './work.data';
+import { FaaaCard } from './faaa/faaa';
+import { StarRatingPkg } from './star-rating/star-rating';
+import { WeatherIcons } from './weather-icons/weather-icons';
+import { CardDeck } from './card-deck';
+import { CardSlider } from './card-slider';
+import { CARD_SHOTS, CATEGORIES, FEATURED, PROJECTS, WorkCategory, WorkProject } from './work.data';
+import { CARD_THUMBS } from './work.thumbs';
+
+/**
+ * CARD_SHOTS mapped to their exact 16:10 thumbnails (scripts/work-thumbs.mjs, re-run after adding shots), so the
+ * 16:10 card frames never crop text at the sides. A shot without a thumb yet falls back to the original. Built once
+ * so the card components get stable arrays.
+ */
+const THUMB_SHOTS: Readonly<Record<string, readonly string[]>> = Object.fromEntries(
+  Object.entries(CARD_SHOTS).map(([id, list]) => [id, list.map((src) => CARD_THUMBS[src] ?? src)]),
+);
+const FIRST_SHOTS: Readonly<Record<string, readonly string[]>> = Object.fromEntries(
+  Object.entries(THUMB_SHOTS).map(([id, list]) => [id, list.slice(0, 3)]),
+);
 
 type Filter = 'all' | WorkCategory;
 
@@ -52,6 +75,15 @@ function bento(items: WorkProject[]): Cell[] {
     if (left < row.length) {
       if (left === 1) {
         const prev = rows[rows.length - 1];
+        // A triple, a pair and one more card (6) end as three zigzag pairs, so the tail keeps its wide cells.
+        const triple = rows[rows.length - 2];
+        if (prev && prev.length === 2 && triple && triple.length === 3) {
+          const before = rows[rows.length - 3];
+          const zig: (1 | 2)[][] = before && before[1] === 2 ? [[2, 1], [1, 2], [2, 1]] : [[1, 2], [2, 1], [1, 2]];
+          rows.splice(rows.length - 2, 2, ...zig);
+          used += 1;
+          break;
+        }
         // Fold a lone last card into the previous row by splitting its wide cell.
         if (prev && prev.length === 2) {
           rows[rows.length - 1] = [1, 1, 1];
@@ -90,9 +122,14 @@ function bento(items: WorkProject[]): Cell[] {
 
 const matches = (cats: WorkCategory[], f: Filter) => f === 'all' || cats.includes(f);
 
+/** The weather icon set is the one design piece; it sits under its own filter. */
+const ICON_SET: WorkCategory[] = ['design'];
+/** Side projects under the weather icons: the npm package and the Faaa VS Code extension (own products). */
+const PACKAGE: WorkCategory[] = ['own'];
+
 @Component({
   selector: 'mh-page-work',
-  imports: [RouterLink, NgIcon, Reveal],
+  imports: [RouterLink, NgIcon, Reveal, WeatherIcons, StarRatingPkg, FaaaCard, CardSlider, CardDeck],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,
@@ -106,15 +143,20 @@ const matches = (cats: WorkCategory[], f: Filter) => f === 'all' || cats.include
       phosphorChatsCircle,
       phosphorDatabase,
       phosphorForkKnife,
+      phosphorGift,
       phosphorGlobe,
       phosphorHandCoins,
+      phosphorHeadset,
       phosphorHouseLine,
+      phosphorIdentificationBadge,
       phosphorInvoice,
       phosphorPackage,
       phosphorPenNib,
+      phosphorPencilSimpleLine,
       phosphorReceipt,
       phosphorTreePalm,
       phosphorTruck,
+      phosphorWrench,
     }),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -127,7 +169,10 @@ export class Work {
   protected readonly filters = CATEGORIES.map((c) => ({
     ...c,
     count:
-      PROJECTS.filter((p) => matches(p.categories, c.id)).length + (matches(FEATURED.categories, c.id) ? 1 : 0),
+      PROJECTS.filter((p) => matches(p.categories, c.id)).length +
+      (matches(FEATURED.categories, c.id) ? 1 : 0) +
+      (matches(ICON_SET, c.id) ? 1 : 0) +
+      (matches(PACKAGE, c.id) ? 2 : 0),
   })).filter((c) => c.count > 0);
 
   protected readonly filter = signal<Filter>('all');
@@ -135,7 +180,12 @@ export class Work {
   protected readonly ready = signal(false);
 
   protected readonly showFeatured = computed(() => matches(FEATURED.categories, this.filter()));
-  protected readonly cells = computed(() => bento(PROJECTS.filter((p) => matches(p.categories, this.filter()))));
+  protected readonly showIcons = computed(() => matches(ICON_SET, this.filter()));
+  protected readonly showPackage = computed(() => matches(PACKAGE, this.filter()));
+  private readonly filtered = computed(() => PROJECTS.filter((p) => matches(p.categories, this.filter())));
+  /** Case studies fill the bento; smaller work without one sits after it as a compact row. */
+  protected readonly cells = computed(() => bento(this.filtered().filter((p) => p.caseStudy)));
+  protected readonly minor = computed(() => this.filtered().filter((p) => !p.caseStudy));
 
   constructor() {
     afterNextRender(() => this.ready.set(true));
@@ -156,6 +206,17 @@ export class Work {
     const f = this.filters.find((x) => x.id === id);
     if (f) this.announcement.set(COPY.filter.announce(f.count, f.label));
   }
+
+  /** The card's screenshots in order: home, sales page, portal (see CARD_SHOTS). Wide cards get them all. */
+  protected shots(p: WorkProject): readonly string[] | null {
+    return THUMB_SHOTS[p.id] ?? null;
+  }
+
+  /** Single cards: the first three only (home, sales page, portal). */
+  protected firstShots(p: WorkProject): readonly string[] | null {
+    return FIRST_SHOTS[p.id] ?? null;
+  }
+
 
   protected meta(p: WorkProject): string[] {
     return [p.domain, p.years, p.where].filter((x): x is string => !!x);
@@ -186,11 +247,33 @@ function itemList(): Record<string, unknown> {
     ...(p.startYear ? { dateCreated: String(p.startYear) } : {}),
     author: { '@id': PERSON_ID },
   }));
+  const icons = {
+    '@type': 'CreativeWork',
+    name: 'Weather icons',
+    description: COPY.icons.note,
+    genre: 'Icon design',
+    keywords: 'Icon set, Weather, SVG, Adobe XD',
+    dateCreated: '2022-07-06',
+    image: abs('/images/weather-icons/partly-sunny.svg'),
+    url: COPY.icons.dribbbleUrl,
+    author: { '@id': PERSON_ID },
+  };
+  const pkg = {
+    '@type': 'SoftwareSourceCode',
+    name: '@mhfrough/star-rating',
+    description: 'Tiny, dependency-free function that turns a number from 0 to 5 into a star string with half stars.',
+    codeRepository: 'https://github.com/mhfrough/star-rating',
+    url: 'https://www.npmjs.com/package/@mhfrough/star-rating',
+    programmingLanguage: 'JavaScript',
+    license: 'https://opensource.org/licenses/MIT',
+    dateCreated: '2025-07-20',
+    author: { '@id': PERSON_ID },
+  };
   return {
     '@type': 'ItemList',
     '@id': abs('/work') + '#projects',
     name: 'Selected work',
-    numberOfItems: rest.length + 1,
-    itemListElement: [featured, ...rest].map((item, i) => ({ '@type': 'ListItem', position: i + 1, item })),
+    numberOfItems: rest.length + 3,
+    itemListElement: [featured, ...rest, icons, pkg].map((item, i) => ({ '@type': 'ListItem', position: i + 1, item })),
   };
 }

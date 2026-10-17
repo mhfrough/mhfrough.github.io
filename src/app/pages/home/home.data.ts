@@ -7,6 +7,8 @@ export interface HomeProject {
   title: string;
   sub: string;
   icon: string;
+  /** The product's own favicon. Shown instead of `icon` when set (see CLAUDE.md, Project icons). */
+  favicon?: string;
   domains: Domain[];
   years: string;
   outcome: string;
@@ -14,27 +16,24 @@ export interface HomeProject {
   href?: string;
 }
 
-export const PROJECTS: HomeProject[] = [
+/**
+ * Home bento (below the hero), in order. Quorum is the feature cell before these; the second cell is solid and the
+ * third spans two columns, so six cells fill three rows. Every entry links to its case study and uses the product's
+ * own favicon when there is one (CLAUDE.md, Project icons). Facts mirror src/app/pages/work/work.data.ts.
+ * The hero explorer (work-explorer.ts) reads work.data.ts directly, not this list.
+ */
+export const BENTO: HomeProject[] = [
   {
-    id: 'quorum',
-    title: 'Quorum',
-    sub: 'Claude Code skill',
-    icon: 'phosphorUsersThree',
-    domains: ['own'],
+    id: 'hrm',
+    title: 'HRM Suite',
+    sub: 'HR and payroll SaaS, in development',
+    icon: 'phosphorIdentificationBadge',
+    favicon: '/images/hrm/hrm-mark.svg',
+    domains: ['own', 'saas'],
     years: '2026',
-    outcome: 'Seven AI personalities debate a decision, vote, and hand back one verdict.',
-    stack: ['Claude Code', 'Sub-agents', 'Three.js', 'Playwright'],
-    href: '/work/quorum',
-  },
-  {
-    id: 'tax',
-    title: 'Tax-filing platform',
-    sub: 'Micro-frontends',
-    icon: 'phosphorReceipt',
-    domains: ['fintech'],
-    years: '2020 - now',
-    outcome: 'Four Angular apps and a filing widget embedded in six banking apps.',
-    stack: ['Angular', 'Micro-frontends', 'postMessage', 'i18n'],
+    outcome: 'One employee record from phone check-in to payslip, with every company walled off by forced row-level security.',
+    stack: ['Angular', 'NestJS', 'PostgreSQL', 'Flutter'],
+    href: '/work/hrm',
   },
   {
     id: 'fleet',
@@ -43,58 +42,56 @@ export const PROJECTS: HomeProject[] = [
     icon: 'phosphorTruck',
     domains: ['saas', 'realtime'],
     years: '2026',
-    outcome: 'NestJS API, Angular admin and a Flutter driver app, with passkeys and Stripe billing.',
+    outcome: 'An Angular admin, two Flutter apps and one multi-tenant NestJS API, with passkey sign-in and Stripe payments.',
     stack: ['NestJS', 'PostgreSQL', 'Flutter', 'WebAuthn'],
+    href: '/work/fleet',
   },
   {
-    id: 'inbox',
-    title: 'Omnichannel inbox',
-    sub: 'B2B SaaS',
-    icon: 'phosphorChatsCircle',
-    domains: ['saas', 'realtime'],
-    years: '2024 - now',
-    outcome: 'One inbox for web chat, WhatsApp, Messenger and Instagram, plus an embeddable chat widget.',
-    stack: ['Angular', 'Real-time', 'Widgets', 'Multi-tenant'],
+    id: 'whiteboard',
+    title: 'Whiteboard',
+    sub: 'An infinite canvas, own product',
+    icon: 'phosphorPencilSimpleLine',
+    domains: ['own', 'realtime'],
+    years: '2026',
+    outcome: 'An Excalidraw-style board in Angular signals and NestJS: smart guides, snapshot undo, five export formats and live editing over socket.io.',
+    stack: ['Angular', 'Signals', 'NestJS', 'socket.io'],
+    href: '/work/whiteboard',
   },
   {
-    id: 'funds',
-    title: 'Mutual fund marketplace',
-    sub: 'Fintech',
-    icon: 'phosphorChartLineUp',
-    domains: ['fintech'],
-    years: '2020 - now',
-    outcome: 'Digital account opening, verified KYC onboarding and an investor dashboard.',
-    stack: ['Angular', 'RxJS', 'ngx-charts', 'KYC'],
-  },
-  {
-    id: 'practice',
-    title: 'Practice management',
-    sub: 'SaaS for accounting firms',
-    icon: 'phosphorBriefcase',
-    domains: ['saas'],
-    years: '2024 - now',
-    outcome: 'Multi-tenant workspace with a provisioning layer that sets up each new firm.',
-    stack: ['Angular', 'PrimeNG', 'Firebase'],
-  },
-  {
-    id: 'food',
-    title: 'Multi-brand ordering',
-    sub: 'Seven restaurant brands',
-    icon: 'phosphorStorefront',
+    id: 'resort',
+    title: 'Bloomstone',
+    sub: 'Resort booking by the slot',
+    icon: 'phosphorTreePalm',
+    favicon: '/images/bloomstone/bloomstone-mark.webp',
     domains: ['commerce', 'realtime'],
-    years: '2023 - 2024',
-    outcome: 'One shared template runs ordering, OTP sign-in, payments and live tracking for seven brands.',
-    stack: ['Angular', 'OTP', 'Payments', 'Back office'],
+    years: '2026',
+    outcome: 'Booking site, live availability calendar, NestJS and PostgreSQL API and admin, with staff and guests synced in real time.',
+    stack: ['Angular', 'NestJS', 'PostgreSQL', 'Socket.io'],
+    href: '/work/bloomstone',
   },
   {
-    id: 'loans',
-    title: 'Microfinance lending',
-    sub: 'Loan management',
-    icon: 'phosphorHandCoins',
+    id: 'tax',
+    title: 'Befiler',
+    sub: 'Tax filing, micro-frontends',
+    icon: 'phosphorReceipt',
+    favicon: '/images/befiler/befiler-icon.webp',
     domains: ['fintech'],
-    years: '2023 - 2024',
-    outcome: 'Applications, field verification, multi-level approvals and repayment tracking.',
-    stack: ['Angular Material', 'Dashboards'],
+    years: '2020 to now',
+    outcome: 'Four Angular apps and a filing widget embedded in six banking apps.',
+    stack: ['Angular', 'Micro-frontends', 'postMessage', 'i18n'],
+    href: '/work/befiler',
+  },
+  {
+    id: 'dmax',
+    title: 'DMAX',
+    sub: 'Banking data extraction',
+    icon: 'phosphorDatabase',
+    favicon: '/images/dmax/dmax-mark.webp',
+    domains: ['fintech'],
+    years: '2023 to now',
+    outcome: 'Extraction consoles for DB2, flat-file and MongoDB data that count every row as extracted, failed or duplicate.',
+    stack: ['Angular', 'RxJS', 'TypeScript', 'jsPDF'],
+    href: '/work/dmax',
   },
 ];
 
@@ -155,11 +152,11 @@ export const HOW = [
 ];
 
 export const EXPERIENCE = [
-  { role: 'Lead frontend developer', years: '2025 - now', focus: 'Architecture and standards across three production platforms; leads and mentors the team.' },
-  { role: 'Contract and freelance', years: '2023 - now', focus: 'Full-stack SaaS for UK and EU clients: fleet, ordering, courier, booking.' },
-  { role: 'Senior frontend developer', years: '2021 - 2024', focus: 'Fintech and B2B SaaS delivery; mockups in Adobe XD; legacy Angular and PHP.' },
-  { role: 'Junior frontend developer', years: '2020 - 2021', focus: 'SEO-friendly Angular and PHP apps, including a first public filing portal.' },
-  { role: 'Blogger and writer', years: '2011 - 2014', focus: 'Tech news, HTML and CSS tutorials, and the SEO for my own blog.' },
+  { role: 'Lead frontend developer', years: '2025 to now', focus: 'Architecture and standards across three production platforms; leads and mentors the team.' },
+  { role: 'Contract and freelance', years: '2023 to now', focus: 'Full-stack SaaS for UK and EU clients: fleet, ordering, courier, booking.' },
+  { role: 'Senior frontend developer', years: '2021 to 2024', focus: 'Fintech and B2B SaaS delivery; mockups in Adobe XD; legacy Angular and PHP.' },
+  { role: 'Junior frontend developer', years: '2020 to 2021', focus: 'SEO-friendly Angular and PHP apps, including a first public filing portal.' },
+  { role: 'Blogger and writer', years: '2011 to 2014', focus: 'Tech news, HTML and CSS tutorials, and the SEO for my own blog.' },
 ];
 
 export const REELS = [

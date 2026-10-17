@@ -1,0 +1,308 @@
+<mh-bloomstone-theme />
+
+<!-- Hero: copy left, a working slot desk right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="bs-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="bs-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+        </a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <mh-bloomstone-slots class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="bs-numbers">
+  <div class="wrap">
+    <h2 id="bs-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The public site: the only screenshots on the page -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bs-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">bloomstone.pk</span>
+        </div>
+        <img src="/images/bloomstone/site-hero.webp" width="1600" height="1000" [alt]="c.site.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img src="/images/bloomstone/site-mobile.webp" width="780" height="1688" [alt]="c.site.mobileAlt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <div class="shots-2">
+      <figure class="card shot" mhReveal>
+        <img src="/images/bloomstone/site-availability.webp" width="1600" height="1000" [alt]="c.site.calendarAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.site.calendarCap }}</figcaption>
+      </figure>
+      <figure class="card shot" mhReveal [revealIndex]="1">
+        <img src="/images/bloomstone/site-packages.webp" width="1600" height="1250" [alt]="c.site.packagesAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.site.packagesCap }}</figcaption>
+      </figure>
+    </div>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+  </div>
+</section>
+}
+
+<!-- The place -->
+@defer (hydrate on viewport) {
+<section class="section place" aria-labelledby="bs-place">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-place" class="title">{{ c.place.title }}</h2>
+      <p class="sub">{{ c.place.sub }}</p>
+    </header>
+  </div>
+  <mh-bloomstone-photos [photos]="c.place.photos" [label]="c.place.title" mhReveal />
+</section>
+}
+
+<!-- Architecture: one API, guests and staff -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bs-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.guests; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <img src="/images/bloomstone/bloomstone-mark.webp" width="48" height="56" alt="" />
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.staff; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Slot rules -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bs-slots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-slots" class="title">{{ c.slots.title }}</h2>
+      <p class="sub">{{ c.slots.sub }}</p>
+    </header>
+
+    <!-- One day, three ways to book it. Purely visual: the rules below say the same in words. -->
+    <div class="day-bar card" mhReveal aria-hidden="true">
+      <div class="hours mono"><span>Day</span><span>Night</span></div>
+      <div class="track">
+        <span class="seg-day">Day slot, 10 h</span>
+        <span class="seg-night">Night slot, 10 h</span>
+      </div>
+      <div class="track">
+        <span class="seg-full">Full day, 20 h, needs the whole day free</span>
+      </div>
+    </div>
+
+    <ol class="rules" role="list">
+      @for (r of c.slots.rules; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Booking lifecycle -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bs-flow">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-flow" class="title">{{ c.flow.title }}</h2>
+      <p class="sub">{{ c.flow.sub }}</p>
+    </header>
+
+    <div class="rail card" mhReveal>
+      <p class="rail-ref mono">{{ c.flow.tracker }}</p>
+      <ol role="list">
+        @for (s of c.flow.steps; track s; let i = $index) {
+          <li [style.--i]="i">
+            <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <div class="flow-2">
+      <div class="card" mhReveal>
+        <h3 class="mini">{{ c.flow.formTitle }}</h3>
+        <ul class="badges" role="list">
+          @for (x of c.flow.form; track x) {
+            <li class="tag">{{ x }}</li>
+          }
+        </ul>
+      </div>
+      <div class="card" mhReveal [revealIndex]="1">
+        <h3 class="mini">{{ c.flow.checkTitle }}</h3>
+        <ul class="badges" role="list">
+          @for (x of c.flow.check; track x) {
+            <li class="tag">{{ x }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Back office -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bs-back">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-back" class="title">{{ c.back.title }}</h2>
+      <p class="sub">{{ c.back.sub }}</p>
+    </header>
+    <div class="back">
+      <ul class="back-grid" role="list">
+        @for (b of c.back.cards; track b.t; let i = $index) {
+          <li class="card card--hover" mhReveal [revealIndex]="i">
+            <span class="node-ic"><ng-icon [name]="b.icon" aria-hidden="true" /></span>
+            <h3>{{ b.t }}</h3>
+            <p>{{ b.s }}</p>
+          </li>
+        }
+      </ul>
+      <mh-bloomstone-ledger [title]="c.back.ledger" mhReveal />
+    </div>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="bs-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="bs-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="bs-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="bs-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="bs-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/befiler">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

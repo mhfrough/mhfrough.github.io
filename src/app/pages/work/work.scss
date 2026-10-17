@@ -230,9 +230,85 @@
   min-width: 0;
 }
 
+// Case-study cells carry a cover thumbnail: in wide cells copy on the left, cover on the right (on top below 900px);
+// in single cells the cover sits on top.
+.cell.has-cover {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 28px;
+  align-content: start;
+
+  > * {
+    grid-column: 1;
+  }
+}
+
+.cell__cover {
+  grid-column: 2 !important;
+  grid-row: 1 / span 6;
+  align-self: center;
+  display: block;
+  border-radius: var(--r-inner);
+  overflow: hidden;
+  border: 1px solid var(--line);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s var(--ease);
+  }
+}
+
+.cell:hover .cell__cover img {
+  transform: scale(1.02);
+}
+
+// Wide cards: the image stack (card-deck.ts) fills the right column from the card's top padding to its bottom
+// padding (22px, .card), even when a taller neighbour makes the row taller than this card's copy.
+.cell.has-cover {
+  position: relative;
+}
+
+.cell__deck {
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  right: 22px;
+  width: calc((100% - 44px - 28px) / 2);
+}
+
+// Single cards: one shot with a slider, on top of the card.
+.cell__slider {
+  order: -1;
+}
+
+// Narrow cells stay a flex column: the cover moves to the top, above the icon and title.
+.cell:not(.has-cover) > .cell__cover {
+  order: -1;
+  align-self: stretch;
+}
+
+@media (max-width: 900px) {
+  .cell.has-cover {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cell__cover,
+  .cell__deck {
+    grid-column: 1 !important;
+    grid-row: 1;
+  }
+
+  .cell__deck {
+    position: static;
+    width: auto;
+  }
+}
+
 .cell__head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
 }
 
@@ -401,3 +477,108 @@
   letter-spacing: -0.03em;
   font-weight: 600;
 }
+
+// "Read the case study": the home page's link style (no underline, arrow slides on hover).
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+
+  ng-icon {
+    transition: transform var(--t-base) var(--ease);
+  }
+}
+
+// The whole case-study card opens the case study: the card's own link stretches over it. The image slider and
+// stack sit above that layer so their arrows stay clickable (their images link to the case study anyway).
+.cell.is-link {
+  position: relative;
+  cursor: pointer;
+
+  &:hover .more ng-icon {
+    transform: translateX(3px);
+  }
+}
+
+.cell__link--card {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  &:focus-visible {
+    outline: none;
+  }
+  &:focus-visible::after {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: var(--r-card);
+  }
+}
+
+.cell__slider {
+  position: relative;
+  z-index: 1;
+}
+
+.cell__deck {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more ng-icon {
+    transition: none;
+  }
+}
+
+// Smaller work without a case study: a compact row after the bento.
+.minor {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.minor__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+
+  .icon-tile {
+    flex: none;
+  }
+}
+
+.minor__body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+
+  h3 {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  > p:not(.cell__status) {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+  .more {
+    margin-top: 2px;
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 900px) {
+  .minor {
+    grid-template-columns: 1fr;
+  }
+}
+

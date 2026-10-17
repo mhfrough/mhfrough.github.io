@@ -1,0 +1,77 @@
+// Call center case-study theme: the site's own design system (Geist, pills, 16px cards) in the portal's colours:
+// its periwinkle #5e81f4, indigo #4d4cac and navy #131336 on the pale lavender #f5f5fb it used for the page, with
+// its salmon #ff808b for cancellations. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="call-center"> (route data on /work/call-center). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 16.4:1 on --bg, ink-2 (the portal's indigo) 6.6:1 on --bg and 7.1:1 on white, muted
+// 5.8:1 on --bg and 5.2:1 on --surface-2, white on the indigo CTA 7.1:1, --c-blue-text 6.8:1 on white and 5.8:1 on
+// --c-blue-soft, --c-red-text 6.5:1 on white and 5.5:1 on --c-red-soft, --c-green-text 5.8:1 on white and 5.0:1 on
+// --c-green-soft, --c-amber-text 5.3:1 on --c-amber-soft. The portal's #5e81f4 and #ff808b are fills for large
+// shapes only (3.6:1 and 2.4:1 on white). Night blocks: --n-ink 16.4:1, --n-muted 8.1:1.
+
+:root[data-theme='call-center'] {
+  --bg: #f5f5fb;
+  --bg-2: #e9eaf5;
+  --bg-raise: #e9eaf5;
+  --surface: #ffffff;
+  --surface-2: #e9eaf5;
+  --line: #dcdeee;
+  --line-strong: #c3c6e0;
+
+  --ink: #131336;
+  --ink-2: #4d4cac;
+  --muted: #5b5f7a;
+  --faint: #c3c6e0; // decorative only
+
+  --c-blue: #5e81f4;
+  --c-blue-text: #3052c0;
+  --c-blue-soft: #e7ecfd;
+  --c-indigo: #4d4cac;
+  --c-red: #ff808b;
+  --c-red-text: #b4233a;
+  --c-red-soft: #ffe6e9;
+  --c-green-text: #00753f;
+  --c-green-soft: #dcf3e7;
+  --c-amber: #ffb400;
+  --c-amber-text: #8a5a00;
+  --c-amber-soft: #fff2d1;
+  --c-night: #131336;
+  --c-night-2: #1d1d4a;
+  --c-night-line: rgb(245 245 251 / 0.12);
+  --n-ink: #f5f5fb;
+  --n-muted: #a9acd6;
+
+  --accent: #4d4cac;
+  --accent-ink: #ffffff;
+  --accent-soft: #e7ecfd;
+  --cta: #4d4cac;
+  --cta-ink: #ffffff;
+  --focus: #4d4cac;
+
+  --solid: #131336;
+  --solid-ink: #f5f5fb;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(19 19 54 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(19 19 54 / 0.05), 0 14px 34px -16px rgb(19 19 54 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(19 19 54 / 0.05), 0 36px 72px -28px rgb(19 19 54 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--c-indigo);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #c3cdf7;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(94 129 244 / 0.14), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(255 128 139 / 0.1), transparent 70%);
+  }
+}

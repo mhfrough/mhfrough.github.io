@@ -1,0 +1,275 @@
+<mh-asaan-hisab-theme />
+
+<!-- Hero: copy left, the working transactions panel right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="ah-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="ah-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+        </a>
+        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+      </div>
+    </div>
+    <mh-ah-journal class="rise d2" />
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="ah-numbers">
+  <div class="wrap">
+    <h2 id="ah-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The public sign-up page: the only screenshots on the page -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ah-site">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-site" class="title">{{ c.site.title }}</h2>
+      <p class="sub">{{ c.site.sub }}</p>
+    </header>
+
+    <div class="shots" mhReveal>
+      <figure class="browser">
+        <div class="browser-bar" aria-hidden="true">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="url">{{ c.site.url }}</span>
+        </div>
+        <img src="/images/asaan-hisab/site-home.webp" width="1600" height="1000" [alt]="c.site.heroAlt" loading="lazy" decoding="async" />
+      </figure>
+      <figure class="mobile">
+        <img src="/images/asaan-hisab/site-mobile.webp" width="780" height="1688" [alt]="c.site.mobileAlt" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+
+    <figure class="card shot wide" mhReveal>
+      <img src="/images/asaan-hisab/site-features.webp" width="1536" height="924" [alt]="c.site.featuresAlt" loading="lazy" decoding="async" />
+      <figcaption>{{ c.site.featuresCap }}</figcaption>
+    </figure>
+    <p class="note mono" mhReveal>{{ c.site.note }}</p>
+  </div>
+</section>
+}
+
+<!-- Architecture: plain forms in, double entry underneath -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ah-arch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-arch" class="title">{{ c.arch.title }}</h2>
+      <p class="sub">{{ c.arch.sub }}</p>
+    </header>
+
+    <div class="arch" mhReveal>
+      <div class="col">
+        <p class="col-label">{{ c.arch.left }}</p>
+        <ul role="list">
+          @for (d of c.arch.owner; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="core">
+        <img src="/images/asaan-hisab/asaan-hisab-mark.webp" width="50" height="48" alt="" />
+        <b>{{ c.arch.core }}</b>
+        <small>{{ c.arch.coreSub }}</small>
+        <ul class="heads mono" role="list">
+          @for (h of heads; track h) {
+            <li>{{ h }}</li>
+          }
+        </ul>
+      </div>
+      <div class="wire rev" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="col">
+        <p class="col-label">{{ c.arch.right }}</p>
+        <ul role="list">
+          @for (d of c.arch.books; track d.t) {
+            <li class="node">
+              <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
+              <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- From a sale to the balance sheet -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ah-flow">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-flow" class="title">{{ c.flow.title }}</h2>
+      <p class="sub">{{ c.flow.sub }}</p>
+    </header>
+
+    <div class="rail card" mhReveal>
+      <ol role="list">
+        @for (s of c.flow.steps; track s; let i = $index) {
+          <li [style.--i]="i">
+            <span class="dot mono" aria-hidden="true">{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <ul class="rules" role="list">
+      @for (r of c.flow.holds; track r.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <span class="mono">0{{ i + 1 }}</span>
+          <h3>{{ r.t }}</h3>
+          <p>{{ r.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- The transaction screen -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ah-tx">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-tx" class="title">{{ c.journal.title }}</h2>
+      <p class="sub">{{ c.journal.sub }}</p>
+    </header>
+    <ul class="points" role="list">
+      @for (p of c.journal.points; track p.t; let i = $index) {
+        <li class="card card--hover" mhReveal [revealIndex]="i">
+          <span class="node-ic"><ng-icon [name]="p.icon" aria-hidden="true" /></span>
+          <div>
+            <h3>{{ p.t }}</h3>
+            <p>{{ p.s }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Invoices -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ah-inv">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-inv" class="title">{{ c.invoice.title }}</h2>
+      <p class="sub">{{ c.invoice.sub }}</p>
+    </header>
+    <mh-ah-invoice mhReveal />
+  </div>
+</section>
+}
+
+<!-- Reports -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ah-rep">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-rep" class="title">{{ c.reports.title }}</h2>
+      <p class="sub">{{ c.reports.sub }}</p>
+    </header>
+    <mh-ah-reports mhReveal />
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ah-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ah-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ah-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Next -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="ah-next">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="ah-next" class="title">{{ c.next.title }}</h2>
+        <p class="sub">{{ c.next.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" routerLink="/work/finclore">{{ c.next.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

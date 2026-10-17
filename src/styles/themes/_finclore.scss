@@ -1,0 +1,80 @@
+// Finclore case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in Finclore's
+// colours, the two in its logo: navy #0a3161 and red #b31942 (the US flag's own blue and red), on the pale grey
+// #f5f6f8 the product used for its page and install screen. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="finclore"> (route data on /work/finclore). Every rule is scoped to that attribute, so
+// nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 15.9:1 on --bg, ink-2 8.9:1, muted 5.7:1 on --bg, 5.3:1 on --surface-2 and 6.1:1 on
+// white, white on the navy CTA 12.9:1, navy 10.6:1 on --f-navy-soft, the logo red 6.7:1 on white and 5.5:1 on
+// --f-red-soft (so it may carry small text), --f-green-text 5.4:1 on white and 4.6:1 on --f-green-soft,
+// --f-amber-text 5.3:1 on --f-amber-soft. Night blocks: --n-ink 15.2:1, --n-muted 8.1:1.
+
+:root[data-theme='finclore'] {
+  // Surfaces
+  --bg: #f5f6f8;
+  --bg-2: #eceff3;
+  --bg-raise: #eceff3;
+  --surface: #ffffff;
+  --surface-2: #eceff3;
+  --line: #dfe3ea;
+  --line-strong: #c6cdd8;
+
+  // Ink, tinted towards the logo's navy
+  --ink: #131b2c;
+  --ink-2: #3b4559;
+  --muted: #596274;
+  --faint: #c6cdd8; // decorative only
+
+  // Brand: navy carries buttons and links, red is the full stop: one accent, used sparingly.
+  --f-navy: #0a3161;
+  --f-navy-dark: #072347;
+  --f-navy-soft: #e3e9f3;
+  --f-red: #b31942;
+  --f-red-soft: #f8e4ea;
+  --f-blue: #4c6a96; // fills only (share bars)
+  --f-slate: #8b97ab; // fills only (share bars)
+  --f-green-text: #1d7a46;
+  --f-green-soft: #def2e6;
+  --f-amber-text: #8a5a00;
+  --f-amber-soft: #fff2d1;
+  --f-night: #071f40;
+  --f-night-2: #0d2a52;
+  --f-night-line: rgb(245 246 248 / 0.12);
+  --f-night-line-strong: rgb(245 246 248 / 0.22);
+  --f-footer-ink: #dedede; // the wordmark's one-colour version on the dark footer, 12.2:1 on --f-night
+  --n-ink: #f5f6f8;
+  --n-muted: #a9b7cc;
+
+  --accent: #0a3161;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3e9f3;
+  --cta: #0a3161;
+  --cta-ink: #ffffff;
+  --focus: #0a3161;
+
+  --solid: #071f40;
+  --solid-ink: #f5f6f8;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(7 31 64 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(7 31 64 / 0.05), 0 14px 34px -16px rgb(7 31 64 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(7 31 64 / 0.05), 0 36px 72px -28px rgb(7 31 64 / 0.26);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--f-navy);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #b9c6da;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(10 49 97 / 0.1), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(179 25 66 / 0.06), transparent 70%);
+  }
+}

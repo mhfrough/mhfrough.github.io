@@ -1,0 +1,372 @@
+<mh-scrawl-theme />
+
+<!-- Hero: copy left, a working sketchpad right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="sc-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <img src="/images/scrawl/scrawl-mark.svg" width="22" height="22" alt="" />
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="sc-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft"><span class="hl">{{ c.hero.line2 }}</span></span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" /> {{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-demo rise d2">
+      <mh-scrawl-sketch />
+      <p class="demo-note mono">{{ c.hero.demoNote }}</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="sc-numbers">
+  <div class="wrap">
+    <h2 id="sc-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The real app -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sc-shots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-shots" class="title">{{ c.shots.title }}</h2>
+      <p class="sub">{{ c.shots.sub }}</p>
+    </header>
+
+    <figure class="browser" mhReveal>
+      <div class="browser-bar" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">{{ c.shots.url }}</span>
+      </div>
+      <img src="/images/scrawl/board-dark.webp" srcset="/images/scrawl/board-dark-800.webp 800w, /images/scrawl/board-dark.webp 1600w" sizes="(max-width: 1160px) calc(100vw - 32px), 1112px" width="1600" height="1000" [alt]="c.shots.mainAlt" loading="lazy" decoding="async" />
+    </figure>
+
+    <div class="shots-3">
+      @for (s of c.shots.details; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" width="960" height="720" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="shots-duo">
+      <figure class="card shot" mhReveal>
+        <img [src]="c.shots.light.src" width="1200" height="750" [alt]="c.shots.light.alt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.shots.light.cap }}</figcaption>
+      </figure>
+      @for (s of c.shots.phones; track s.src; let i = $index) {
+        <figure class="card shot phone" mhReveal [revealIndex]="i + 1">
+          <img [src]="s.src" width="480" height="1039" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+    <p class="note mono" mhReveal>{{ c.shots.note }}</p>
+  </div>
+</section>
+}
+
+<!-- The marker look -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sc-marker">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-marker" class="title">{{ c.marker.title }}</h2>
+      <p class="sub">{{ c.marker.sub }}</p>
+    </header>
+
+    <div class="marker">
+      <ol class="steps" role="list">
+        @for (s of c.marker.steps; track s.t; let i = $index) {
+          <li mhReveal [revealIndex]="i">
+            <span class="mono idx">0{{ i + 1 }}</span>
+            <div>
+              <h3>{{ s.t }}</h3>
+              <p>{{ s.s }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+
+      <div class="marker-side" mhReveal>
+        <figure class="card hands">
+          <figcaption class="hands-head">
+            <span>{{ c.marker.specLabel }}</span>
+            <button type="button" class="btn btn-ghost btn-sm" (click)="reseed()">
+              <ng-icon name="phosphorArrowsClockwise" aria-hidden="true" /> {{ c.marker.reseed }}
+            </button>
+          </figcaption>
+          @for (h of specimen(); track h.name) {
+            <div class="hand-row">
+              <span class="mono hand-name">{{ h.name }}</span>
+              <svg viewBox="0 0 550 100" role="img" [attr.aria-label]="'Box, circle, diamond and arrow drawn with the ' + h.name + ' hand'">
+                @for (f of h.fills; track $index) {
+                  <path [attr.d]="f" [attr.fill]="h.color" />
+                }
+                @for (k of h.strokes; track $index) {
+                  <path [attr.d]="k" fill="none" [attr.stroke]="h.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                }
+              </svg>
+            </div>
+          }
+          <p class="mono seed" aria-live="polite">seed {{ seedLabel() }}, the same shapes every time it renders</p>
+        </figure>
+        <pre class="codeblock mono" tabindex="0" aria-label="markerLine from scene.js"><code>{{ c.marker.code }}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Print fills -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sc-fills">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-fills" class="title">{{ c.fills.title }}</h2>
+      <p class="sub">{{ c.fills.sub }}</p>
+    </header>
+    <div mhReveal>
+      <mh-scrawl-fills />
+    </div>
+    <ul class="notes three" role="list">
+      @for (n of c.fills.notes; track n; let i = $index) {
+        <li mhReveal [revealIndex]="i">{{ n }}</li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Pencil case -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sc-tools">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-tools" class="title">{{ c.tools.title }}</h2>
+      <p class="sub">{{ c.tools.sub }}</p>
+    </header>
+    <ul class="tools" role="list">
+      @for (t of c.tools.items; track t.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="tool-ic"><ng-icon [name]="t.icon" aria-hidden="true" /></span>
+          <h3>{{ t.t }}</h3>
+          <p>{{ t.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Dark paper -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sc-dark">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-dark" class="title">{{ c.dark.title }}</h2>
+      <p class="sub">{{ c.dark.sub }}</p>
+    </header>
+    <div class="dark-grid">
+      <div mhReveal>
+        <mh-scrawl-ink />
+      </div>
+      <ul class="notes" role="list" mhReveal [revealIndex]="1">
+        @for (n of c.dark.notes; track n) {
+          <li>{{ n }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Saving -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sc-save">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-save" class="title">{{ c.saving.title }}</h2>
+      <p class="sub">{{ c.saving.sub }}</p>
+    </header>
+
+    <ol class="tiers" role="list">
+      @for (t of c.saving.tiers; track t.t; let i = $index) {
+        <li class="card tier" mhReveal [revealIndex]="i">
+          <div class="tier-head">
+            <h3>{{ t.t }}</h3>
+            <span class="tag">{{ t.tag }}</span>
+          </div>
+          <ul role="list">
+            @for (x of t.items; track x) {
+              <li>{{ x }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ol>
+
+    <figure class="file" mhReveal>
+      <figcaption class="file-head">
+        <h3 class="mini">{{ c.saving.fileTitle }}</h3>
+        <span class="mono size">{{ fileSize() }} {{ c.saving.sizeOf }}</span>
+      </figcaption>
+      <pre class="codeblock mono" tabindex="0" aria-label="The hero sketch as a .scrawl file"><code>{{ sketch.file() }}</code></pre>
+      <p class="note mono">{{ c.saving.fileNote }}</p>
+    </figure>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sc-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+
+    <div class="stack-grid">
+      <div class="card files" mhReveal>
+        <table>
+          <caption class="sr-only">Files in the Scrawl repository</caption>
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">File</th>
+              <th scope="col">What it does</th>
+              <th scope="col">Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (f of c.stack.files; track f.f) {
+              <tr>
+                <th scope="row" class="mono">{{ f.f }}</th>
+                <td>{{ f.s }}</td>
+                <td class="mono n">{{ f.n }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <ul class="stack" role="list">
+        @for (g of c.stack.groups; track g.t; let i = $index) {
+          <li class="card" mhReveal [revealIndex]="i">
+            <h3>{{ g.t }}</h3>
+            <p class="why">{{ g.why }}</p>
+            <mh-tech-pills [items]="g.items" />
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Engineering -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sc-eng">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-eng" class="title">{{ c.engineering.title }}</h2>
+      <p class="sub">{{ c.engineering.sub }}</p>
+    </header>
+    <ul class="inside" role="list">
+      @for (d of c.engineering.items; track d.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="mono idx">0{{ i + 1 }}</span>
+          <h3>{{ d.t }}</h3>
+          <p>{{ d.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Status and limits -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sc-limits">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sc-limits" class="title">{{ c.limits.title }}</h2>
+      <p class="sub">{{ c.limits.sub }}</p>
+    </header>
+    <div class="status">
+      <div class="card st st--ok" mhReveal>
+        <h3>{{ c.limits.worksTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.works; track w) {
+            <li><ng-icon name="phosphorCheckCircle" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+      <div class="card st st--todo" mhReveal [revealIndex]="1">
+        <h3>{{ c.limits.limitsTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.limits; track w) {
+            <li><ng-icon name="phosphorCircleDashed" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- CTA -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="sc-cta">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="sc-cta" class="title">{{ c.cta.title }}</h2>
+        <p class="sub">{{ c.cta.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" /> {{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" routerLink="/work/flick">{{ c.cta.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

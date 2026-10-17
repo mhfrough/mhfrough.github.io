@@ -150,7 +150,7 @@ export const CONTACT_COPY = {
     ],
     response: 'Response time',
     responseValue: 'Usually within two working days, Monday to Friday.',
-    time: 'Local time in Karachi',
+    time: 'Local time in Karāchi',
     zone: 'UTC+5',
     working: 'Within working hours',
     offHours: 'Outside working hours, replies resume next working day',

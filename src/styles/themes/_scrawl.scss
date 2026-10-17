@@ -1,0 +1,72 @@
+// Scrawl case-study theme: the site's own design system (Geist, pills, 16px cards) in Scrawl's dark sketchbook
+// colours from its styles.css: paper #161614, cards #22221f and #2e2e2a, ink #ebebe9, muted #a9a9a4, the rail's
+// near-black #0b0b0a, and its one highlighter yellow #ffe14a for the CTA (with Scrawl's #1d1d1b ink on it).
+// The riso pink #ff48b0 and the dark-mode selection blue #5fb4f0 from app.js are for small highlights only.
+// Colour tokens only, like the other case studies. Applied by <html data-theme="scrawl"> (route data on
+// /work/scrawl). Every rule is scoped to that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1) on --bg #161614: ink 15.2:1, ink-2 11.6:1, muted 7.7:1 (6.8:1 on --surface, 5.8:1 on
+// --surface-2), --sc-hi 13.9:1, --sc-blue 8.0:1, --sc-pink 5.9:1. CTA ink #1d1d1b on #ffe14a 13.0:1.
+// --faint is decorative only (2.7:1).
+
+:root[data-theme='scrawl'] {
+  --bg: #161614;
+  --bg-2: #1b1b19;
+  --bg-raise: #1b1b19;
+  --surface: #22221f;
+  --surface-2: #2e2e2a;
+  --line: #33332f;
+  --line-strong: #46463f;
+
+  --ink: #ebebe9;
+  --ink-2: #cfcfcb;
+  --muted: #a9a9a4;
+  --faint: #5c5c56; // decorative only
+
+  --sc-hi: #ffe14a;
+  --sc-hi-soft: #2b2817;
+  --sc-on-hi: #1d1d1b;
+  --sc-blue: #5fb4f0;
+  --sc-pink: #ff48b0;
+  --sc-dot: rgb(238 237 230 / 0.16);
+  --sc-mark: rgb(255 225 74 / 0.28); // highlighter stroke behind text (text stays --ink)
+  --sc-glow: rgb(255 225 74 / 0.14);
+  --sc-edge: #4a4430;
+  --sc-rail: #0b0b0a;
+
+  --accent: #ffe14a;
+  --accent-ink: #1d1d1b;
+  --accent-soft: #2b2817;
+  --solid: #2e2e2a;
+  --solid-ink: #ebebe9;
+  --cta: #ffe14a;
+  --cta-ink: #1d1d1b;
+  --focus: #ffe14a;
+
+  --glass-edge: rgb(238 237 230 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.06);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.4), 0 40px 80px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #ffe14a;
+    color: #1d1d1b;
+  }
+
+  .btn-solid:hover,
+  .btn--primary:hover {
+    background: #ffe97a;
+  }
+
+  .card--hover:hover {
+    border-color: #5a5338;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(55% 50% at 85% 20%, rgb(255 225 74 / 0.11), transparent 70%),
+      radial-gradient(45% 40% at 8% 90%, rgb(255 72 176 / 0.05), transparent 70%);
+  }
+}

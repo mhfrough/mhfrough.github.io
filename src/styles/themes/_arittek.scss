@@ -1,0 +1,77 @@
+// Arittek case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// colours of the arittek.com redesign: its navy #14284a, gold #b8863b and the cream #fbf9f4 it uses for pages,
+// with the forest green #24402c it gives Al-Qist. Colour tokens only, like the other case-study themes: no
+// Playfair, no square buttons.
+// Applied by <html data-theme="arittek"> (route data on /work/arittek). Every rule is scoped to that attribute,
+// so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink (the site's navy) 13.9:1 on --bg, ink-2 7.6:1, muted 5.5:1 on --bg, 5.0:1 on
+// --surface-2 and 5.8:1 on white, white on the navy CTA 14.7:1, --a-gold-text 6.3:1 on white, 6.0:1 on --bg and
+// 5.2:1 on --a-gold-soft, --a-forest-text 7.4:1 on --a-forest-soft, --a-red-text 5.4:1 on --a-red-soft. The site's
+// own gold #b8863b is a fill for large shapes only. Night blocks: --n-ink 14.5:1, --n-muted 9.1:1, --a-gold-night
+// 6.9:1 on --a-night.
+
+:root[data-theme='arittek'] {
+  --bg: #fbf9f4;
+  --bg-2: #f3eee3;
+  --bg-raise: #f3eee3;
+  --surface: #ffffff;
+  --surface-2: #f3eee3;
+  --line: #e6e0d2;
+  --line-strong: #d3cab6;
+
+  --ink: #14284a;
+  --ink-2: #47525f;
+  --muted: #5d6673;
+  --faint: #d3cab6; // decorative only
+
+  --a-navy: #14284a;
+  --a-navy-2: #1c3660;
+  --a-gold: #b8863b;
+  --a-gold-text: #7d5924;
+  --a-gold-soft: #f4e8d3;
+  --a-gold-night: #cf9f57;
+  --a-forest: #24402c;
+  --a-forest-text: #2f5138;
+  --a-forest-soft: #e6ebe2;
+  --a-red-text: #a8323a;
+  --a-red-soft: #f8e3e3;
+  --a-night: #0e1f3a;
+  --a-night-2: #14284a;
+  --a-night-line: rgb(238 241 246 / 0.14);
+  --n-ink: #eef1f6;
+  --n-muted: #b7c1d1;
+
+  --accent: #14284a;
+  --accent-ink: #ffffff;
+  --accent-soft: #f4e8d3;
+  --cta: #14284a;
+  --cta-ink: #ffffff;
+  --focus: #14284a;
+
+  --solid: #0e1f3a;
+  --solid-ink: #eef1f6;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  --glass-edge: rgb(14 31 58 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --shadow: 0 1px 2px rgb(14 31 58 / 0.05), 0 14px 34px -16px rgb(14 31 58 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(14 31 58 / 0.05), 0 36px 72px -28px rgb(14 31 58 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--a-navy);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #dcc8a4;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(184 134 59 / 0.12), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(20 40 74 / 0.08), transparent 70%);
+  }
+}

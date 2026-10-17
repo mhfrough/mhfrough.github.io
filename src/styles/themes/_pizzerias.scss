@@ -1,0 +1,80 @@
+// Pizzerias case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// shared storefront template's colours: tomato #ea3600, cheese yellow #fccc4c and basil green #00a850 on the
+// cloud-kitchen brand's cream #fff9e4. Colour tokens only, like the other case-study themes.
+// Applied by <html data-theme="pizzerias"> (route data on /work/pizzerias). Every rule is scoped to that
+// attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1): ink 15.5:1 on --bg, ink-2 9.2:1, muted 5.6:1 on --bg and 5.2:1 on --surface-2,
+// white on the tomato CTA #cc2f00 5.3:1 (the template's #ea3600 is 4.2:1 with white, so it stays a fill for
+// large shapes only), --p-red-text 6.3:1 on --surface and 5.2:1 on --p-red-soft, --p-green-text 5.7:1 and
+// 5.0:1 on --p-green-soft, --p-yellow-text 5.6:1 on --p-yellow-soft. Night blocks: --n-ink 16.0:1,
+// --n-muted 7.7:1.
+
+:root[data-theme='pizzerias'] {
+  // Surfaces: warm cream, cards a shade lighter
+  --bg: #fbf6ec;
+  --bg-2: #f5eee0;
+  --bg-raise: #f5eee0;
+  --surface: #fffdf8;
+  --surface-2: #f5eee0;
+  --line: #ebe1cf;
+  --line-strong: #d9ccb4;
+
+  // Ink: the template's charcoal, warmed
+  --ink: #221d18;
+  --ink-2: #4a423a;
+  --muted: #6b6157;
+  --faint: #d9ccb4; // decorative only
+
+  // Brand: tomato is the fill, yellow and green are accents (fills only; their -text tones carry words).
+  --p-red: #ea3600;
+  --p-red-dark: #cc2f00;
+  --p-red-text: #b52a00;
+  --p-red-soft: #fde3d8;
+  --p-yellow: #fccc4c;
+  --p-yellow-text: #7a5a00;
+  --p-yellow-soft: #fdf0c8;
+  --p-green: #00a850;
+  --p-green-text: #00753a;
+  --p-green-soft: #dcf3e5;
+  --p-night: #1f1a16;
+  --p-night-2: #2a231d;
+  --p-night-line: rgb(251 246 236 / 0.12);
+  --n-ink: #fbf6ec;
+  --n-muted: #b8ab9a;
+
+  --accent: #cc2f00;
+  --accent-ink: #ffffff;
+  --accent-soft: #fde3d8;
+  --cta: #cc2f00;
+  --cta-ink: #ffffff;
+  --focus: #cc2f00;
+
+  // Dark blocks in the template's warm charcoal.
+  --solid: #1f1a16;
+  --solid-ink: #fbf6ec;
+  --solid-edge: rgb(0 0 0 / 0.1);
+
+  // Glass + elevation, warm and soft for a light page.
+  --glass-edge: rgb(31 26 22 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.65);
+  --shadow: 0 1px 2px rgb(31 26 22 / 0.05), 0 14px 34px -16px rgb(31 26 22 / 0.18);
+  --shadow-lg: 0 2px 4px rgb(31 26 22 / 0.05), 0 36px 72px -28px rgb(31 26 22 / 0.28);
+
+  color-scheme: light;
+
+  ::selection {
+    background: var(--p-red-dark);
+    color: #fff;
+  }
+
+  .card--hover:hover {
+    border-color: #f2c2ad;
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgb(234 54 0 / 0.08), transparent 70%),
+      radial-gradient(50% 40% at 10% 90%, rgb(252 204 76 / 0.14), transparent 70%);
+  }
+}
