@@ -1,0 +1,16 @@
+/* TEAM */
+Designer and developer: Mohammad Hamza
+Handle: @mhfrough
+Role: Software Architect
+Site: https://mhfrough.dev
+GitHub: https://github.com/mhfrough
+LinkedIn: https://www.linkedin.com/in/mhfrough
+From: Karachi, Pakistan
+
+/* SITE */
+Language: English
+Standards: HTML, CSS, TypeScript, WCAG 2.1 AA
+Components: Angular, Angular SSR (static prerender)
+Type: Geist, JetBrains Mono
+Icons: Phosphor
+Software: VS Code, Figma, Playwright, Lighthouse
