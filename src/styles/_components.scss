@@ -934,3 +934,39 @@ section.block {
     }
   }
 }
+
+// ---------- Optical centring for pill labels (owner, 2026-10-23: "buttons are not centred") ----------
+// Measured in Chrome: with the body's line-height 1.6, the half-leading is floored to a whole pixel, so Geist's caps
+// sat up to 1px above the centre of 32px pills. line-height: normal drops the leading, and 1px of top padding lowers
+// the caps the last half pixel; every pill now lands within about 0.4px of its centre. Heights are fixed, so neither
+// changes a box size. Kept last so it wins over each component's own `padding` shorthand.
+.btn,
+.chip,
+.badge,
+.seg button,
+.seg a,
+.copy,
+.status-pill {
+  line-height: normal;
+  padding-top: 1px;
+}
+
+// Geist Mono, and Geist at the small button's 13.5 to 14px, already centre without the extra pixel.
+.tag,
+.btn-sm,
+.btn--sm {
+  padding-top: 0;
+}
+
+// Phosphor draws inside a 256 grid with 32 units (0.125em) of empty space on each side. Pulling the icon out by that
+// much makes the ink, not the box, sit on the padding and the gap, so a trailing arrow no longer looks pushed in.
+.btn,
+.chip,
+.badge,
+.copy,
+.status-pill,
+.pill-link {
+  > ng-icon {
+    margin-inline: -0.125em;
+  }
+}

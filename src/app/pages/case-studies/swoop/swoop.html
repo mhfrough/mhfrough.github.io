@@ -1,0 +1,434 @@
+<mh-swoop-theme />
+
+<!-- Hero: copy left, a working markup editor right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="sw-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <img src="/images/swoop/swoop-mark.svg" width="22" height="22" alt="" />
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="sw-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" /> {{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-demo rise d2">
+      <mh-swoop-markup />
+      <p class="demo-note mono">{{ c.hero.demoNote }}</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="sw-numbers">
+  <div class="wrap">
+    <h2 id="sw-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The real thing -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sw-shots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-shots" class="title">{{ c.shots.title }}</h2>
+      <p class="sub">{{ c.shots.sub }}</p>
+    </header>
+
+    <figure class="browser" mhReveal>
+      <div class="browser-bar" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">{{ c.shots.url }}</span>
+      </div>
+      <img src="/images/swoop/site.webp" srcset="/images/swoop/site-800.webp 800w, /images/swoop/site.webp 1600w" sizes="(max-width: 1160px) calc(100vw - 32px), 1112px" width="1600" height="1000" [alt]="c.shots.mainAlt" loading="lazy" decoding="async" />
+    </figure>
+
+    <div class="shots-2">
+      @for (s of c.shots.duo; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" [attr.srcset]="s.small ? s.small + ' 800w, ' + s.src + ' 1600w' : null" sizes="(max-width: 640px) 100vw, (max-width: 1160px) 50vw, 548px" width="1600" height="1000" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="shots-3">
+      @for (s of c.shots.trio; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i">
+          <img [src]="s.src" [srcset]="s.small + ' 800w, ' + s.src + ' 1600w'" sizes="(max-width: 640px) 100vw, (max-width: 1160px) 33vw, 360px" width="1600" height="1000" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="phone-split">
+      <div class="phone-copy" mhReveal>
+        <h3>{{ c.shots.phoneTitle }}</h3>
+        <p>{{ c.shots.phoneText }}</p>
+        <ul class="ticks" role="list">
+          @for (p of c.shots.phonePoints; track p) {
+            <li>{{ p }}</li>
+          }
+        </ul>
+      </div>
+      <div class="phones">
+        @for (s of c.shots.phones; track s.src; let i = $index) {
+          <figure class="phone" mhReveal [revealIndex]="i">
+            <img [src]="s.src" width="600" height="1298" [alt]="s.alt" loading="lazy" decoding="async" />
+            <figcaption>{{ s.cap }}</figcaption>
+          </figure>
+        }
+      </div>
+    </div>
+    <p class="note mono" mhReveal>{{ c.shots.note }}</p>
+  </div>
+</section>
+}
+
+<!-- Two ways in -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sw-ways">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-ways" class="title">{{ c.ways.title }}</h2>
+      <p class="sub">{{ c.ways.sub }}</p>
+    </header>
+    <ul class="ways" role="list">
+      @for (w of c.ways.items; track w.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i">
+          <div class="way-head">
+            <span class="icon-well"><ng-icon [name]="icons[w.icon]" aria-hidden="true" /></span>
+            <span class="tag">{{ w.tag }}</span>
+          </div>
+          <h3>{{ w.t }}</h3>
+          <p class="keys">
+            @for (k of w.keys; track k; let last = $last) {
+              <kbd>{{ k }}</kbd>
+              @if (!last) {
+                <span aria-hidden="true">+</span>
+              }
+            }
+          </p>
+          <p>{{ w.s }}</p>
+          <ul class="ticks" role="list">
+            @for (p of w.points; track p) {
+              <li>{{ p }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Scroll and stitch -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sw-stitch">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-stitch" class="title">{{ c.stitch.title }}</h2>
+      <p class="sub">{{ c.stitch.sub }}</p>
+    </header>
+    <div class="stitch-grid">
+      <div mhReveal>
+        <mh-swoop-stitch />
+      </div>
+      <div class="stitch-side" mhReveal [revealIndex]="1">
+        <ul class="ticks" role="list">
+          @for (n of c.stitch.notes; track n) {
+            <li>{{ n }}</li>
+          }
+        </ul>
+        <div class="card why">
+          <h3>{{ c.stitch.whyTitle }}</h3>
+          <p>{{ c.stitch.why }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- One editor -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sw-editor">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-editor" class="title">{{ c.editor.title }}</h2>
+      <p class="sub">{{ c.editor.sub }}</p>
+    </header>
+
+    <div class="editor-grid">
+      <figure class="model" mhReveal>
+        <figcaption class="model-head">
+          <h3 class="mini">{{ c.editor.modelTitle }}</h3>
+          <span class="mono size">{{ doc.shapes().length }} shapes</span>
+        </figcaption>
+        <pre class="codeblock mono" tabindex="0" aria-label="The hero marks in the editor's document model"><code>{{ doc.json() }}</code></pre>
+        <p class="note mono">{{ c.editor.modelNote }}</p>
+      </figure>
+
+      <ul class="points" role="list">
+        @for (p of c.editor.points; track p.t; let i = $index) {
+          <li mhReveal [revealIndex]="i">
+            <span class="mono idx">0{{ i + 1 }}</span>
+            <div>
+              <h3>{{ p.t }}</h3>
+              <p>{{ p.s }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="keys-band" mhReveal>
+      <h3 class="mini">{{ c.editor.keysTitle }}</h3>
+      <ul class="keymap" role="list">
+        @for (k of c.editor.keys; track k.k) {
+          <li><kbd>{{ k.k }}</kbd><span>{{ k.t }}</span></li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- A small desktop app -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sw-desktop">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-desktop" class="title">{{ c.desktop.title }}</h2>
+      <p class="sub">{{ c.desktop.sub }}</p>
+    </header>
+    <ul class="inside" role="list">
+      @for (d of c.desktop.items; track d.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="mono idx">0{{ i + 1 }}</span>
+          <h3>{{ d.t }}</h3>
+          <p>{{ d.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sw-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+    <div class="card compare" mhReveal>
+      <table>
+        <caption>{{ c.decisions.tableTitle }}</caption>
+        <thead>
+          <tr>
+            @for (h of c.decisions.table.cols; track h) {
+              <th scope="col">{{ h }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of c.decisions.table.rows; track r[0]; let last = $last) {
+            <tr [class.pick]="last">
+              <th scope="row">{{ r[0] }}</th>
+              <td class="mono">{{ r[1] }}</td>
+              <td>{{ r[2] }}</td>
+              <td>{{ r[3] }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Private by design -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sw-privacy">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-privacy" class="title">{{ c.privacy.title }}</h2>
+      <p class="sub">{{ c.privacy.sub }}</p>
+    </header>
+    <div class="privacy-grid">
+      <div class="card perms" mhReveal>
+        <table>
+          <caption class="sr-only">The extension's permissions and what each one is for</caption>
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">Permission</th>
+              <th scope="col">Why Swoop needs it</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of c.privacy.perms; track p.p) {
+              <tr>
+                <th scope="row" class="mono">{{ p.p }}</th>
+                <td>{{ p.s }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <ul class="no-list" role="list">
+        @for (p of c.privacy.points; track p.t; let i = $index) {
+          <li class="card" mhReveal [revealIndex]="i % 2">
+            <span class="icon-well"><ng-icon [name]="icons[p.icon]" aria-hidden="true" /></span>
+            <div>
+              <h3>{{ p.t }}</h3>
+              <p>{{ p.s }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Status -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sw-limits">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-limits" class="title">{{ c.limits.title }}</h2>
+      <p class="sub">{{ c.limits.sub }}</p>
+    </header>
+    <div class="status">
+      <div class="card st st--ok" mhReveal>
+        <h3>{{ c.limits.worksTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.works; track w) {
+            <li><ng-icon name="phosphorCheckCircle" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+      <div class="card st st--todo" mhReveal [revealIndex]="1">
+        <h3>{{ c.limits.notTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.not; track w) {
+            <li><ng-icon name="phosphorCircleDashed" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sw-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sw-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+
+    <div class="stack-grid">
+      <div class="card files" mhReveal>
+        <table>
+          <caption class="sr-only">Key files in the Swoop repository</caption>
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">File</th>
+              <th scope="col">What it does</th>
+              <th scope="col">Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (f of c.stack.files; track f.f) {
+              <tr>
+                <th scope="row" class="mono">{{ f.f }}</th>
+                <td>{{ f.s }}</td>
+                <td class="mono n">{{ f.n }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <ul class="stack" role="list">
+        @for (g of c.stack.groups; track g.t; let i = $index) {
+          <li class="card" mhReveal [revealIndex]="i">
+            <h3>{{ g.t }}</h3>
+            <p class="why">{{ g.why }}</p>
+            <mh-tech-pills [items]="g.items" />
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+}
+
+<!-- CTA -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="sw-cta">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="sw-cta" class="title">{{ c.cta.title }}</h2>
+        <p class="sub">{{ c.cta.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" /> {{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" routerLink="/work/flick">{{ c.cta.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

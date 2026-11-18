@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, afterNextRender, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -9,9 +10,12 @@ import {
   phosphorBuildingOffice,
   phosphorBuildings,
   phosphorCalendarCheck,
+  phosphorCaretLeft,
+  phosphorCaretRight,
   phosphorChartLineUp,
   phosphorChatsCircle,
   phosphorDatabase,
+  phosphorFilmSlate,
   phosphorForkKnife,
   phosphorGift,
   phosphorGlobe,
@@ -19,6 +23,7 @@ import {
   phosphorHeadset,
   phosphorHouseLine,
   phosphorIdentificationBadge,
+  phosphorImage,
   phosphorInvoice,
   phosphorPackage,
   phosphorPenNib,
@@ -36,7 +41,8 @@ import { StarRatingPkg } from './star-rating/star-rating';
 import { WeatherIcons } from './weather-icons/weather-icons';
 import { CardDeck } from './card-deck';
 import { CardSlider } from './card-slider';
-import { CARD_SHOTS, CATEGORIES, FEATURED, PROJECTS, WorkCategory, WorkProject } from './work.data';
+import { ShelfLoop } from './shelf-loop';
+import { CARD_SHOTS, CATEGORIES, FEATURED, PROJECTS, TOOL_ORDER, WorkCategory, WorkProject } from './work.data';
 import { CARD_THUMBS } from './work.thumbs';
 
 /**
@@ -129,7 +135,7 @@ const PACKAGE: WorkCategory[] = ['own'];
 
 @Component({
   selector: 'mh-page-work',
-  imports: [RouterLink, NgIcon, Reveal, WeatherIcons, StarRatingPkg, FaaaCard, CardSlider, CardDeck],
+  imports: [NgTemplateOutlet, RouterLink, NgIcon, Reveal, WeatherIcons, StarRatingPkg, FaaaCard, CardSlider, CardDeck, ShelfLoop],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,
@@ -139,9 +145,12 @@ const PACKAGE: WorkCategory[] = ['own'];
       phosphorBuildingOffice,
       phosphorBuildings,
       phosphorCalendarCheck,
+      phosphorCaretLeft,
+      phosphorCaretRight,
       phosphorChartLineUp,
       phosphorChatsCircle,
       phosphorDatabase,
+      phosphorFilmSlate,
       phosphorForkKnife,
       phosphorGift,
       phosphorGlobe,
@@ -149,6 +158,7 @@ const PACKAGE: WorkCategory[] = ['own'];
       phosphorHeadset,
       phosphorHouseLine,
       phosphorIdentificationBadge,
+      phosphorImage,
       phosphorInvoice,
       phosphorPackage,
       phosphorPenNib,
@@ -178,17 +188,28 @@ export class Work {
   protected readonly filter = signal<Filter>('all');
   protected readonly announcement = signal('');
   protected readonly ready = signal(false);
+  /** Originals shelf: one set on the server, the set plus its looping copy in the browser. */
+  protected readonly copies = signal<number[]>([0]);
 
   protected readonly showFeatured = computed(() => matches(FEATURED.categories, this.filter()));
   protected readonly showIcons = computed(() => matches(ICON_SET, this.filter()));
   protected readonly showPackage = computed(() => matches(PACKAGE, this.filter()));
   private readonly filtered = computed(() => PROJECTS.filter((p) => matches(p.categories, this.filter())));
+  /** My Originals get their own shelf before client work, in TOOL_ORDER. */
+  protected readonly tools = computed(() =>
+    this.filtered()
+      .filter((p) => p.tool)
+      .sort((a, b) => TOOL_ORDER.indexOf(a.id) - TOOL_ORDER.indexOf(b.id)),
+  );
   /** Case studies fill the bento; smaller work without one sits after it as a compact row. */
-  protected readonly cells = computed(() => bento(this.filtered().filter((p) => p.caseStudy)));
-  protected readonly minor = computed(() => this.filtered().filter((p) => !p.caseStudy));
+  protected readonly cells = computed(() => bento(this.filtered().filter((p) => p.caseStudy && !p.tool)));
+  protected readonly minor = computed(() => this.filtered().filter((p) => !p.caseStudy && !p.tool));
 
   constructor() {
-    afterNextRender(() => this.ready.set(true));
+    afterNextRender(() => {
+      this.ready.set(true);
+      this.copies.set([0, 1]);
+    });
     inject(Seo).set({
       title: COPY.seo.title,
       description: COPY.seo.description,
@@ -217,6 +238,11 @@ export class Work {
     return FIRST_SHOTS[p.id] ?? null;
   }
 
+
+  /** The product name alone (titles read "Flick, nearby sharing in the browser"). */
+  protected name(p: WorkProject): string {
+    return p.title.split(',')[0];
+  }
 
   protected meta(p: WorkProject): string[] {
     return [p.domain, p.years, p.where].filter((x): x is string => !!x);

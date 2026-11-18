@@ -155,6 +155,210 @@
   }
 }
 
+// ---------- Originals: a horizontal shelf, its own look apart from the client bento ----------
+.apps-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.apps-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.apps-nav {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+}
+
+// The viewport runs edge to edge of the window, so tiles slide in and out at the screen edge with no fade, while the
+// first tile still lines up with the page column (body clips the scrollbar's few pixels). It clips the drifting
+// track (shelf-loop.ts).
+.apps {
+  // Room above and below for the 3px hover lift and the 4px focus ring, which the clip would otherwise cut.
+  margin: -10px calc(50% - 50vw) 0;
+  padding: 10px calc(50vw - 50%) 18px;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.apps__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, calc((100% - 2 * 12px) / 3.25));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
+}
+
+.app {
+  display: flex;
+}
+
+.app__card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 10px 18px;
+  border-radius: var(--r-card);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface) 46%);
+  border: 1px solid var(--line);
+  transition:
+    transform var(--t-base) var(--ease),
+    box-shadow var(--t-base) var(--ease),
+    border-color var(--t-base) var(--ease);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: var(--line-strong);
+  }
+  // Keyboard focus only: a mouse click on the tile shows no ring.
+  &:has(a:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+
+.app__shot {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  aspect-ratio: 640 / 336;
+  background: var(--bg);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease);
+  }
+}
+
+.app__card:hover .app__shot img {
+  transform: scale(1.03);
+}
+
+.app__id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px;
+
+  .icon-tile {
+    width: 38px;
+    height: 38px;
+    padding: 6px;
+  }
+}
+
+.app__name {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+
+  a {
+    color: inherit;
+    outline: none;
+
+    // The whole tile is the link.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+  }
+}
+
+.app__runs {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.app__line {
+  flex: 1;
+  margin: 0;
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+.app__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+
+  ng-icon {
+    transition: transform var(--t-base) var(--ease);
+  }
+}
+
+.app__card:hover .app__go ng-icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 640px) {
+  .apps-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .apps-nav {
+    display: none;
+  }
+
+  .apps__track {
+    grid-auto-columns: 82%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__card,
+  .app__shot img,
+  .app__go ng-icon {
+    transition: none;
+  }
+
+  .app__card:hover {
+    transform: none;
+  }
+}
+
 // ---------- Grid head ----------
 .grid-head {
   display: flex;
@@ -164,7 +368,9 @@
   margin-bottom: 24px;
 }
 
-.featured-slot + .grid-head {
+.featured-slot + .grid-head,
+.featured-slot + .apps-head,
+.apps + .grid-head {
   margin-top: 96px;
 }
 
@@ -188,7 +394,9 @@
 }
 
 @media (max-width: 640px) {
-  .featured-slot + .grid-head {
+  .featured-slot + .grid-head,
+  .featured-slot + .apps-head,
+  .apps + .grid-head {
     margin-top: 72px;
   }
 

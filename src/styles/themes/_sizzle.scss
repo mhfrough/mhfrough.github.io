@@ -1,0 +1,68 @@
+// Sizzle case-study theme: the site's own design system (Geist, pills, 16px cards) in Sizzle's film-release palette,
+// read from its site.css: soft black #111111, surface #1c1c1c, ink #f2f2f2, muted #a3a3a3, hairline #2c2c2c and one
+// bronze accent #a08672 with #111111 on it. Sizzle's square buttons, Bebas Neue posters and EB Garamond body stay on
+// its own site; only the colours come here. Applied by <html data-theme="sizzle"> (route data on /work/sizzle).
+// Every rule is scoped to that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1) on --bg #111111: ink 16.9:1, ink-2 12.1:1, muted 7.5:1 (6.2:1 on --surface-2),
+// --sz-bronze 5.5:1 (5.0:1 on --surface, 4.5:1 on --surface-2), --sz-bronze-hi 7.6:1.
+// CTA ink #111111 on bronze #a08672 5.5:1. Lines are decorative hairlines, as on the base theme.
+
+:root[data-theme='sizzle'] {
+  --bg: #111111;
+  --bg-2: #151515;
+  --bg-raise: #161616;
+  --surface: #1c1c1c;
+  --surface-2: #242424;
+  --line: #2c2c2c;
+  --line-strong: #3d3833;
+
+  --ink: #f2f2f2;
+  --ink-2: #cfcfcf;
+  --muted: #a3a3a3;
+  --faint: #4d4741; // decorative only
+
+  --sz-bronze: #a08672;
+  --sz-bronze-hi: #b9a08b;
+  --sz-bronze-ink: #111111;
+  --sz-bronze-soft: #251f1a;
+  --sz-bronze-line: #5a4a3e;
+  --sz-grain: rgb(242 242 242 / 0.05);
+
+  --accent: #a08672;
+  --accent-ink: #111111;
+  --accent-soft: #251f1a;
+  --solid: #1c1c1c;
+  --solid-ink: #f2f2f2;
+  --solid-edge: rgb(160 134 114 / 0.22);
+  --cta: #a08672;
+  --cta-ink: #111111;
+  --focus: #b9a08b;
+
+  --glass-edge: rgb(242 242 242 / 0.09);
+  --glass-hi: rgb(255 255 255 / 0.05);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-lg: 0 2px 4px rgb(0 0 0 / 0.35), 0 40px 80px -30px rgb(0 0 0 / 0.75);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #a08672;
+    color: #111111;
+  }
+
+  .btn-solid:hover,
+  .btn--primary:hover {
+    background: #b9a08b;
+  }
+
+  .card--hover:hover {
+    border-color: var(--sz-bronze-line);
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(55% 50% at 82% 20%, rgb(160 134 114 / 0.14), transparent 70%),
+      radial-gradient(45% 40% at 6% 92%, rgb(160 134 114 / 0.05), transparent 70%);
+  }
+}

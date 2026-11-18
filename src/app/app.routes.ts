@@ -126,6 +126,21 @@ export const routes: Routes = [
     data: { theme: 'scrawl' },
     loadComponent: () => import('./pages/case-studies/scrawl/scrawl').then((m) => m.ScrawlCaseStudy),
   },
+  {
+    path: 'work/pinch',
+    data: { theme: 'pinch' },
+    loadComponent: () => import('./pages/case-studies/pinch/pinch').then((m) => m.PinchCaseStudy),
+  },
+  {
+    path: 'work/sizzle',
+    data: { theme: 'sizzle' },
+    loadComponent: () => import('./pages/case-studies/sizzle/sizzle').then((m) => m.SizzleCaseStudy),
+  },
+  {
+    path: 'work/swoop',
+    data: { theme: 'swoop' },
+    loadComponent: () => import('./pages/case-studies/swoop/swoop').then((m) => m.SwoopCaseStudy),
+  },
   { path: 'about', loadComponent: () => import('./pages/about/about').then((m) => m.About) },
   { path: 'hire', loadComponent: () => import('./pages/hire/hire').then((m) => m.Hire) },
   { path: 'contact', loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact) },

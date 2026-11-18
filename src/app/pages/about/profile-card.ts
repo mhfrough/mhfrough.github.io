@@ -108,7 +108,7 @@ import { ABOUT_COPY } from './about.copy';
     }
     .traits .badge {
       height: 28px;
-      padding: 0 11px;
+      padding-inline: 11px;
       font-size: 12.5px;
       background: var(--surface-2);
       border: 1px solid var(--line);

@@ -223,6 +223,9 @@ export const CASE_THEMES: CaseTheme[] = [
   theme('whiteboard', 'Whiteboard', 'phosphorPencilSimpleLine', undefined, 'dark', ['#1a1917', '#e4e0d8', '#818cf8', '#4f46e5', '#ffffff']),
   theme('flick', 'Flick', 'phosphorShareNetwork', '/images/flick/flick-mark.svg', 'dark', ['#0f110e', '#eceee6', '#d4f84b', '#d4f84b', '#11130f']),
   theme('scrawl', 'Scrawl', 'phosphorPenNib', '/images/scrawl/scrawl-mark.svg', 'dark', ['#161614', '#ebebe9', '#ffe14a', '#ffe14a', '#1d1d1b']),
+  theme('pinch', 'Pinch', 'phosphorImage', '/images/pinch/pinch-mark.svg', 'dark', ['#0c0d0f', '#f3f3f2', '#5c7dff', '#4566ff', '#ffffff']),
+  theme('sizzle', 'Sizzle', 'phosphorFilmSlate', '/images/sizzle/sizzle-mark.svg', 'dark', ['#111111', '#f2f2f2', '#a08672', '#a08672', '#111111']),
+  theme('swoop', 'Swoop', 'phosphorBrowser', '/images/swoop/swoop-mark.svg', 'dark', ['#0d0d0f', '#f4f3f1', '#ff7a3d', '#ff5a1f', '#141210']),
   theme('gift-wrap', 'Gift Wrap', 'phosphorGift', undefined, 'light', ['#fdf6f8', '#3a2330', '#7a0f3d', '#7a0f3d', '#ffffff']),
   theme('ethical-node', 'EthicalNode', 'phosphorHandCoins', '/images/ethical-node/ethical-node-mark.webp', 'light', ['#f2f6fd', '#0d1b33', '#1d5fd6', '#1d5fd6', '#ffffff']),
 ];

@@ -1,0 +1,75 @@
+// Pinch case-study theme: the site's own design system (Geist, pills, 16px cards) in Pinch's dark palette, read from
+// its tokens.css: page #0c0d0f, sunken #0f1012, raised #16171a, hover #222328, ink #f3f3f2, ink-2 #a9abb1, ink-3
+// #8a8c93, and the one signal blue: #4566ff behind white for the primary action, #5c7dff (the dot in Pinch's mark and
+// the base of its accent-soft) where blue is text, a line or focus. Green, amber and red keep Pinch's meanings only:
+// good (smaller), warning (kept or larger), error. Pinch separates surfaces by tone; this site keeps its hairlines,
+// tinted to match. Colour tokens only, like the other case studies. Applied by <html data-theme="pinch"> (route data
+// on /work/pinch). Every rule is scoped to that attribute, so nothing leaks once the router removes it.
+//
+// Contrast (WCAG 2.1) on --bg #0c0d0f: ink 17.5:1, ink-2 8.5:1, muted 5.8:1 (4.7:1 on --surface-2),
+// --pn-blue 5.4:1 (5.0:1 on --surface; large text or non-text only on --surface-2, 4.4:1), --pn-good 9.7:1,
+// --pn-warn 9.2:1, --pn-bad 7.0:1. CTA white on #4566ff 4.6:1, on hover #3f62ff 4.8:1.
+// Lines are decorative hairlines, as on the base theme.
+
+:root[data-theme='pinch'] {
+  --bg: #0c0d0f;
+  --bg-2: #0f1012;
+  --bg-raise: #0f1012;
+  --surface: #16171a;
+  --surface-2: #222328;
+  --line: #24252a;
+  --line-strong: #33343a;
+
+  --ink: #f3f3f2;
+  --ink-2: #a9abb1;
+  --muted: #8a8c93;
+  --faint: #45474d; // decorative only
+
+  --pn-blue: #5c7dff;
+  --pn-blue-strong: #4566ff;
+  --pn-blue-soft: #161b33;
+  --pn-blue-line: #2c3a7a;
+  --pn-good: #3ccf8e;
+  --pn-good-soft: #10261d;
+  --pn-warn: #f0a23b;
+  --pn-warn-soft: #2a1e0e;
+  --pn-bad: #ff6b6b;
+  --pn-check-a: #141518;
+  --pn-check-b: #1b1c20;
+
+  --accent: #5c7dff;
+  --accent-ink: #ffffff;
+  --accent-soft: #161b33;
+  --solid: #222328;
+  --solid-ink: #f3f3f2;
+  --cta: #4566ff;
+  --cta-ink: #ffffff;
+  --focus: #5c7dff;
+
+  --glass-edge: rgb(255 255 255 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.05);
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px -14px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px rgb(0 0 0 / 0.45), 0 32px 80px -30px rgb(0 0 0 / 0.5);
+
+  color-scheme: dark;
+
+  ::selection {
+    background: #2c3a7a;
+    color: #f3f3f2;
+  }
+
+  .btn-solid:hover,
+  .btn--primary:hover {
+    background: #3f62ff;
+  }
+
+  .card--hover:hover {
+    border-color: var(--pn-blue-line);
+  }
+
+  .glow::before {
+    background:
+      radial-gradient(55% 50% at 85% 18%, rgb(92 125 255 / 0.1), transparent 70%),
+      radial-gradient(45% 40% at 8% 90%, rgb(92 125 255 / 0.04), transparent 70%);
+  }
+}

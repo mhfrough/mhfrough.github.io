@@ -179,7 +179,7 @@ import { LAYOUT_COPY } from './layout.copy';
     }
     .cta {
       height: 36px;
-      padding: 0 16px;
+      padding-inline: 16px;
       font-size: 13.5px;
     }
     .menu-btn {

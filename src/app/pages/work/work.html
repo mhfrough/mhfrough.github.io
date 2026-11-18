@@ -53,6 +53,48 @@
       </div>
     }
 
+    @if (tools().length) {
+      <div class="apps-head">
+        <div>
+          <h2 class="grid-title" id="apps-title">{{ t.tools.title }}</h2>
+          <p class="grid-note">{{ t.tools.note }}</p>
+          <ul class="apps-traits" role="list">
+            @for (x of t.tools.traits; track x) {
+              <li class="tag">{{ x }}</li>
+            }
+          </ul>
+        </div>
+        <div class="apps-nav">
+          <button type="button" class="icon-btn" [attr.aria-label]="t.tools.prev" (click)="loop.step(-1)">
+            <ng-icon name="phosphorCaretLeft" aria-hidden="true" />
+          </button>
+          <button type="button" class="icon-btn" [attr.aria-label]="t.tools.next" (click)="loop.step(1)">
+            <ng-icon name="phosphorCaretRight" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      <!-- An endless shelf, unlike the client bento below: one tile per app, drifting on its own (shelf-loop.ts).
+           The second set is an inert copy, added in the browser only, so the end runs straight into the start. -->
+      <div class="apps" [mhShelfLoop]="tools().length" #loop="mhShelfLoop">
+        <ul class="apps__track" role="list" aria-labelledby="apps-title">
+          @for (copy of copies(); track copy) {
+            @for (p of tools(); track p.id; let i = $index) {
+              @if (copy === 0) {
+                <li class="app" mhReveal [revealIndex]="i">
+                  <ng-container *ngTemplateOutlet="app; context: { $implicit: p }" />
+                </li>
+              } @else {
+                <li class="app" aria-hidden="true" inert>
+                  <ng-container *ngTemplateOutlet="app; context: { $implicit: p }" />
+                </li>
+              }
+            }
+          }
+        </ul>
+      </div>
+    }
+
     @if (cells().length || minor().length) {
       <div class="grid-head">
         <div>
@@ -65,72 +107,7 @@
       <ul class="bento" role="list">
         @for (c of cells(); track c.p.id; let i = $index) {
           <li class="slot" [class.wide]="c.span === 2" [class.full]="c.span === 3" mhReveal [revealIndex]="i % 3">
-            <article class="card card--hover cell" [class.card--solid]="c.solid" [class.is-link]="!!c.p.caseStudy" [class.has-cover]="c.span > 1 && !!c.p.cover">
-              <div class="cell__head">
-                @if (c.p.favicon) {
-                  <span class="icon-tile icon-tile--fav" aria-hidden="true"><img [src]="c.p.favicon" width="28" height="28" alt="" loading="lazy" decoding="async" /></span>
-                } @else {
-                  <span class="icon-tile" aria-hidden="true"><ng-icon [name]="c.p.icon" /></span>
-                }
-                <div class="cell__id">
-                  <h3 class="cell__title">{{ c.p.title }}</h3>
-                  <p class="cell__meta">
-                    @for (m of meta(c.p); track m; let last = $last) {
-                      <span>{{ m }}</span>@if (!last) {<span class="sep"><span aria-hidden="true"> · </span><span class="sr-only">, </span></span>}
-                    }
-                  </p>
-                </div>
-              </div>
-
-              <p class="cell__outcome">{{ c.p.outcome }}</p>
-
-              @if (c.span > 1 && c.p.stats) {
-                <dl class="stats">
-                  @for (s of c.p.stats; track s.label) {
-                    <div class="stat">
-                      <dt>{{ s.label }}</dt>
-                      <dd>{{ s.value }}</dd>
-                    </div>
-                  }
-                </dl>
-              }
-
-              <p class="cell__role"><span class="k">{{ t.grid.role }}</span>{{ c.p.role }}</p>
-
-              <div class="cell__foot">
-                <ul class="tag-list" role="list" [attr.aria-label]="t.grid.stack">
-                  @for (s of c.p.stack; track s) {
-                    <li class="tag">{{ s }}</li>
-                  }
-                </ul>
-                @if (c.p.caseStudy; as cs) {
-                  <a class="more cell__link cell__link--card" [routerLink]="cs">
-                    {{ t.grid.caseStudy }}<ng-icon name="phosphorArrowRight" aria-hidden="true" />
-                  </a>
-                } @else if (c.p.link; as l) {
-                  <a class="link cell__link" [href]="l.href" target="_blank" rel="noopener">
-                    {{ l.label }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
-                    <span class="sr-only">{{ t.grid.externalHint }}</span>
-                  </a>
-                } @else {
-                  <p class="cell__status">{{ t.grid.status }}</p>
-                }
-              </div>
-
-              @if (c.p.cover; as cv) {
-                @if (shots(c.p); as sh) {
-                  @if (c.span === 1) {
-                    <mh-card-slider class="cell__slider" [shots]="firstShots(c.p)!" [link]="c.p.caseStudy!" [label]="c.p.title" />
-                  } @else {
-                    <mh-card-deck class="cell__deck" [shots]="sh" [link]="c.p.caseStudy!" [label]="c.p.title" />
-                  }
-                } @else {
-                  <a class="cell__cover" [routerLink]="c.p.caseStudy" tabindex="-1" aria-hidden="true">
-                    <img [src]="cv.src" [width]="cv.width" [height]="cv.height" [alt]="cv.alt" loading="lazy" decoding="async" />
-                  </a>
-                }
-              }
-            </article>
+            <ng-container *ngTemplateOutlet="cell; context: { $implicit: c }" />
           </li>
         }
       </ul>
@@ -179,3 +156,97 @@
     </a>
   </div>
 </section>
+
+<!-- One bento cell, shared by the tools group and client work -->
+<ng-template #cell let-c>
+  <article class="card card--hover cell" [class.card--solid]="c.solid" [class.is-link]="!!c.p.caseStudy" [class.has-cover]="c.span > 1 && !!c.p.cover">
+    <div class="cell__head">
+      @if (c.p.favicon) {
+        <span class="icon-tile icon-tile--fav" aria-hidden="true"><img [src]="c.p.favicon" width="28" height="28" alt="" loading="lazy" decoding="async" /></span>
+      } @else {
+        <span class="icon-tile" aria-hidden="true"><ng-icon [name]="c.p.icon" /></span>
+      }
+      <div class="cell__id">
+        <h3 class="cell__title">{{ c.p.title }}</h3>
+        <p class="cell__meta">
+          @for (m of meta(c.p); track m; let last = $last) {
+            <span>{{ m }}</span>@if (!last) {<span class="sep"><span aria-hidden="true"> · </span><span class="sr-only">, </span></span>}
+          }
+        </p>
+      </div>
+    </div>
+
+    <p class="cell__outcome">{{ c.p.outcome }}</p>
+
+    @if (c.span > 1 && c.p.stats) {
+      <dl class="stats">
+        @for (s of c.p.stats; track s.label) {
+          <div class="stat">
+            <dt>{{ s.label }}</dt>
+            <dd>{{ s.value }}</dd>
+          </div>
+        }
+      </dl>
+    }
+
+    <p class="cell__role"><span class="k">{{ t.grid.role }}</span>{{ c.p.role }}</p>
+
+    <div class="cell__foot">
+      <ul class="tag-list" role="list" [attr.aria-label]="t.grid.stack">
+        @for (s of c.p.stack; track s) {
+          <li class="tag">{{ s }}</li>
+        }
+      </ul>
+      @if (c.p.caseStudy; as cs) {
+        <a class="more cell__link cell__link--card" [routerLink]="cs">
+          {{ t.grid.caseStudy }}<ng-icon name="phosphorArrowRight" aria-hidden="true" />
+        </a>
+      } @else if (c.p.link; as l) {
+        <a class="link cell__link" [href]="l.href" target="_blank" rel="noopener">
+          {{ l.label }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+          <span class="sr-only">{{ t.grid.externalHint }}</span>
+        </a>
+      } @else {
+        <p class="cell__status">{{ t.grid.status }}</p>
+      }
+    </div>
+
+    @if (c.p.cover; as cv) {
+      @if (shots(c.p); as sh) {
+        @if (c.span === 1) {
+          <mh-card-slider class="cell__slider" [shots]="firstShots(c.p)!" [link]="c.p.caseStudy!" [label]="c.p.title" />
+        } @else {
+          <mh-card-deck class="cell__deck" [shots]="sh" [link]="c.p.caseStudy!" [label]="c.p.title" />
+        }
+      } @else {
+        <a class="cell__cover" [routerLink]="c.p.caseStudy" tabindex="-1" aria-hidden="true">
+          <img [src]="cv.src" [width]="cv.width" [height]="cv.height" [alt]="cv.alt" loading="lazy" decoding="async" />
+        </a>
+      }
+    }
+  </article>
+</ng-template>
+
+<!-- One Originals tile, shared by the real set and its looping copy -->
+<ng-template #app let-p>
+  <article class="app__card">
+    <span class="app__shot">
+      <img draggable="false" [src]="'/images/home/tools/' + p.id + '-640.webp'" width="640" height="336" alt="" loading="lazy" decoding="async" />
+    </span>
+    <div class="app__id">
+      @if (p.favicon) {
+        <span class="icon-tile icon-tile--fav" aria-hidden="true"><img [src]="p.favicon" width="26" height="26" alt="" loading="lazy" decoding="async" /></span>
+      }
+      <div>
+        <h3 class="app__name">
+          <a [routerLink]="p.caseStudy" draggable="false">{{ name(p) }}</a>
+        </h3>
+        @if (p.runs) {
+          <p class="app__runs mono">{{ p.runs }}</p>
+        }
+      </div>
+    </div>
+    <p class="app__line">{{ p.outcome }}</p>
+    <p class="app__go" aria-hidden="true">{{ t.tools.caseStudy }} <ng-icon name="phosphorArrowRight" /></p>
+  </article>
+</ng-template>

@@ -20,7 +20,7 @@ export interface HomeProject {
  * Home bento (below the hero), in order. Quorum is the feature cell before these; the second cell is solid and the
  * third spans two columns, so six cells fill three rows. Every entry links to its case study and uses the product's
  * own favicon when there is one (CLAUDE.md, Project icons). Facts mirror src/app/pages/work/work.data.ts.
- * The hero explorer (work-explorer.ts) reads work.data.ts directly, not this list.
+ * The hero tool shelf (tool-shelf.ts) keeps its own list of my five Originals.
  */
 export const BENTO: HomeProject[] = [
   {

@@ -286,6 +286,6 @@ function markerLine(p, x1, y1, x2, y2, rough, rand, over = 0) {
     title: 'Want a tool people enjoy drawing in?',
     sub: 'Editors, canvases and small tools with the keyboard, export and saving work done properly.',
     hire: 'Hire me',
-    other: 'Next: Flick',
+    other: 'Next: Pinch',
   },
 } as const;

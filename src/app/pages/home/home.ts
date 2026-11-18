@@ -36,11 +36,11 @@ import { Pattern } from '../../shared/ui/pattern';
 import { Skeleton } from '../../shared/ui/skeleton';
 import { BENTO, EXPERIENCE, HOW, REELS, STACK } from './home.data';
 import { HomeMore } from './home-more';
-import { WorkExplorer } from './work-explorer';
+import { ToolShelf } from './tool-shelf';
 
 @Component({
   selector: 'mh-page-home',
-  imports: [RouterLink, NgIcon, Pattern, Skeleton, Reveal, WorkExplorer, HomeMore],
+  imports: [RouterLink, NgIcon, Pattern, Skeleton, Reveal, ToolShelf, HomeMore],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,

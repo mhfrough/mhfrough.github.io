@@ -1,0 +1,301 @@
+<mh-sizzle-theme />
+
+<!-- Hero: copy left, a working storyboard of the Sizzle trailer right -->
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="sz-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="pill rise">
+        <b>{{ c.hero.tag }}</b>
+        <span>{{ c.hero.pill }}</span>
+      </p>
+      <h1 id="sz-title" class="display">
+        <span class="line"><span>{{ c.hero.line1 }}</span></span>
+        <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
+      </h1>
+      <p class="lede rise d2">{{ c.hero.lede }}</p>
+      <div class="actions rise d4">
+        <a class="btn btn-solid" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" />{{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-demo rise d2">
+      <mh-sz-scrubber />
+      <p class="demo-note mono">{{ c.hero.demoNote }}</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <dl class="meta rise d4">
+      @for (m of c.meta; track m.k) {
+        <div>
+          <dt>{{ m.k }}</dt>
+          <dd>{{ m.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers" aria-labelledby="sz-numbers">
+  <div class="wrap">
+    <h2 id="sz-numbers" class="sr-only">In numbers</h2>
+    <dl class="nums">
+      @for (n of c.numbers; track n.label; let i = $index) {
+        <div class="num" mhReveal [revealIndex]="i">
+          <dt>{{ n.label }}</dt>
+          <dd>{{ n.value }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<!-- The trailer -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sz-trailer">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-trailer" class="title">{{ c.trailer.title }}</h2>
+      <p class="sub">{{ c.trailer.sub }}</p>
+    </header>
+    <div mhReveal>
+      <mh-sz-trailer />
+    </div>
+
+    <div class="trailer-more">
+      <figure class="card shot sheet" mhReveal>
+        <img src="/images/sizzle/sheet.webp" width="1600" height="1129" [alt]="c.trailer.sheetAlt" loading="lazy" decoding="async" />
+        <figcaption>{{ c.trailer.sheetTitle }}<span>{{ c.trailer.sheetCap }}</span></figcaption>
+      </figure>
+      <div class="mix" mhReveal [revealIndex]="1">
+        <h3>{{ c.trailer.mixTitle }}</h3>
+        <p>{{ c.trailer.mixSub }}</p>
+        <div class="code">
+          <pre class="mono">{{ c.trailer.mix }}</pre>
+        </div>
+        <p class="credit">{{ c.trailer.credit }}</p>
+      </div>
+    </div>
+    <p class="note mono" mhReveal>{{ c.trailer.note }}</p>
+  </div>
+</section>
+}
+
+<!-- The workflow and its gates -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sz-flow">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-flow" class="title">{{ c.flow.title }}</h2>
+      <p class="sub">{{ c.flow.sub }}</p>
+    </header>
+    <div mhReveal>
+      <mh-sz-gates />
+    </div>
+  </div>
+</section>
+}
+
+<!-- The project page -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sz-shots">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-shots" class="title">{{ c.shots.title }}</h2>
+      <p class="sub">{{ c.shots.sub }}</p>
+    </header>
+
+    <figure class="browser" mhReveal>
+      <div class="browser-bar" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="url">{{ c.shots.url }}</span>
+      </div>
+      <img src="/images/sizzle/site.webp" srcset="/images/sizzle/site-800.webp 800w, /images/sizzle/site.webp 1600w" sizes="(max-width: 1160px) 100vw, 1112px" width="1600" height="1000" [alt]="c.shots.mainAlt" loading="lazy" decoding="async" />
+    </figure>
+
+    <div class="shots-2">
+      @for (s of c.shots.wide; track s.src; let i = $index) {
+        <figure class="card shot" mhReveal [revealIndex]="i % 2">
+          <img [src]="s.src" [srcset]="s.small + ' 800w, ' + s.src + ' 1600w'" sizes="(max-width: 640px) 100vw, (max-width: 1160px) 50vw, 548px" width="1600" height="1000" [alt]="s.alt" loading="lazy" decoding="async" />
+          <figcaption>{{ s.cap }}</figcaption>
+        </figure>
+      }
+    </div>
+
+    <div class="phone-split">
+      <div class="phone-copy" mhReveal>
+        <h3>{{ c.shots.phoneTitle }}</h3>
+        <p>{{ c.shots.phoneText }}</p>
+        <ul class="ticks" role="list">
+          @for (p of c.shots.phonePoints; track p) {
+            <li>{{ p }}</li>
+          }
+        </ul>
+      </div>
+      <div class="phones">
+        @for (s of c.shots.phones; track s.src; let i = $index) {
+          <figure class="phone" mhReveal [revealIndex]="i">
+            <img [src]="s.src" width="600" height="1298" [alt]="s.alt" loading="lazy" decoding="async" />
+            <figcaption>{{ s.cap }}</figcaption>
+          </figure>
+        }
+      </div>
+    </div>
+    <p class="note mono" mhReveal>{{ c.shots.note }}</p>
+  </div>
+</section>
+}
+
+<!-- Under the hood -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sz-inside">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-inside" class="title">{{ c.inside.title }}</h2>
+      <p class="sub">{{ c.inside.sub }}</p>
+    </header>
+    <ul class="inside" role="list">
+      @for (d of c.inside.items; track d.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 3">
+          <span class="mono idx">0{{ i + 1 }}</span>
+          <h3>{{ d.t }}</h3>
+          <p>{{ d.s }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- Decisions -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sz-dec">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-dec" class="title">{{ c.decisions.title }}</h2>
+      <p class="sub">{{ c.decisions.sub }}</p>
+    </header>
+    <ol class="dec" role="list">
+      @for (d of c.decisions.items; track d.t; let i = $index) {
+        <li mhReveal [revealIndex]="i % 2">
+          <span class="mono">0{{ i + 1 }}</span>
+          <div>
+            <h3>{{ d.t }}</h3>
+            <p>{{ d.s }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+}
+
+<!-- Install -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sz-install">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-install" class="title">{{ c.install.title }}</h2>
+      <p class="sub">{{ c.install.sub }}</p>
+    </header>
+    <div class="install">
+      <div class="card" mhReveal>
+        <mh-sz-install />
+      </div>
+      <div class="install-side">
+        <div class="card say" mhReveal [revealIndex]="1">
+          <h3>{{ c.install.sayTitle }}</h3>
+          <p>“{{ c.install.say }}”</p>
+        </div>
+        <div class="card req" mhReveal [revealIndex]="2">
+          <h3>{{ c.install.reqTitle }}</h3>
+          <div class="code">
+            <pre class="mono">{{ c.install.req }}</pre>
+          </div>
+          <p>{{ c.install.reqNote }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Limits -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="sz-limits">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-limits" class="title">{{ c.limits.title }}</h2>
+      <p class="sub">{{ c.limits.sub }}</p>
+    </header>
+    <div class="status">
+      <div class="card st st--ok" mhReveal>
+        <h3>{{ c.limits.worksTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.works; track w) {
+            <li><ng-icon name="phosphorCheckCircle" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+      <div class="card st st--todo" mhReveal [revealIndex]="1">
+        <h3>{{ c.limits.notTitle }}</h3>
+        <ul role="list">
+          @for (w of c.limits.not; track w) {
+            <li><ng-icon name="phosphorCircleDashed" aria-hidden="true" /><span>{{ w }}</span></li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Stack -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="sz-stack">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="sz-stack" class="title">{{ c.stack.title }}</h2>
+      <p class="sub">{{ c.stack.sub }}</p>
+    </header>
+    <ul class="stack" role="list">
+      @for (g of c.stack.groups; track g.t; let i = $index) {
+        <li class="card" mhReveal [revealIndex]="i % 2">
+          <h3>{{ g.t }}</h3>
+          <p class="why">{{ g.why }}</p>
+          <mh-tech-pills [items]="g.items" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
+<!-- CTA -->
+@defer (hydrate on viewport) {
+<section class="section next" aria-labelledby="sz-cta">
+  <div class="wrap">
+    <div class="card cta-band" mhReveal>
+      <div>
+        <h2 id="sz-cta" class="title">{{ c.cta.title }}</h2>
+        <p class="sub">{{ c.cta.sub }}</p>
+      </div>
+      <div class="cta-acts">
+        <a class="btn btn-solid" routerLink="/hire">{{ c.cta.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
+        <a class="btn btn-ghost" [href]="live" target="_blank" rel="noopener">
+          {{ c.hero.live }}<ng-icon name="phosphorArrowUpRight" aria-hidden="true" /><span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" [href]="repo" target="_blank" rel="noopener">
+          <ng-icon name="phosphorGithubLogo" aria-hidden="true" />{{ c.hero.source }}<span class="sr-only"> {{ c.hero.newTab }}</span>
+        </a>
+        <a class="btn btn-ghost" routerLink="/work/swoop">{{ c.cta.other }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+}

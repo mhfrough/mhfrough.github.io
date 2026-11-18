@@ -8,7 +8,7 @@ export const COPY = {
   },
   head: {
     title: 'Selected work',
-    sub: '30+ products delivered since 2020 across tax, banking, investment, multi-tenant SaaS and commerce, plus one product of my own.',
+    sub: '30+ products delivered since 2020 across tax, banking, investment, multi-tenant SaaS and commerce, plus products and products of my own.',
   },
   filter: {
     label: 'Filter projects by domain',
@@ -20,6 +20,14 @@ export const COPY = {
     eyebrow: 'Own product',
     badge: 'Full case study',
     cta: 'Read the case study',
+  },
+  tools: {
+    title: 'Originals, private by default',
+    note: 'Products I design, build and ship on my own. Each runs entirely on your device, with no server behind it and nothing to sign up for.',
+    traits: ['Runs on your device', 'No sign-up', 'Open source'],
+    prev: 'Scroll apps back',
+    next: 'Scroll apps forward',
+    caseStudy: 'Case study',
   },
   grid: {
     title: 'Client and freelance work',

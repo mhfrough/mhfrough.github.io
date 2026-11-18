@@ -41,6 +41,10 @@ export interface WorkProject {
   /** Thumbnail shown beside the copy in wide cells (case studies). */
   cover?: { src: string; width: number; height: number; alt: string };
   freelance?: boolean;
+  /** One of my Originals (no server, runs on your device): listed in their own group on /work, before client work (see TOOL_ORDER). */
+  tool?: boolean;
+  /** Tools only: where it runs, in a few words (mono label on its shelf tile). */
+  runs?: string;
 }
 
 export interface FeaturedProject {
@@ -90,6 +94,9 @@ export const FEATURED: FeaturedProject = {
 };
 
 // Order matters: the bento layout gives wide cells to positions 0, 6 and 10 in the "All" view.
+/** The tools group on /work runs in this order. */
+export const TOOL_ORDER = ['flick', 'pinch', 'scrawl', 'sizzle', 'swoop'];
+
 export const PROJECTS: WorkProject[] = [
   {
     id: 'tax-filing',
@@ -557,11 +564,94 @@ export const PROJECTS: WorkProject[] = [
       { value: '3', label: 'public MQTT brokers at once' },
     ],
     caseStudy: '/work/flick',
+    tool: true,
+    runs: 'Browser to browser',
     cover: {
       src: '/images/flick/cover.webp',
       width: 1200,
       height: 630,
       alt: 'Flick case study cover: "Files to the next screen, with no server." beside the Flick app with a phone connected.',
+    },
+  },
+  {
+    id: 'pinch',
+    title: 'Pinch, image compression in the browser',
+    domain: 'Developer tools',
+    years: '2026',
+    startYear: 2026,
+    role: 'Own product, design and build',
+    outcome:
+      'Compresses, converts and upscales images in the browser with nothing uploaded: WebAssembly codecs in a pool of Web Workers, a target-size search, and Real-ESRGAN upscaling on the device.',
+    stack: ['JavaScript', 'WebAssembly', 'Web Workers', 'ONNX Runtime Web'],
+    categories: ['own'],
+    icon: 'phosphorImage',
+    favicon: '/images/pinch/pinch-mark.svg',
+    stats: [
+      { value: '0', label: 'bytes of images uploaded' },
+      { value: '7', label: 'formats it saves' },
+    ],
+    caseStudy: '/work/pinch',
+    tool: true,
+    runs: 'In your browser',
+    cover: {
+      src: '/images/pinch/cover.webp',
+      width: 1200,
+      height: 630,
+      alt: 'Pinch case study cover: "Lighter images, never uploaded." beside the Pinch studio with four sample photos made 35% smaller.',
+    },
+  },
+  {
+    id: 'swoop',
+    title: 'Swoop, screenshots that stay on your computer',
+    domain: 'Developer tools',
+    years: '2026',
+    startYear: 2026,
+    role: 'Own product, design and build',
+    outcome:
+      'A Chrome extension that captures a whole page by scrolling and stitching, and a 1.4 MB Print Screen app for Windows built with Tauri 2, sharing one free editor. Nothing is uploaded.',
+    stack: ['JavaScript', 'Canvas 2D', 'Rust', 'Tauri 2'],
+    categories: ['own'],
+    icon: 'phosphorBrowser',
+    favicon: '/images/swoop/swoop-mark.svg',
+    stats: [
+      { value: '0', label: 'servers, accounts or links' },
+      { value: '11', label: 'editor tools, all free' },
+    ],
+    caseStudy: '/work/swoop',
+    tool: true,
+    runs: 'Chrome and Windows',
+    cover: {
+      src: '/images/swoop/cover.webp',
+      width: 1200,
+      height: 630,
+      alt: 'Swoop case study cover: "Screenshots that stay on your computer." beside the Swoop editor with a box, numbered steps, an arrow and a blurred address.',
+    },
+  },
+  {
+    id: 'sizzle',
+    title: 'Sizzle, promo reels cut by your agent',
+    domain: 'Developer tools',
+    years: '2026',
+    startYear: 2026,
+    role: 'Own product, design and build',
+    outcome:
+      'A skill for AI agents that makes short promo reels for software: built as an HTML animation from the product’s real interface, approved by you at two gates, then rendered frame-exact to a 4K MP4 with music, with no ffmpeg.',
+    stack: ['Markdown', 'Node', 'Playwright', 'Python'],
+    categories: ['own'],
+    icon: 'phosphorFilmSlate',
+    favicon: '/images/sizzle/sizzle-mark.svg',
+    stats: [
+      { value: '2', label: 'approval gates before any 4K frame' },
+      { value: '750', label: 'frames rendered on a fake clock' },
+    ],
+    caseStudy: '/work/sizzle',
+    tool: true,
+    runs: 'Inside your AI agent',
+    cover: {
+      src: '/images/sizzle/cover.webp',
+      width: 1200,
+      height: 630,
+      alt: 'Sizzle case study cover: "Promo reels, cut by your agent." beside the Sizzle site and its bronze trailer poster.',
     },
   },
   {
@@ -633,6 +723,8 @@ export const PROJECTS: WorkProject[] = [
       { value: '12', label: 'tools, each on one key' },
     ],
     caseStudy: '/work/scrawl',
+    tool: true,
+    runs: 'In your browser',
     cover: {
       src: '/images/scrawl/cover.webp',
       width: 1200,
@@ -867,6 +959,26 @@ export const CARD_SHOTS: Readonly<Record<string, readonly string[]>> = {
     '/images/scrawl/export-dark.webp',
     '/images/scrawl/board-light.webp',
     '/images/scrawl/drawings-dark.webp',
+  ],
+  pinch: [
+    '/images/pinch/batch.webp',
+    '/images/pinch/target.webp',
+    '/images/pinch/app.webp',
+    '/images/pinch/privacy.webp',
+  ],
+  sizzle: [
+    '/images/sizzle/site.webp',
+    '/images/sizzle/studio.webp',
+    '/images/sizzle/schedule.webp',
+    '/images/sizzle/screening.webp',
+    '/images/sizzle/install.webp',
+  ],
+  swoop: [
+    '/images/swoop/site.webp',
+    '/images/swoop/editor.webp',
+    '/images/swoop/overlay.webp',
+    '/images/swoop/chrome.webp',
+    '/images/swoop/tools.webp',
   ],
   'gift-wrap': [
     '/images/gift-wrap/site-home.webp',

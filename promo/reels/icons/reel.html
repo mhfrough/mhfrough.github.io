@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather icons</title>
+<!--
+  Weather icons reel, on the site's own black. Built on the Sizzle reel engine (parts marked ENGINE).
+  All 25 icons in one wall, a zoom into the first one, a quick slide through every animated icon,
+  a Karachi weather app frame, the "comment CLOUD" ask and the end card.
+  The icons are the real animated SVGs from /work, inlined from icons.js (build_icons.py), so the
+  renderer's clock drives their own CSS keyframes.
+  Preview: serve the repo root (python -m http.server 8131) and open /promo/reels/icons/reel.html
+-->
+<style>
+/* ================= ENGINE (keep) ================= */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#000;overflow:hidden}
+#reel{position:absolute;left:0;top:0;width:calc(var(--W) * 1px);height:calc(var(--H) * 1px);overflow:hidden;transform-origin:0 0;
+  -webkit-font-smoothing:antialiased}
+body.hold *,body.hold *::before,body.hold *::after{animation-play-state:paused !important}
+#reel.measure,#reel.measure *{animation:none !important;transition:none !important}
+.r-clock{position:absolute;width:1px;height:1px;animation:r-clock var(--end) linear 0s both}
+@keyframes r-clock{from{opacity:0}to{opacity:0}}
+.r-ui{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;align-items:center;z-index:99;font:600 14px/1 system-ui;color:#eee}
+.r-ui button{min-height:40px;padding:0 16px;border:0;border-radius:999px;background:#eee;color:#111;font:inherit;cursor:pointer}
+.r-ui span{padding:12px 14px;border-radius:999px;background:#222;font-variant-numeric:tabular-nums}
+.render .r-ui{display:none}
+
+/* ================= THIS REEL ================= */
+@font-face{font-family:"EB Garamond";font-style:normal;font-weight:400 800;font-display:block;src:url(fonts/EBGaramond-latin.woff2) format("woff2")}
+@font-face{font-family:"EB Garamond";font-style:italic;font-weight:400 800;font-display:block;src:url(fonts/EBGaramond-Italic-latin.woff2) format("woff2")}
+@font-face{font-family:"Geist Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2) format("woff2-variations")}
+@font-face{font-family:"Geist Mono Variable";font-style:normal;font-weight:100 900;font-display:block;
+  src:url(../../../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2) format("woff2-variations")}
+
+/* the site's tokens (src/styles/_tokens.scss) */
+:root{
+  --bg:#111; --surface:#1a1a1a; --surface-2:#222; --line:#2c2c2c; --ink:#ededed; --ink-2:#bdbdbd; --muted:#8a8a8a;
+  --sans:"Geist Variable",system-ui,sans-serif;
+  --serif:"EB Garamond",Georgia,serif;
+  --mono:"Geist Mono Variable",ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --soft:cubic-bezier(.45,0,.2,1);
+}
+#reel{background:var(--bg);color:var(--ink);font-family:var(--sans)}
+.bg{position:absolute;inset:0;background:radial-gradient(70% 40% at 50% 30%,rgba(255,255,255,.06),transparent 70%),
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/54px 54px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/54px 54px}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 50% 45%,transparent 55%,rgba(0,0,0,.4) 100%)}
+svg{display:block}
+.ico,.ico svg{width:100%;height:100%;overflow:visible}
+
+/* shared motion */
+.up{animation:up .7s var(--ease) var(--d) both,out .4s ease var(--o) forwards}
+.w{display:inline-block;animation:up .7s var(--ease) calc(var(--d) + var(--i) * 55ms) both}
+.words{animation:out .4s ease var(--o) forwards}
+@keyframes up{from{opacity:0;transform:translateY(34px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes out{to{opacity:0;transform:translateY(-24px);filter:blur(6px)}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes fade-out{to{opacity:0}}
+
+.h1{position:absolute;left:60px;right:60px;text-align:center;font:400 96px/1.02 var(--serif);letter-spacing:-.01em}
+.h1 .soft{color:var(--muted);font-style:italic}
+.kicker{position:absolute;left:0;right:0;text-align:center;font:500 26px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- 1. the wall: all 25 icons, after a giant 25 ---------- */
+.num{position:absolute;left:0;right:0;top:470px;text-align:center;font:400 760px/1 var(--serif);letter-spacing:-.04em;
+  font-variant-numeric:lining-nums;animation:num-in .9s var(--ease) var(--d) both,num-out .7s var(--soft) var(--o) forwards}
+@keyframes num-in{from{opacity:0;transform:scale(1.25);filter:blur(20px)}to{opacity:1;transform:none;filter:none}}
+@keyframes num-out{to{opacity:0;transform:translateY(-220px) scale(.35);filter:blur(12px)}}
+.wall{position:absolute;left:58px;top:600px;width:964px;display:grid;grid-template-columns:repeat(5,180px);gap:16px;transform-origin:0 0;
+  animation:zoom 1s cubic-bezier(.7,0,.2,1) var(--zoom) forwards}
+@keyframes zoom{
+  0%{transform:none;opacity:1}
+  70%{opacity:1}
+  100%{transform:translate(var(--zx),var(--zy)) scale(var(--zs));opacity:0}}
+.cell{width:180px;height:180px;border-radius:30px;padding:14px;background:var(--surface);border:1px solid var(--line);
+  animation:cell-in .7s var(--ease) calc(var(--d) + var(--i) * 40ms) both}
+.cell.first{animation:cell-in .7s var(--ease) calc(var(--d) + var(--i) * 40ms) both,cell-clear .5s ease var(--zoom) forwards}
+@keyframes cell-in{from{opacity:0;transform:translateY(30px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes cell-clear{to{background:transparent;border-color:transparent}}
+
+/* ---------- 2. the slide: every icon, one by one ---------- */
+.stage{position:absolute;inset:0;animation:fade-in .25s linear var(--slide) both,stage-out .5s var(--soft) var(--app) forwards}
+@keyframes stage-out{to{opacity:0;transform:scale(.94);filter:blur(10px)}}
+.strip{position:absolute;left:0;top:0;height:100%;display:flex;animation:strip var(--slidelen) linear var(--slide) both}
+.slide{position:relative;flex:none;width:1080px;height:100%}
+.slide .big{position:absolute;left:140px;top:470px;width:800px;height:800px}
+.slide .name{position:absolute;left:0;right:0;top:1282px;text-align:center;font:400 104px/1 var(--serif);letter-spacing:-.01em}
+.slide .meta{position:absolute;left:0;right:0;top:1402px;text-align:center;font:500 26px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.slide .chips{position:absolute;left:0;right:0;top:1452px;display:flex;justify-content:center;gap:14px}
+.chip{padding:12px 22px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font:500 26px/1 var(--mono);color:var(--ink-2)}
+.chip b{color:var(--ink);font-weight:600}
+
+/* ---------- 3. the app: Karachi, a good day ---------- */
+.app{position:absolute;left:150px;top:330px;width:780px;height:1170px;border-radius:64px;padding:52px 48px;
+  background:linear-gradient(180deg,#1d1d1d,#161616);border:1px solid var(--line);box-shadow:0 50px 120px rgba(0,0,0,.6);
+  animation:app-in .8s var(--ease) var(--d) both,stage-out .5s var(--soft) var(--o) forwards}
+@keyframes app-in{from{opacity:0;transform:translateY(90px) scale(.96)}to{opacity:1;transform:none}}
+.app > *{animation:up .6s var(--ease) calc(var(--d) + .25s + var(--i) * 90ms) both}
+.loc{display:flex;align-items:center;gap:14px;font:500 40px/1 var(--sans)}
+.loc .pin{width:58px;height:58px}
+.loc small{margin-left:auto;font:500 24px/1 var(--mono);letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.now{display:flex;align-items:center;gap:10px;margin-top:34px}
+.now .sun{width:300px;height:300px;margin:-30px -10px -30px -40px}
+.now .deg{font:200 210px/1 var(--sans);letter-spacing:-.05em}
+.now .deg sup{font-size:.42em;vertical-align:.95em;font-weight:300}
+.cond{font:500 46px/1 var(--sans);margin-top:4px}
+.cond span{display:block;margin-top:14px;font:400 30px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+.hours{display:flex;justify-content:space-between;margin-top:46px;padding:26px 24px;border-radius:32px;background:var(--surface-2);border:1px solid var(--line)}
+.hours div{width:110px;text-align:center;font:500 30px/1 var(--sans)}
+.hours small{display:block;font:500 22px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+.hours .i{width:96px;height:96px;margin:10px auto}
+.days{margin-top:30px}
+.day{display:grid;grid-template-columns:150px 92px 1fr auto;align-items:center;height:92px;border-bottom:1px solid var(--line);font:500 34px/1 var(--sans)}
+.day:last-child{border-bottom:0}
+.day .i{width:84px;height:84px}
+.day .bar{height:8px;margin:0 26px 0 18px;border-radius:9px;background:linear-gradient(90deg,#4188b2,#ffcc33,#fc9601)}
+.day .t{font:500 30px/1 var(--mono);color:var(--ink-2)}
+.day .t em{font-style:normal;color:var(--muted)}
+
+/* ---------- 4. the ask ---------- */
+.cloud{position:absolute;left:370px;top:250px;width:340px;height:340px;animation:pop .8s var(--ease) var(--d) both,out .4s ease var(--o) forwards}
+.say{position:absolute;left:0;right:0;text-align:center}
+.say.s1{top:630px;font:italic 400 80px/1 var(--serif);color:var(--ink-2)}
+.say.s2{top:720px;font:800 210px/1 var(--sans);letter-spacing:-.02em}
+.say.s3{top:1218px;font:italic 400 66px/1.2 var(--serif);color:var(--ink-2)}
+.composer{position:absolute;left:90px;width:900px;top:1010px;height:150px;border-radius:999px;display:flex;align-items:center;gap:26px;
+  padding:0 24px 0 26px;background:var(--surface);border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.mark{flex:none;width:96px;height:96px;border-radius:24px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink);display:grid;place-items:center}
+.mark svg{width:72%;height:72%}
+.field{flex:1;font:650 60px/1 var(--sans);letter-spacing:.04em;white-space:nowrap;position:relative}
+.ph{position:absolute;left:0;top:50%;transform:translateY(-50%);font:400 44px/1 var(--sans);letter-spacing:0;color:var(--muted);
+  animation:fade-out .15s linear var(--type) forwards}
+.caret{display:inline-block;width:4px;height:58px;margin-left:6px;vertical-align:-8px;background:var(--ink);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.send{flex:none;width:104px;height:104px;border-radius:50%;background:var(--ink);color:#111;display:grid;place-items:center;
+  animation:press .5s var(--soft) var(--send) both}
+.send svg{width:46px;height:46px}
+@keyframes press{0%,100%{transform:none}35%{transform:scale(.84)}}
+.ripple{position:absolute;width:104px;height:104px;border-radius:50%;border:3px solid var(--ink);opacity:0;animation:ripple .8s var(--ease) var(--send) both}
+@keyframes ripple{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+.reply{position:absolute;left:170px;right:170px;top:1360px;display:flex;align-items:center;gap:20px;padding:22px 28px;border-radius:30px;
+  background:var(--surface);border:1px solid var(--line);font:500 38px/1.2 var(--sans)}
+.reply .who{font:500 24px/1 var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.reply .av{flex:none;width:68px;height:68px;border-radius:18px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center}
+.reply .av svg{width:70%;height:70%}
+
+/* ---------- 5. the end card ---------- */
+.tile{position:absolute;left:50%;top:420px;width:180px;height:180px;margin-left:-90px;border-radius:40px;background:var(--surface);
+  border:1px solid var(--line);color:var(--ink);display:grid;place-items:center;box-shadow:0 30px 80px rgba(0,0,0,.5);
+  animation:pop .7s var(--ease) var(--d) both}
+.tile svg{width:70%;height:70%}
+.nm{position:absolute;left:0;right:0;top:660px;text-align:center;font:650 76px/1 var(--sans);letter-spacing:-.02em}
+.role{position:absolute;left:0;right:0;top:760px;text-align:center;font:400 34px/1 var(--sans);color:#9a9a9a}
+.cmd{position:absolute;left:50%;top:850px;transform:translateX(-50%);height:96px;padding:0 36px;border-radius:999px;display:flex;align-items:center;gap:18px;
+  background:var(--surface);border:1px solid var(--line);font:500 40px/1 var(--mono);white-space:nowrap;
+  animation:cmd-in .6s var(--ease) var(--d) both}
+@keyframes cmd-in{from{opacity:0;transform:translate(-50%,24px)}to{opacity:1;transform:translateX(-50%)}}
+.cmd svg{width:40px;height:40px;opacity:.8}
+.cmd .p{color:#777}
+.more{position:absolute;left:0;right:0;top:1150px;text-align:center;font:500 26px/1 var(--mono);letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
+.tools{position:absolute;left:0;right:0;top:1216px;display:flex;justify-content:center;gap:30px}
+.tool{width:128px;text-align:center;animation:up .6s var(--ease) calc(var(--tools) + var(--i) * 80ms) both}
+.tool .t{width:128px;height:128px;border-radius:30px;padding:18px;background:var(--surface);border:1px solid var(--line)}
+.tool .t svg{width:100%;height:100%}
+.tool span{display:block;margin-top:18px;font:500 28px/1 var(--sans);color:#d8d8d8}
+</style>
+</head>
+<body class="hold">
+<div id="reel">
+  <div class="r-clock" id="clk"></div>
+  <div class="bg"></div>
+
+  <!-- 1. the wall -->
+  <div class="num" data-in="open+.05" data-out="open+1.15">25</div>
+  <div class="h1 words" style="top:230px" data-in="open+1.25" data-out="zoom">Want icons that<br><span class="soft">move like this?</span></div>
+  <div class="kicker up" style="top:446px" data-in="open+2.0" data-out="zoom">25 custom icons · all animated</div>
+  <div class="wall" id="wall"></div>
+
+  <!-- 2. the slide -->
+  <div class="stage" id="stage">
+    <div class="h1 words" style="top:230px" data-in="slide+.3" data-out="app-.2">Animated down to<br><span class="soft">the smallest detail.</span></div>
+    <div class="strip" id="strip"></div>
+  </div>
+
+  <!-- 3. the app -->
+  <div class="kicker up" style="top:236px" data-in="app+.1" data-out="cta-.2">Ready for a real app</div>
+  <div class="app" id="app" data-in="app" data-out="cta-.2"></div>
+
+  <!-- 4. the ask -->
+  <div class="cloud" id="ask-cloud" data-in="cta" data-out="card-.3"></div>
+  <div class="say s1 up" data-in="cta+.25" data-out="card-.3">Comment</div>
+  <div class="say s2 words" data-in="cta+.4" data-out="card-.3">CLOUD</div>
+  <div class="composer up" data-in="cta+.7" data-out="card-.3">
+    <div class="mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30.16 15.34A8 8 0 1 0 24.5 29" fill="none" stroke="currentColor" stroke-width="5"/><path d="M22.5 26.5H37V28.5L15.5 38V35Z" fill="currentColor"/></svg></div>
+    <div class="field"><span class="ph">Add a comment…</span><span id="typed"></span><span class="caret"></span></div>
+    <div style="position:relative;flex:none">
+      <div class="ripple"></div>
+      <div class="send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+  <div class="say s3 up" data-in="cta+1.0" data-out="card-.3">and I'll send you the link.</div>
+  <div class="reply up" data-in="reply" data-out="card-.3">
+    <div class="av"><svg viewBox="0 0 48 48" aria-hidden="true" style="color:var(--ink)"><path d="M30.16 15.34A8 8 0 1 0 24.5 29" fill="none" stroke="currentColor" stroke-width="5"/><path d="M22.5 26.5H37V28.5L15.5 38V35Z" fill="currentColor"/></svg></div>
+    <div><div class="who">mhfrough</div>Sent you the link.</div>
+  </div>
+
+  <!-- 5. end card -->
+  <div class="tile" data-in="card+.2"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M30.16 15.34A8 8 0 1 0 24.5 29" fill="none" stroke="currentColor" stroke-width="5"/><path d="M22.5 26.5H37V28.5L15.5 38V35Z" fill="currentColor"/></svg></div>
+  <div class="nm up" data-in="card+.45">Mohammad Hamza</div>
+  <div class="role up" data-in="card+.6">Software architect · @mhfrough</div>
+  <div class="cmd" data-in="card+.8"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg><span class="p">github.com/</span><span id="gh"></span></div>
+  <div class="more up" data-in="tools-.25">More free tools</div>
+  <div class="tools" id="tools"></div>
+
+  <div class="vig"></div>
+</div>
+<div class="r-ui"><span id="clock">0.0s</span><button type="button" id="replay">Replay</button></div>
+
+<script>
+/* ENGINE config */
+var SIZE = { w: 1080, h: 1920 };
+var CUES = {
+  open: 0,       // the wall of 25 icons builds
+  zoom: 4.0,     // the camera dives into the thunderstorm
+  slide: 4.8,    // the six best icons, one by one
+  app: 13.8,     // a Karachi weather app
+  cta: 17.8,     // comment CLOUD
+  type: 18.9,
+  send: 19.7,
+  reply: 20.1,
+  card: 21.5,    // end card
+  tools: 22.5,
+  end: 25.5
+};
+/* the slide: the six best icons, each held long enough to watch it move */
+var SHOW = ['thunderstorm', 'leaf', 'snowing', 'partly-sunny', 'windy', 'clear-night'];
+var SLIDE = { hold: 1.0, move: .6, last: 1.0 };
+</script>
+<script src="icons.js"></script>
+<script>
+/* ENGINE helpers (keep). */
+window.R = (function(){
+  var C = CUES, render = new URLSearchParams(location.search).has('render'), beats = [], measures = [];
+  function at(expr){
+    if (typeof expr === 'number') return expr;
+    var m = String(expr).trim().match(/^([a-zA-Z_][a-zA-Z0-9_]*|[\d.]+)([+-][.\d]+)?$/);
+    if (!m) throw new Error('bad cue expression: ' + expr);
+    var base = isNaN(+m[1]) ? C[m[1]] : +m[1];
+    if (base === undefined) throw new Error('unknown cue: ' + m[1]);
+    return base + (m[2] ? +m[2] : 0);
+  }
+  function split(el, by){
+    var out = [];
+    (function walk(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(n){
+        if (n.nodeType === 1){ walk(n); return }
+        if (n.nodeType !== 3) return;
+        var frag = document.createDocumentFragment();
+        (by === 'words' ? n.textContent.split(/(\s+)/) : Array.from(n.textContent)).forEach(function(part){
+          if (part === '') return;
+          if (/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return }
+          var s = document.createElement('span'); s.className = by === 'words' ? 'w' : 'c'; s.textContent = part;
+          s.style.setProperty('--i', out.length); frag.appendChild(s); out.push(s);
+        });
+        node.replaceChild(frag, n);
+      });
+    })(el);
+    el.style.setProperty('--n', out.length);
+    return out;
+  }
+  function box(el){
+    var reel = document.getElementById('reel'), r = el.getBoundingClientRect(), Rr = reel.getBoundingClientRect(), s = Rr.width / SIZE.w;
+    return { x: (r.left - Rr.left) / s, y: (r.top - Rr.top) / s, w: r.width / s, h: r.height / s,
+             cx: (r.left - Rr.left + r.width / 2) / s, cy: (r.top - Rr.top + r.height / 2) / s };
+  }
+  function type(el, text, t0, cps){
+    cps = cps || 30; t0 = at(t0);
+    for (var i = 1; i <= text.length; i++) (function(i){ beats.push([t0 + i / cps, function(){ el.textContent = text.slice(0, i) }]) })(i);
+  }
+  return { C: C, W: SIZE.w, H: SIZE.h, render: render, at: at, split: split, box: box, type: type,
+           beat: function(t, fn){ beats.push([at(t), fn]) },
+           onMeasure: function(fn){ measures.push(fn) },
+           _beats: beats, _measures: measures };
+})();
+</script>
+<script>
+/* THIS REEL: scenes */
+(function(){
+  var $ = function(id){ return document.getElementById(id) };
+  var byId = {}; WEATHER.forEach(function(w){ byId[w.id] = w });
+  var n = 0;
+  function icon(id, cls){ var d = document.createElement('div'); d.className = 'ico ' + (cls || ''); d.innerHTML = byId[id].svg.replace(/@P@/g, 'k' + (n++)); return d }
+  function el(tag, cls, html){ var e = document.createElement(tag); e.className = cls || ''; if (html != null) e.innerHTML = html; return e }
+  var pad = function(i){ return (i < 9 ? '0' : '') + (i + 1) };
+
+  /* 1. the wall */
+  var wall = $('wall');
+  WEATHER.forEach(function(w, i){
+    var c = el('div', 'cell' + (w.id === SHOW[0] ? ' first' : ''));
+    c.dataset.in = 'open+1.3'; c.style.setProperty('--i', i);
+    c.appendChild(icon(w.id)); wall.appendChild(c);
+  });
+  /* the zoom lands the first shown icon's cell exactly on the first slide's icon */
+  R.onMeasure(function(){
+    var cell = R.box(wall.querySelector('.first')), wb = R.box(wall), ico = 180 - 28, target = 800;
+    var s = target / ico, ix = cell.x + 14 - wb.x, iy = cell.y + 14 - wb.y;   // icon's top-left inside the wall
+    wall.style.setProperty('--zs', s);
+    wall.style.setProperty('--zx', (140 - s * ix - wb.x) + 'px');
+    wall.style.setProperty('--zy', (470 - s * iy - wb.y) + 'px');
+  });
+
+  /* 2. the slide: one 1080 px slide per icon, moved by a keyframe list built from SLIDE */
+  var strip = $('strip'), N = SHOW.length, moves = [], t = 0;
+  SHOW.forEach(function(id, i){
+    var w = byId[id], s = el('div', 'slide');
+    var big = el('div', 'big'); big.appendChild(icon(w.id)); s.appendChild(big);
+    s.appendChild(el('div', 'name', w.name));
+    s.appendChild(el('div', 'meta', pad(WEATHER.indexOf(w)) + ' / ' + WEATHER.length + ' · ' + w.group));
+    s.appendChild(el('div', 'chips', w.motion.map(function(m){ return '<span class="chip"><b>@keyframes</b> ' + m + '</span>' }).join('')));
+    strip.appendChild(s);
+    if (i === N - 1) return;
+    t += SLIDE.hold; moves.push([t, t + SLIDE.move, i + 1]); t += SLIDE.move;
+  });
+  var len = t + SLIDE.last, kf = '@keyframes strip{0%{transform:translateX(0)}';
+  moves.forEach(function(m){
+    var a = (m[0] / len * 100).toFixed(3), b = (m[1] / len * 100).toFixed(3);
+    kf += a + '%{transform:translateX(' + (-(m[2] - 1) * 1080) + 'px);animation-timing-function:cubic-bezier(.65,0,.35,1)}' +
+          b + '%{transform:translateX(' + (-m[2] * 1080) + 'px);animation-timing-function:linear}';
+  });
+  kf += '100%{transform:translateX(' + (-(N - 1) * 1080) + 'px)}}';
+  document.head.appendChild(el('style', '', kf));
+  strip.style.width = (N * 1080) + 'px';
+  document.documentElement.style.setProperty('--slidelen', len.toFixed(3) + 's');
+  window.SLIDE_MOVES = moves.map(function(m){ return +(CUES.slide + m[0]).toFixed(3) });   // for the sound cues
+
+  /* 3. the app: Karachi on a good day */
+  var app = $('app'), parts = [];
+  var loc = el('div', 'loc'); var pin = el('div', 'pin'); pin.appendChild(icon('location')); loc.appendChild(pin);
+  loc.appendChild(el('span', '', 'Karāchi, Pakistan')); loc.appendChild(el('small', '', 'Now'));
+  parts.push(loc);
+  var now = el('div', 'now'); var sun = el('div', 'sun'); sun.appendChild(icon('sun')); now.appendChild(sun);
+  now.appendChild(el('div', 'deg', '31<sup>°</sup>')); parts.push(now);
+  parts.push(el('div', 'cond', 'Sunny<span>H 33° · L 26° · clear all day</span>'));
+  var hours = el('div', 'hours');
+  [['Now', 'sun', 31], ['14:00', 'sun', 32], ['15:00', 'partly-sunny', 32], ['16:00', 'partly-sunny', 31], ['17:00', 'windy', 30]].forEach(function(h){
+    var d = el('div', '', '<small>' + h[0] + '</small>'); var i = el('div', 'i'); i.appendChild(icon(h[1])); d.appendChild(i);
+    d.appendChild(document.createTextNode(h[2] + '°')); hours.appendChild(d);
+  });
+  parts.push(hours);
+  var days = el('div', 'days');
+  [['Today', 'sun', 33, 26], ['Mon', 'partly-sunny', 32, 26], ['Tue', 'mild-cloud', 31, 25], ['Wed', 'sun', 33, 27]].forEach(function(d){
+    var r = el('div', 'day', '<span>' + d[0] + '</span>'); var i = el('div', 'i'); i.appendChild(icon(d[1])); r.appendChild(i);
+    r.appendChild(el('div', 'bar')); r.appendChild(el('span', 't', d[2] + '° <em>' + d[3] + '°</em>')); days.appendChild(r);
+  });
+  parts.push(days);
+  parts.forEach(function(p, i){ p.style.setProperty('--i', i); app.appendChild(p) });
+
+  /* 4. the ask */
+  $('ask-cloud').appendChild(icon('cloud'));
+  R.type($('typed'), 'CLOUD', 'type', 9);
+
+  /* 5. end card */
+  R.type($('gh'), 'mhfrough', 'card+1.0', 16);
+  var tools = $('tools');
+  TOOLS.forEach(function(t, i){
+    var d = el('div', 'tool'); d.style.setProperty('--i', i);
+    var tile = el('div', 't', t.svg.replace(/@P@/g, 'tool' + i));
+    d.appendChild(tile); d.appendChild(el('span', '', t.name));
+    tools.appendChild(d);
+  });
+
+  document.querySelectorAll('.words').forEach(function(c){ R.split(c, 'words') });
+})();
+</script>
+<script>
+/* ENGINE boot (keep) */
+(function(){
+  var C = CUES, $ = function(id){ return document.getElementById(id) };
+  var reel = $('reel'), render = R.render, root = document.documentElement.style;
+  if (render) document.documentElement.classList.add('render');
+  root.setProperty('--W', SIZE.w); root.setProperty('--H', SIZE.h);
+  for (var k in C) root.setProperty('--' + k, C[k].toFixed(3) + 's');
+  document.querySelectorAll('[data-in]').forEach(function(el){
+    el.style.setProperty('--d', R.at(el.dataset.in).toFixed(3) + 's');
+    el.style.setProperty('--o', R.at(el.dataset.out || 'end+1').toFixed(3) + 's');
+  });
+  document.querySelectorAll('[data-s]').forEach(function(el){ el.style.setProperty('--s', R.at(el.dataset.s).toFixed(3) + 's') });
+  document.querySelectorAll('[data-at]').forEach(function(el){ el.style.setProperty('--at', R.at(el.dataset.at).toFixed(3) + 's') });
+  function fit(){
+    if (render) return;
+    var s = Math.min(innerWidth / SIZE.w, innerHeight / SIZE.h);
+    reel.style.transform = 'translate(' + ((innerWidth - SIZE.w * s) / 2) + 'px,' + ((innerHeight - SIZE.h * s) / 2) + 'px) scale(' + s + ')';
+  }
+  fit(); addEventListener('resize', fit);
+  function measure(){
+    var keep = reel.style.transform; reel.style.transform = 'none';
+    reel.classList.add('measure');
+    document.querySelectorAll('.r-fit').forEach(function(h){
+      var room = Math.min(h.parentNode.clientWidth || SIZE.w, SIZE.w - 96), widest = 0;
+      var lines = Array.prototype.filter.call(h.children, function(c){
+        return c.tagName === 'SPAN' && !c.classList.contains('c') && !c.classList.contains('w') });
+      if (!lines.length) lines = [h];
+      lines.forEach(function(s){ widest = Math.max(widest, s.scrollWidth) });
+      if (widest > room) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * room / widest * .98).toFixed(1) + 'px';
+    });
+    R._measures.forEach(function(fn){ fn() });
+    reel.classList.remove('measure');
+    reel.style.transform = keep;
+  }
+  var fonts = []; document.fonts.forEach(function(f){ fonts.push(f.load().catch(function(){})) });
+  window.reelReady = Promise.all(fonts).then(function(){ return document.fonts.ready }).then(function(){
+    measure();
+    window.REEL = { cues: C, duration: C.end, width: SIZE.w, height: SIZE.h };
+  });
+  window.startReel = function(){
+    document.body.classList.remove('hold');
+    var BEATS = R._beats;
+    if (render){ BEATS.forEach(function(b){ setTimeout(b[1], b[0] * 1000) }); return }
+    var ref = $('clk').getAnimations()[0], left = BEATS.slice().sort(function(x, y){ return x[0] - y[0] });
+    (function tick(){
+      var t = (ref.currentTime || 0) / 1000;
+      while (left.length && left[0][0] <= t) left.shift()[1]();
+      $('clock').textContent = Math.min(t, C.end).toFixed(1) + 's';
+      if (t < C.end) requestAnimationFrame(tick);
+    })();
+  };
+  $('replay').onclick = function(){ location.reload() };
+  if (!render) window.reelReady.then(window.startReel);
+})();
+</script>
+</body>
+</html>
