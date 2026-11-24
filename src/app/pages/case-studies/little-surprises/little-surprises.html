@@ -83,6 +83,59 @@
 </section>
 }
 
+<!-- The how-to-order reel: steps left, the video right -->
+@defer (hydrate on viewport) {
+<section class="section alt" aria-labelledby="ls-reel">
+  <div class="wrap reel-split">
+    <div>
+      <header mhReveal>
+        <h2 id="ls-reel" class="title">{{ c.reel.title }}</h2>
+        <p class="sub">{{ c.reel.sub }}</p>
+      </header>
+      <ol class="reel-steps" role="list">
+        @for (s of c.reel.steps; track s; let i = $index) {
+          <li mhReveal [revealIndex]="i">
+            <span class="mono" aria-hidden="true">0{{ i + 1 }}</span>
+            <span>{{ s }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+    <figure class="reel reel-big" mhReveal>
+      @defer (on viewport) {
+        <div class="reel-media">
+          <video controls playsinline preload="none" [poster]="c.reel.poster" width="1080" height="1920">
+            <source [src]="c.reel.src" type="video/mp4" />
+          </video>
+        </div>
+      } @placeholder (minimum 300ms) {
+        <div class="reel-media"><mh-skeleton shape="block" ratio="9/16" /></div>
+      }
+      <figcaption>{{ c.reel.caption }} <span>{{ c.reel.meta }}</span></figcaption>
+    </figure>
+  </div>
+</section>
+}
+
+<!-- The marketing kit -->
+@defer (hydrate on viewport) {
+<section class="section" aria-labelledby="ls-kit">
+  <div class="wrap">
+    <header class="split-head" mhReveal>
+      <h2 id="ls-kit" class="title">{{ c.kit.title }}</h2>
+      <p class="sub">{{ c.kit.sub }}</p>
+    </header>
+    <ul class="posts" role="list">
+      @for (p of c.kit.posts; track p.src; let i = $index) {
+        <li class="post" mhReveal [revealIndex]="i">
+          <img [src]="p.src" width="540" height="675" [alt]="p.alt" loading="lazy" decoding="async" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+}
+
 <!-- Ordering -->
 @defer (hydrate on viewport) {
 <section class="section alt" aria-labelledby="ls-studio">

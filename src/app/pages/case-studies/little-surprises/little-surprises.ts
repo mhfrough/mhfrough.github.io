@@ -18,6 +18,7 @@ import {
 } from '@ng-icons/phosphor-icons/regular';
 import { PERSON_ID, Seo, abs } from '../../../core/seo/seo.service';
 import { Reveal } from '../../../shared/directives/reveal.directive';
+import { Skeleton } from '../../../shared/ui/skeleton';
 import { TechPills } from '../stack/tech-pills';
 import { LittleSurprisesBuilderDemo } from './builder-demo';
 import { COPY } from './little-surprises.copy';
@@ -33,7 +34,7 @@ const OG_IMAGE = '/og/og-little-surprises.jpg';
  */
 @Component({
   selector: 'mh-page-little-surprises',
-  imports: [RouterLink, NgIcon, Reveal, LittleSurprisesTheme, LittleSurprisesBuilderDemo, TechPills],
+  imports: [RouterLink, NgIcon, Reveal, Skeleton, LittleSurprisesTheme, LittleSurprisesBuilderDemo, TechPills],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,

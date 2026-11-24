@@ -1,76 +1,70 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorBasket, phosphorCheck, phosphorMinus, phosphorPlus } from '@ng-icons/phosphor-icons/regular';
+import { phosphorArrowLeft, phosphorArrowRight, phosphorCheck, phosphorMinus, phosphorPlus, phosphorShoppingBag } from '@ng-icons/phosphor-icons/regular';
 import { COPY } from './little-surprises.copy';
 
 interface Base {
-  id: 'kraft' | 'box' | 'hamper';
-  name: string;
-  short: string;
-  price: number;
-}
-
-interface Wrap {
   id: string;
   name: string;
-  from: string;
-  to: string;
   price: number;
+  img: string;
 }
 
-interface Ribbon {
-  id: string;
-  name: string;
-  hex: string;
-}
-
-interface Treat {
+interface Part {
   id: string;
   name: string;
   price: number;
 }
 
-// Options and prices are the live shop's own (littlesurprises.shop, 24 Nov 2026): three of its baskets, its wraps,
-// ribbon colours from its palette and four treats that fit a basket. Every basket holds up to 6 items.
+interface Item extends Part {
+  img: string;
+}
+
+const IMG = '/images/little-surprises/parts/';
+
+// The shop's own parts and prices, read from its live API (GET api.littlesurprises.shop/v1/catalog/basket-parts,
+// 24 Nov 2026) and its catalogue; photos are the shop's own. Every basket holds up to 6 items.
 const BASES: Base[] = [
-  { id: 'kraft', name: 'Wooden basket with handle', short: 'Wooden basket', price: 799 },
-  { id: 'box', name: 'Cardboard gift box', short: 'Gift box', price: 499 },
-  { id: 'hamper', name: 'Clear gift box', short: 'Clear box', price: 1150 },
+  { id: 'wooden', name: 'Wooden basket with handle', price: 799, img: IMG + 'wooden-basket.webp' },
+  { id: 'clear', name: 'Clear gift box', price: 1150, img: IMG + 'clear-gift-box.webp' },
+  { id: 'rope', name: 'Handmade rope basket, white and gold', price: 1400, img: IMG + 'rope-basket-gold.webp' },
 ];
 
-const WRAPS: Wrap[] = [
-  { id: 'kraft', name: 'Kraft paper', from: '#e8d6c3', to: '#c9a37a', price: 100 },
-  { id: 'shred', name: 'Coloured paper shred', from: '#f7e8ec', to: '#e89cb3', price: 100 },
-  { id: 'satin', name: 'Coloured kraft sheets', from: '#e89cb3', to: '#d86b8a', price: 100 },
-  { id: 'net', name: 'Wrapping net', from: '#a13a5e', to: '#7a0f3d', price: 150 },
+const WRAPS: Part[] = [
+  { id: 'shred', name: 'Colored paper shred', price: 100 },
+  { id: 'kraft', name: 'Kraft paper sheets', price: 100 },
+  { id: 'net', name: 'Wrapping net', price: 150 },
 ];
 
-const RIBBONS: Ribbon[] = [
-  { id: 'rose', name: 'Rose Pink', hex: '#d86b8a' },
-  { id: 'wine', name: 'Plum', hex: '#7a0f3d' },
-  { id: 'blush', name: 'Blush', hex: '#e89cb3' },
-  { id: 'sage', name: 'Sage', hex: '#7b7a5c' },
-  { id: 'cream', name: 'Cream', hex: '#f2e7d8' },
+const RIBBONS: Part[] = [
+  { id: 'bows', name: 'Ribbon pull bows', price: 40 },
+  { id: 'satin', name: 'Satin ribbon roll', price: 250 },
 ];
 
-const TREATS: Treat[] = [
-  { id: 'dairy', name: 'Cadbury Dairy Milk Bubbly', price: 500 },
-  { id: 'roses', name: 'Forever red roses', price: 999 },
-  { id: 'keychain', name: 'Pink lily keychain', price: 299 },
-  { id: 'card', name: 'Saalgirah Mubarak card', price: 299 },
+const ITEMS: Item[] = [
+  { id: 'roses', name: 'Forever red roses', price: 999, img: IMG + 'forever-red-roses.webp' },
+  { id: 'lilies', name: 'Pure grace lilies', price: 999, img: IMG + 'pure-grace-lilies.webp' },
+  { id: 'lily-key', name: 'Pink lily keychain', price: 299, img: IMG + 'pink-lily-keychain.webp' },
+  { id: 'sun-key', name: 'Sunflower keychain', price: 299, img: IMG + 'sunflower-keychain.webp' },
+  { id: 'card', name: 'Saalgirah Mubarak card', price: 299, img: IMG + 'card-saalgirah-mubarak-1.webp' },
+  { id: 'popper', name: 'Party popper', price: 230, img: IMG + 'party-popper.webp' },
 ];
 
-const usd = (n: number) => 'Rs ' + n.toLocaleString('en-US');
+const CAPACITY = 6;
+const NOTE_MAX = 120;
+const rs = (n: number) => 'Rs ' + n.toLocaleString('en-US');
+
+type Step = 0 | 1 | 2;
 
 /**
- * The Little Surprises basket builder, redrawn small as my own working component: basket, wrap, ribbon and treats,
- * priced like the shop (basket + wrap + treats, whole rupees) with the basket's 6-item limit, and a drawn preview
- * that takes the wrap and ribbon colours. Nothing is sent anywhere.
+ * The Little Surprises basket builder, redrawn small as my own working component with the shop's real photos and
+ * prices: the same three steps as the live builder (basket, fill it, note), the basket's 6-item limit, and the
+ * note on the shop's signature "For you" tag. Nothing is sent anywhere.
  */
 @Component({
   selector: 'mh-ls-builder',
   imports: [NgIcon],
-  viewProviders: [provideIcons({ phosphorBasket, phosphorCheck, phosphorMinus, phosphorPlus })],
+  viewProviders: [provideIcons({ phosphorArrowLeft, phosphorArrowRight, phosphorCheck, phosphorMinus, phosphorPlus, phosphorShoppingBag })],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card card--lift studio" role="group" [attr.aria-label]="d.label">
@@ -79,168 +73,169 @@ const usd = (n: number) => 'Rs ' + n.toLocaleString('en-US');
         <span class="mono">{{ d.sample }}</span>
       </header>
 
+      <!-- The basket as it stands: photo, what is inside, the tag, and the bill -->
       <div class="stage">
-        <svg class="art" viewBox="0 0 200 170" role="img" [attr.aria-label]="artLabel()">
-          <defs>
-            <linearGradient id="ls-wrap-fill" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" [attr.stop-color]="wrap().from" />
-              <stop offset="1" [attr.stop-color]="wrap().to" />
-            </linearGradient>
-          </defs>
-          <ellipse cx="100" cy="162" rx="78" ry="6" class="shadow" />
-          @switch (base().id) {
-            @case ('kraft') {
-              <path d="M52 92 Q100 14 148 92" class="handle" fill="none" />
-              <path d="M34 90 H166 L150 160 H50 Z" fill="url(#ls-wrap-fill)" class="body" />
-              <path d="M40 112 H160 M44 134 H156" class="weave" fill="none" />
-              <rect x="93" y="90" width="14" height="70" [attr.fill]="ribbon().hex" class="band" />
-              <g [attr.fill]="ribbon().hex" class="bow" transform="translate(100 88)">
-                <ellipse cx="-13" cy="-6" rx="13" ry="7" transform="rotate(-24 -13 -6)" />
-                <ellipse cx="13" cy="-6" rx="13" ry="7" transform="rotate(24 13 -6)" />
-                <circle r="6" />
-              </g>
-            }
-            @default {
-              @let wide = base().id === 'hamper';
-              <rect [attr.x]="wide ? 26 : 42" y="84" [attr.width]="wide ? 148 : 116" height="76" rx="5" fill="url(#ls-wrap-fill)" class="body" />
-              <rect [attr.x]="wide ? 18 : 34" y="64" [attr.width]="wide ? 164 : 132" height="24" rx="5" fill="url(#ls-wrap-fill)" class="lid" />
-              <rect x="93" y="64" width="14" height="96" [attr.fill]="ribbon().hex" class="band" />
-              <rect [attr.x]="wide ? 26 : 42" y="114" [attr.width]="wide ? 148 : 116" height="12" [attr.fill]="ribbon().hex" class="band" />
-              <g [attr.fill]="ribbon().hex" class="bow" transform="translate(100 62)">
-                <ellipse cx="-15" cy="-8" rx="15" ry="8" transform="rotate(-24 -15 -8)" />
-                <ellipse cx="15" cy="-8" rx="15" ry="8" transform="rotate(24 15 -8)" />
-                <circle r="7" />
-              </g>
-            }
+        <figure class="shot">
+          <img [src]="base().img" width="400" height="400" [alt]="base().name" decoding="async" />
+          @if (inside().length) {
+            <ul class="inside" role="list" [attr.aria-label]="d.inside">
+              @for (it of inside(); track $index) {
+                <li><img [src]="it.img" width="400" height="400" [alt]="it.name" decoding="async" /></li>
+              }
+            </ul>
           }
-          <g class="tag" transform="translate(140 98)">
-            <path d="M0 0 L-12 -16" class="string" fill="none" />
-            <rect x="-2" y="-2" width="60" height="24" rx="5" />
-            <text x="28" y="14" text-anchor="middle">{{ count() }} {{ count() === 1 ? 'treat' : 'treats' }}</text>
-          </g>
-        </svg>
+          <figcaption class="note-tag" [class.empty]="!note().trim()">
+            <span class="tag-for mono">{{ d.forYou }}</span>
+            <span class="tag-note">{{ note().trim() || d.notePlaceholder }}</span>
+          </figcaption>
+        </figure>
 
-        <dl class="sum">
-          <div><dt>{{ d.base }}</dt><dd>{{ base().name }}<span class="mono">{{ usd(base().price) }}</span></dd></div>
-          <div><dt>{{ d.wrap }}</dt><dd>{{ wrap().name }}<span class="mono">{{ wrap().price ? usd(wrap().price) : 'Free' }}</span></dd></div>
-          <div><dt>{{ d.treats }} ({{ count() }})</dt><dd><span class="mono">{{ usd(treatsTotal()) }}</span></dd></div>
-          <div class="total"><dt>{{ d.total }}</dt><dd class="mono">{{ usd(total()) }}</dd></div>
-        </dl>
-      </div>
-
-      <div class="opts">
-        <div class="row" role="group" [attr.aria-label]="d.base">
-          <span class="lab">{{ d.base }}</span>
-          <div class="chips">
-            @for (b of bases; track b.id) {
-              <button type="button" class="chip" [attr.aria-pressed]="b.id === base().id" (click)="baseId.set(b.id); added.set(null)">
-                {{ b.short }} <span class="mono">{{ usd(b.price) }}</span>
-              </button>
-            }
+        <div class="bill">
+          <dl>
+            <div><dt>{{ d.base }}</dt><dd>{{ rs(base().price) }}</dd></div>
+            <div><dt>{{ d.wrap }}</dt><dd>{{ rs(wrap().price) }}</dd></div>
+            <div><dt>{{ d.ribbon }}</dt><dd>{{ rs(ribbon().price) }}</dd></div>
+            <div><dt>{{ d.items }} ({{ count() }})</dt><dd>{{ rs(itemsTotal()) }}</dd></div>
+            <div class="total"><dt>{{ d.total }}</dt><dd>{{ rs(total()) }}</dd></div>
+          </dl>
+          <div class="cap">
+            <p class="mono">{{ count() }} / {{ capacity }} <span>{{ d.capacityLabel }}</span></p>
+            <span class="bar" aria-hidden="true">
+              @for (s of slots; track s) {
+                <i [class.on]="s < count()"></i>
+              }
+            </span>
           </div>
         </div>
+      </div>
 
-        <div class="row" role="group" [attr.aria-label]="d.wrap">
-          <span class="lab">{{ d.wrap }}</span>
-          <div class="swatches">
-            @for (w of wraps; track w.id) {
-              <button
-                type="button"
-                class="sw"
-                [style.background]="'linear-gradient(135deg,' + w.from + ',' + w.to + ')'"
-                [attr.aria-pressed]="w.id === wrap().id"
-                [attr.aria-label]="w.name + (w.price ? ', plus ' + usd(w.price) : ', included')"
-                [title]="w.name"
-                (click)="wrapId.set(w.id); added.set(null)"
-              >
-                @if (w.id === wrap().id) {
-                  <ng-icon name="phosphorCheck" aria-hidden="true" />
+      <!-- Steps, like the live builder -->
+      <div class="seg steps" role="group" [attr.aria-label]="d.stepsLabel">
+        @for (s of d.steps; track s; let i = $index) {
+          <button type="button" [attr.aria-pressed]="step() === i" (click)="go(i)">
+            <span class="n mono" aria-hidden="true">{{ i + 1 }}</span>{{ s }}
+          </button>
+        }
+      </div>
+
+      <div class="pane">
+        @switch (step()) {
+          @case (0) {
+            <ul class="bases" role="list" [attr.aria-label]="d.base">
+              @for (b of bases; track b.id) {
+                <li>
+                  <button type="button" class="pick" [attr.aria-pressed]="b.id === baseId()" (click)="baseId.set(b.id); added.set(null)">
+                    <img [src]="b.img" width="400" height="400" alt="" loading="lazy" decoding="async" />
+                    <span class="pick-name">{{ b.name }}</span>
+                    <span class="pick-meta mono">{{ rs(b.price) }} · {{ d.holds }}</span>
+                    @if (b.id === baseId()) {
+                      <span class="tick" aria-hidden="true"><ng-icon name="phosphorCheck" /></span>
+                    }
+                  </button>
+                </li>
+              }
+            </ul>
+            <div class="row" role="group" [attr.aria-label]="d.wrap">
+              <span class="lab">{{ d.wrap }}</span>
+              <div class="chips">
+                @for (w of wraps; track w.id) {
+                  <button type="button" class="chip" [attr.aria-pressed]="w.id === wrapId()" (click)="wrapId.set(w.id); added.set(null)">
+                    {{ w.name }} <span class="mono">{{ w.price }}</span>
+                  </button>
                 }
-              </button>
-            }
-          </div>
-        </div>
-
-        <div class="row" role="group" [attr.aria-label]="d.ribbon">
-          <span class="lab">{{ d.ribbon }}</span>
-          <div class="swatches">
-            @for (r of ribbons; track r.id) {
-              <button
-                type="button"
-                class="dot"
-                [class.light]="r.id === 'cream'"
-                [style.background]="r.hex"
-                [attr.aria-pressed]="r.id === ribbon().id"
-                [attr.aria-label]="r.name"
-                [title]="r.name"
-                (click)="ribbonId.set(r.id); added.set(null)"
-              >
-                @if (r.id === ribbon().id) {
-                  <ng-icon name="phosphorCheck" aria-hidden="true" />
+              </div>
+            </div>
+            <div class="row" role="group" [attr.aria-label]="d.ribbon">
+              <span class="lab">{{ d.ribbon }}</span>
+              <div class="chips">
+                @for (r of ribbons; track r.id) {
+                  <button type="button" class="chip" [attr.aria-pressed]="r.id === ribbonId()" (click)="ribbonId.set(r.id); added.set(null)">
+                    {{ r.name }} <span class="mono">{{ r.price }}</span>
+                  </button>
                 }
-              </button>
-            }
-            <span class="rname">{{ ribbon().name }}</span>
-          </div>
-        </div>
-
-        <ul class="treats" role="list" [attr.aria-label]="d.treats">
-          @for (t of treats; track t.id) {
-            <li [class.in]="qty(t.id) > 0">
-              <span class="tname">{{ t.name }}<small class="mono">{{ usd(t.price) }}</small></span>
-              <span class="step">
-                <button type="button" class="icon-btn sm" [disabled]="!qty(t.id)" (click)="change(t.id, -1)" [attr.aria-label]="'Remove one ' + t.name">
-                  <ng-icon name="phosphorMinus" aria-hidden="true" />
-                </button>
-                <span class="mono q" aria-live="polite">{{ qty(t.id) }}</span>
-                <button type="button" class="icon-btn sm" [disabled]="qty(t.id) >= 5 || room() === 0" (click)="change(t.id, 1)" [attr.aria-label]="'Add one ' + t.name">
-                  <ng-icon name="phosphorPlus" aria-hidden="true" />
-                </button>
-              </span>
-            </li>
+              </div>
+            </div>
           }
-        </ul>
+          @case (1) {
+            <ul class="items" role="list" [attr.aria-label]="d.items">
+              @for (it of items; track it.id) {
+                <li class="item" [class.in]="qty(it.id) > 0">
+                  <img [src]="it.img" width="400" height="400" alt="" loading="lazy" decoding="async" />
+                  <span class="item-name">{{ it.name }}</span>
+                  <span class="item-foot">
+                    <span class="mono">{{ rs(it.price) }}</span>
+                    <span class="step-ctl">
+                      <button type="button" class="icon-btn sm" [disabled]="!qty(it.id)" (click)="change(it.id, -1)" [attr.aria-label]="d.removeOne + ' ' + it.name">
+                        <ng-icon name="phosphorMinus" aria-hidden="true" />
+                      </button>
+                      <span class="q mono">{{ qty(it.id) }}</span>
+                      <button type="button" class="icon-btn sm" [disabled]="room() === 0" (click)="change(it.id, 1)" [attr.aria-label]="d.addOne + ' ' + it.name">
+                        <ng-icon name="phosphorPlus" aria-hidden="true" />
+                      </button>
+                    </span>
+                  </span>
+                </li>
+              }
+            </ul>
+            <p class="hint" aria-live="polite">{{ room() === 0 ? d.full : d.room(room()) }}</p>
+          }
+          @case (2) {
+            <label class="field">
+              <span class="field__label">{{ d.noteLabel }}</span>
+              <textarea
+                class="textarea"
+                rows="3"
+                [attr.maxlength]="noteMax"
+                [value]="note()"
+                (input)="setNote($event)"
+                aria-describedby="ls-note-count"
+              ></textarea>
+              <span class="field__hint mono" id="ls-note-count">{{ note().length }} / {{ noteMax }}</span>
+            </label>
+          }
+        }
       </div>
 
-      <div class="ship" [class.free]="room() === 0">
-        <p>
-          <ng-icon name="phosphorBasket" aria-hidden="true" />
-          @if (room() === 0) {
-            Basket full, {{ d.capacity }} of {{ d.capacity }} items
-          } @else {
-            {{ count() }} of {{ d.capacity }} items, room for {{ room() }} more
-          }
-        </p>
-        <span class="bar" aria-hidden="true"><i [style.transform]="'scaleX(' + progress() + ')'"></i></span>
-      </div>
-
-      <div class="foot">
-        <button type="button" class="btn btn-solid" [disabled]="!count()" (click)="addToCart()">{{ d.add }}</button>
+      <footer class="foot">
+        @if (step() > 0) {
+          <button type="button" class="btn btn-ghost" (click)="go(step() - 1)">
+            <ng-icon name="phosphorArrowLeft" aria-hidden="true" /> {{ d.back }}
+          </button>
+        }
+        @if (step() < 2) {
+          <button type="button" class="btn btn-solid" (click)="go(step() + 1)">
+            {{ d.next }} <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+          </button>
+        } @else {
+          <button type="button" class="btn btn-solid" [disabled]="!count()" (click)="addToBag()">
+            <ng-icon name="phosphorShoppingBag" aria-hidden="true" /> {{ d.add }}
+          </button>
+        }
         <p class="status" role="status">
           @if (added(); as a) {
-            <ng-icon name="phosphorCheck" aria-hidden="true" /> {{ d.added }}: {{ a }}
+            <ng-icon name="phosphorCheck" aria-hidden="true" /> {{ a }}
           } @else if (!count()) {
             {{ d.needOne }}
           }
         </p>
-      </div>
+      </footer>
     </div>
   `,
   styles: `
     :host {
       display: block;
+      min-width: 0;
     }
     .studio {
       display: grid;
       gap: 14px;
-      padding: 18px 20px 20px;
+      padding: 16px;
     }
     .top {
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
+      align-items: baseline;
       gap: 12px;
-      flex-wrap: wrap;
 
       b {
         font-size: 15px;
@@ -251,118 +246,263 @@ const usd = (n: number) => 'Rs ' + n.toLocaleString('en-US');
         color: var(--muted);
       }
     }
+
+    /* Stage: the basket photo with what is inside and the tag, beside the bill */
     .stage {
       display: grid;
-      grid-template-columns: 170px minmax(0, 1fr);
-      gap: 16px;
-      align-items: center;
-      padding: 10px 14px;
-      border-radius: var(--r-inner);
-      background: var(--bg);
-      border: 1px solid var(--line);
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
     }
-    .art {
-      width: 100%;
-      height: auto;
-      overflow: visible;
-    }
-    .shadow {
-      fill: rgb(122 15 61 / 0.1);
-    }
-    .handle {
-      stroke: #b88a5c;
-      stroke-width: 6;
-      stroke-linecap: round;
-    }
-    .body,
-    .lid {
-      stroke: rgb(58 35 48 / 0.18);
-      stroke-width: 1;
-    }
-    .weave {
-      stroke: rgb(58 35 48 / 0.14);
-      stroke-width: 2;
-    }
-    .tag {
-      rect {
-        fill: #fff;
-        stroke: var(--g-rose);
-        stroke-width: 1.2;
-      }
-      .string {
-        stroke: var(--g-rose);
-        stroke-width: 1;
-      }
-      text {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        fill: var(--g-wine);
-      }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .body,
-      .lid,
-      .band,
-      .bow,
-      stop {
-        transition:
-          fill var(--t-base) var(--ease),
-          stop-color var(--t-base) var(--ease);
-      }
-    }
-    .sum {
-      display: grid;
-      gap: 6px;
+    .shot {
+      position: relative;
       margin: 0;
-      font-size: 13px;
+      aspect-ratio: 1;
+      border-radius: var(--r-inner);
+      overflow: hidden;
+      background: var(--surface-2);
+      box-shadow: inset 0 0 0 1px var(--line);
 
-      div {
+      > img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .inside {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li + li {
+        margin-left: -10px;
+      }
+      img {
+        display: block;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgb(0 0 0 / 0.18);
+        animation: drop 0.35s var(--ease) both;
+      }
+    }
+    /* The shop's signature: the note on a "For you" tag, hung by a plum string */
+    .note-tag {
+      position: absolute;
+      display: block;
+      top: 12px;
+      right: 10px;
+      width: min(62%, 150px);
+      padding: 9px 11px 10px;
+      border-radius: 8px 8px 8px 2px;
+      background: #fff;
+      color: #1f1a1c;
+      box-shadow: 0 6px 16px rgb(43 13 27 / 0.16);
+      transform: rotate(3deg);
+      transform-origin: top center;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -9px;
+        left: 14px;
+        width: 2px;
+        height: 12px;
+        border-radius: 2px;
+        background: var(--accent);
+      }
+    }
+    .tag-for {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .tag-note {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-top: 3px;
+      font-size: 12.5px;
+      line-height: 1.35;
+      font-style: italic;
+      overflow-wrap: anywhere;
+    }
+    .note-tag.empty .tag-note {
+      color: #7a5a6a;
+    }
+
+    .bill {
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--r-inner);
+      background: var(--surface-2);
+      box-shadow: inset 0 0 0 1px var(--line);
+
+      dl {
         display: grid;
-        gap: 1px;
-      }
-      dt {
-        font-size: 12px;
-        color: var(--muted);
-      }
-      dd {
+        gap: 6px;
         margin: 0;
+      }
+      dl > div {
         display: flex;
         justify-content: space-between;
         gap: 8px;
-        font-weight: 500;
-        color: var(--ink);
+        font-size: 13px;
       }
-      .mono {
-        font-size: 12px;
+      dt {
         color: var(--ink-2);
       }
+      dd {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        white-space: nowrap;
+      }
       .total {
-        grid-template-columns: 1fr auto;
-        align-items: baseline;
-        padding-top: 6px;
+        margin-top: 4px;
+        padding-top: 8px;
         border-top: 1px solid var(--line);
 
         dt {
-          font-size: 13px;
-          font-weight: 600;
           color: var(--ink);
+          font-weight: 600;
         }
         dd {
-          font-size: 17px;
+          font-size: 15px;
           font-weight: 600;
-          color: var(--g-wine);
+          color: var(--accent);
         }
       }
     }
-    .opts {
+    .cap {
       display: grid;
-      gap: 10px;
+      gap: 6px;
+
+      p {
+        font-size: 12px;
+
+        span {
+          color: var(--muted);
+        }
+      }
+    }
+    .bar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+
+      i {
+        height: 6px;
+        border-radius: 999px;
+        background: var(--line);
+        transition: background-color 0.25s var(--ease);
+      }
+      i.on {
+        background: var(--accent);
+      }
+    }
+
+    /* Steps */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      button {
+        justify-content: center;
+        gap: 6px;
+      }
+      .n {
+        font-size: 11px;
+        opacity: 0.7;
+      }
+    }
+
+    .pane {
+      display: grid;
+      gap: 12px;
+      min-height: 196px;
+      align-content: start;
+    }
+
+    /* Step 1: baskets with their photos, then wrap and ribbon */
+    .bases {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .pick {
+      position: relative;
+      display: grid;
+      gap: 4px;
+      width: 100%;
+      height: 100%;
+      padding: 6px 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-inner);
+      background: var(--surface);
+      color: inherit;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+
+      img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      &:hover {
+        border-color: var(--line-strong, var(--line));
+      }
+      &[aria-pressed='true'] {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+      }
+    }
+    .pick-name {
+      font-size: 12.5px;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+    .pick-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .tick {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-size: 12px;
     }
     .row {
       display: grid;
       grid-template-columns: 54px minmax(0, 1fr);
-      align-items: center;
       gap: 10px;
+      align-items: center;
     }
     .lab {
       font-size: 12px;
@@ -374,208 +514,138 @@ const usd = (n: number) => 'Rs ' + n.toLocaleString('en-US');
       gap: 6px;
 
       .chip {
-        height: 30px;
-        padding: 0 11px;
         font-size: 12.5px;
       }
       .mono {
-        font-size: 12px;
-        opacity: 0.8;
+        margin-left: 4px;
+        font-size: 11px;
+        opacity: 0.75;
       }
     }
-    .swatches {
+
+    /* Step 2: items to fill it with */
+    .items {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .item {
+      display: grid;
+      gap: 5px;
+      padding: 6px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-inner);
+      background: var(--surface);
+      transition: border-color 0.2s var(--ease);
+
+      img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+      &.in {
+        border-color: var(--accent);
+      }
+    }
+    .item-name {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.25;
+      min-height: 2.5em;
+    }
+    .item-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+
+      > .mono {
+        font-size: 11px;
+        color: var(--muted);
+      }
+    }
+    .step-ctl {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+
+      .q {
+        min-width: 14px;
+        text-align: center;
+        font-size: 12px;
+      }
+    }
+    .icon-btn.sm {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+
+      /* 44px hit area */
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -10px;
+      }
+    }
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Step 3: the note */
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+    .textarea {
+      resize: none;
+    }
+
+    .foot {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
     }
-    // 30px visual, 44px hit area via the transparent outline-offset ring below.
-    .sw,
-    .dot {
-      position: relative;
-      display: grid;
-      place-items: center;
-      height: 30px;
-      border: 1px solid rgb(58 35 48 / 0.12);
-      color: #fff;
-      cursor: pointer;
-
-      &::after {
-        content: '';
-        position: absolute;
-        inset: -7px;
-      }
-      &[aria-pressed='true'] {
-        box-shadow:
-          0 0 0 2px var(--surface),
-          0 0 0 4px var(--g-wine);
-      }
-      ng-icon {
-        font-size: 15px;
-        filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.35));
-      }
-    }
-    .sw {
-      width: 46px;
-      border-radius: 9px;
-    }
-    .dot {
-      width: 30px;
-      border-radius: 50%;
-
-      &.light {
-        color: var(--g-wine);
-
-        ng-icon {
-          filter: none;
-        }
-      }
-    }
-    .rname {
-      font-size: 12.5px;
-      color: var(--ink-2);
-      margin-left: 4px;
-    }
-    .treats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      margin-top: 2px;
-
-      li {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 6px 6px 6px 12px;
-        border-radius: 12px;
-        border: 1px solid var(--line);
-        background: var(--surface);
-        transition: border-color var(--t-base) var(--ease);
-
-        &.in {
-          border-color: var(--g-blush);
-          background: var(--g-rose-soft);
-        }
-      }
-    }
-    .tname {
-      display: grid;
-      font-size: 12.5px;
-      font-weight: 500;
-      line-height: 1.3;
-      min-width: 0;
-
-      small {
-        font-size: 12px;
-        font-weight: 400;
-        color: var(--muted);
-      }
-    }
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      flex-shrink: 0;
-    }
-    .icon-btn.sm {
-      width: 30px;
-      height: 30px;
-      position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        inset: -7px -2px;
-      }
-      &:disabled {
-        opacity: 0.4;
-        cursor: default;
-      }
-      ng-icon {
-        font-size: 14px;
-      }
-    }
-    .q {
-      width: 16px;
-      text-align: center;
-      font-size: 13px;
-    }
-    .ship {
-      display: grid;
-      gap: 6px;
-
-      p {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12.5px;
-        color: var(--ink-2);
-      }
-      &.free p {
-        color: var(--g-sage-text);
-        font-weight: 500;
-      }
-      .bar {
-        display: block;
-        height: 6px;
-        border-radius: 999px;
-        background: var(--surface-2);
-        overflow: hidden;
-      }
-      i {
-        display: block;
-        height: 100%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, var(--g-blush), var(--g-rose));
-        transform-origin: left;
-      }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .ship i {
-        transition: transform var(--t-slow, 0.4s) var(--ease);
-      }
-    }
-    .foot {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-
-      .btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-    }
     .status {
-      flex: 1 1 180px;
-      display: flex;
+      flex: 1 1 160px;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 12.5px;
       color: var(--ink-2);
-      min-height: 1.4em;
     }
-    @media (max-width: 520px) {
-      .studio {
-        padding: 16px 14px 18px;
+
+    @keyframes drop {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.8);
       }
+    }
+
+    @media (max-width: 520px) {
       .stage {
         grid-template-columns: 1fr;
-        justify-items: center;
       }
-      .art {
-        max-width: 190px;
+      .items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .sum {
-        width: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .inside img {
+        animation: none;
       }
-      .row {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-      .treats {
-        grid-template-columns: 1fr;
+      .bar i,
+      .pick,
+      .item {
+        transition: none;
       }
     }
   `,
@@ -585,40 +655,53 @@ export class LittleSurprisesBuilderDemo {
   protected readonly bases = BASES;
   protected readonly wraps = WRAPS;
   protected readonly ribbons = RIBBONS;
-  protected readonly treats = TREATS;
-  protected readonly usd = usd;
+  protected readonly items = ITEMS;
+  protected readonly capacity = CAPACITY;
+  protected readonly noteMax = NOTE_MAX;
+  protected readonly slots = Array.from({ length: CAPACITY }, (_, i) => i);
+  protected readonly rs = rs;
 
-  protected readonly baseId = signal<Base['id']>('box');
-  protected readonly wrapId = signal('satin');
-  protected readonly ribbonId = signal('wine');
-  private readonly qtys = signal<Record<string, number>>({ dairy: 2, keychain: 1 });
+  protected readonly step = signal<Step>(0);
+  protected readonly baseId = signal('wooden');
+  protected readonly wrapId = signal('shred');
+  protected readonly ribbonId = signal('satin');
+  private readonly qtys = signal<Record<string, number>>({ roses: 1, 'lily-key': 1, card: 1 });
+  protected readonly note = signal<string>(COPY.demo.noteDefault);
   protected readonly added = signal<string | null>(null);
 
   protected readonly base = computed(() => BASES.find((b) => b.id === this.baseId())!);
   protected readonly wrap = computed(() => WRAPS.find((w) => w.id === this.wrapId())!);
   protected readonly ribbon = computed(() => RIBBONS.find((r) => r.id === this.ribbonId())!);
   protected readonly count = computed(() => Object.values(this.qtys()).reduce((n, q) => n + q, 0));
-  protected readonly treatsTotal = computed(() => TREATS.reduce((s, t) => s + t.price * (this.qtys()[t.id] ?? 0), 0));
-  protected readonly total = computed(() => this.base().price + this.wrap().price + this.treatsTotal());
-  protected readonly room = computed(() => Math.max(0, this.d.capacity - this.count()));
-  protected readonly progress = computed(() => Math.min(1, this.count() / this.d.capacity));
-  protected readonly artLabel = computed(
-    () => `${this.base().name} in ${this.wrap().name} with a ${this.ribbon().name} ribbon, ${this.count()} treats`,
-  );
+  protected readonly room = computed(() => Math.max(0, CAPACITY - this.count()));
+  protected readonly itemsTotal = computed(() => ITEMS.reduce((s, it) => s + it.price * (this.qtys()[it.id] ?? 0), 0));
+  protected readonly total = computed(() => this.base().price + this.wrap().price + this.ribbon().price + this.itemsTotal());
+  /** One thumbnail per unit, in the order of the list, for the stack on the basket photo. */
+  protected readonly inside = computed(() => ITEMS.flatMap((it) => Array.from({ length: this.qtys()[it.id] ?? 0 }, () => it)));
 
   protected qty(id: string): number {
     return this.qtys()[id] ?? 0;
   }
 
+  protected go(i: number): void {
+    this.step.set(Math.max(0, Math.min(2, i)) as Step);
+  }
+
   protected change(id: string, by: number): void {
-    this.qtys.update((q) => ({ ...q, [id]: Math.max(0, Math.min(5, (q[id] ?? 0) + (by > 0 && this.room() === 0 ? 0 : by))) }));
+    if (by > 0 && this.room() === 0) return;
+    this.qtys.update((q) => ({ ...q, [id]: Math.max(0, (q[id] ?? 0) + by) }));
     this.added.set(null);
   }
 
-  /** Same summary line the shop writes on the bag line: base, wrap, ribbon, item count, price. */
-  protected addToCart(): void {
-    if (!this.count()) return;
+  protected setNote(e: Event): void {
+    this.note.set((e.target as HTMLTextAreaElement).value.slice(0, NOTE_MAX));
+    this.added.set(null);
+  }
+
+  /** The line the shop writes on the bag: basket, item count and total. */
+  protected addToBag(): void {
     const n = this.count();
-    this.added.set(`${this.base().short}, ${this.wrap().name}, ${this.ribbon().name}, ${n} item${n === 1 ? '' : 's'}, ${usd(this.total())}`);
+    if (!n) return;
+    this.added.set(`${this.d.added}: ${this.base().name}, ${n} item${n === 1 ? '' : 's'}, ${rs(this.total())}`);
   }
 }
