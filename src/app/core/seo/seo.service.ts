@@ -146,7 +146,7 @@ export function personNode(): Record<string, unknown> {
     url: SITE.origin + '/',
     jobTitle: SITE.role,
     description:
-      'Software architect and lead frontend developer building production SaaS, fintech and enterprise platforms with Angular, NestJS and PostgreSQL.',
+      'Software architect and lead developer building production SaaS, fintech and enterprise platforms with Angular, NestJS and PostgreSQL, AI-first with agentic workflows. Co-founder of Little Surprises, a gift-basket shop in Karāchi.',
     image: abs('/icons/icon-512.png'),
     address: { '@type': 'PostalAddress', addressLocality: SITE.locality, addressCountry: SITE.countryCode },
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'Karachi Institute of Economics and Technology (KIET)' },

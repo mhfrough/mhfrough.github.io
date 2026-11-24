@@ -40,7 +40,7 @@ p{margin-top:22px;font-size:21px;color:#4a423a;line-height:1.45}
   <h1>Seven pizzerias,<br><span>one template.</span></h1>
   <p>Menus, delivery rules, payments and order tracking for seven brands in Germany, on one Angular storefront.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/pizzerias/roma-menu.webp')}"></div>
 </body></html>`;
 

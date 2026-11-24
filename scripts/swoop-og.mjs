@@ -47,7 +47,7 @@ p{margin-top:22px;width:520px;font-size:21px;color:#c9c6c1;line-height:1.45}
   <h1>Screenshots that stay<br><span>on your computer.</span></h1>
   <p>A full-page capture extension for Chrome and a Print Screen app for Windows, sharing one free editor.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/swoop/editor.webp')}"></div>
 </body></html>`;
 

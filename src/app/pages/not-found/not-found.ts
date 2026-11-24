@@ -15,7 +15,7 @@ import { Seo } from '../../core/seo/seo.service';
 const COPY = {
   seoTitle: 'Page not found',
   description:
-    'This page does not exist on mhfrough.dev. Head home, view the work, or get in touch.',
+    'This page does not exist on mhfrough.github.io. Head home, view the work, or get in touch.',
   code: '404',
   line: 'This page does not exist, or it moved.',
   label: 'Requested path',

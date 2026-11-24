@@ -13,7 +13,7 @@ export const COPY = {
     pill: 'Monochrome, dark only',
     line1: "mhfrough's system.",
     line2: 'Black and white.',
-    lede: 'The design language of mhfrough.dev. Dark only, two inks, one shape rule. Every specimen below renders the live code.',
+    lede: 'The design language of mhfrough.github.io. Dark only, two inks, one shape rule. Every specimen below renders the live code.',
     browse: 'Browse components',
     download: 'Download the mark',
   },

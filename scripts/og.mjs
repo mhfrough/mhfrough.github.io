@@ -52,7 +52,7 @@ const CARDS = {
     <div class="body">
       <h1>Mohammad Hamza</h1>
       <p class="sub">Software Architect. Angular platforms, <span class="nw">multi-tenant</span> SaaS, design systems.</p>
-      ${chips(pill('@mhfrough', 'mhfrough.dev'), chip('Karāchi, PK', true))}
+      ${chips(pill('@mhfrough', 'mhfrough.github.io'), chip('Karāchi, PK', true))}
     </div>`,
   'og-work': page('/work', 'Selected work', 'Platforms, <span class="nw">multi-tenant</span> SaaS and the design systems behind them.'),
   'og-hire': page('/hire', 'Hire me', 'Freelance and contract work, from architecture to launch.'),

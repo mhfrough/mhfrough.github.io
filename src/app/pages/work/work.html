@@ -34,10 +34,17 @@
                 <li class="tag">{{ s }}</li>
               }
             </ul>
-            <a class="btn btn-solid featured__cta" [routerLink]="featured.path">
-              {{ t.featured.cta }}
-              <ng-icon name="phosphorArrowRight" aria-hidden="true" />
-            </a>
+            <div class="featured__acts">
+              <a class="btn btn-solid featured__cta" [routerLink]="featured.path">
+                {{ t.featured.cta }}
+                <ng-icon name="phosphorArrowRight" aria-hidden="true" />
+              </a>
+              <a class="btn btn-ghost featured__cta" [href]="featured.liveUrl" target="_blank" rel="noopener">
+                {{ t.featured.live }}
+                <ng-icon name="phosphorArrowUpRight" aria-hidden="true" />
+                <span class="sr-only">{{ t.grid.externalHint }}</span>
+              </a>
+            </div>
           </div>
           <div class="featured__media">
             <img
@@ -126,7 +133,7 @@
                     <span class="sr-only">{{ t.grid.externalHint }}</span>
                   </a>
                 } @else {
-                  <p class="cell__status">{{ p.domain }}{{ p.freelance ? ' · freelance' : '' }}</p>
+                  <p class="cell__status">{{ p.domain }}{{ p.where ? ' · ' + p.where : '' }}{{ p.freelance ? ' · freelance' : '' }}</p>
                 }
               </div>
             </li>
@@ -239,7 +246,11 @@
       }
       <div>
         <h3 class="app__name">
-          <a [routerLink]="p.caseStudy" draggable="false">{{ name(p) }}</a>
+          @if (p.caseStudy) {
+            <a [routerLink]="p.caseStudy" draggable="false">{{ name(p) }}</a>
+          } @else if (p.link) {
+            <a [href]="p.link.href" target="_blank" rel="noopener" draggable="false">{{ name(p) }}<span class="sr-only"> {{ t.grid.externalHint }}</span></a>
+          }
         </h3>
         @if (p.runs) {
           <p class="app__runs mono">{{ p.runs }}</p>
@@ -247,6 +258,10 @@
       </div>
     </div>
     <p class="app__line">{{ p.outcome }}</p>
-    <p class="app__go" aria-hidden="true">{{ t.tools.caseStudy }} <ng-icon name="phosphorArrowRight" /></p>
+    @if (p.caseStudy) {
+      <p class="app__go" aria-hidden="true">{{ t.tools.caseStudy }} <ng-icon name="phosphorArrowRight" /></p>
+    } @else if (p.link) {
+      <p class="app__go" aria-hidden="true">{{ p.link.label }} <ng-icon name="phosphorArrowUpRight" /></p>
+    }
   </article>
 </ng-template>

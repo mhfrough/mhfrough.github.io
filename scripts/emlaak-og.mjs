@@ -40,7 +40,7 @@ p{margin-top:22px;font-size:21px;color:#3a4652;line-height:1.45}
   <h1>Every mutual fund, <span>one account.</span></h1>
   <p>Account opening, KYC, risk profiling and portfolio tracking for an SECP-licensed fund marketplace.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/emlaak/site-hero.webp')}"></div>
 </body></html>`;
 

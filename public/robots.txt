@@ -1,5 +1,5 @@
-# mhfrough.dev
+# mhfrough.github.io
 User-agent: *
 Allow: /
 
-Sitemap: https://mhfrough.dev/sitemap.xml
+Sitemap: https://mhfrough.github.io/sitemap.xml

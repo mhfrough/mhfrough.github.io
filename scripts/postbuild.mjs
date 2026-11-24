@@ -4,7 +4,8 @@
 // 1. 404 fallback: copies 404/index.html to 404.html (GitHub Pages and Cloudflare Pages serve it for misses).
 // 2. Flat pages: copies <route>/index.html to <route>.html so '/hire' (the canonical form, no trailing slash)
 //    answers 200 directly on GitHub Pages and Cloudflare Pages instead of redirecting to '/hire/'.
-// 3. Makes sure CNAME and .nojekyll are in the output (dotfiles are easy to lose in asset copies).
+// 3. Makes sure .nojekyll is in the output (dotfiles are easy to lose in asset copies). No CNAME: the site is
+//    served from the user site https://mhfrough.github.io (owner, 2026-11-24).
 // 4. CSP: replaces __INLINE_SCRIPT_HASHES__ in _headers with the sha256 of every inline <script>
 //    Angular emitted (event-replay contract + bootstrap) and the stylesheet onload handler.
 // 5. Writes sitemap.xml.
@@ -49,7 +50,7 @@ if (flat) {
 }
 
 // 3. Host files
-for (const [name, content] of [['CNAME', 'mhfrough.dev\n'], ['.nojekyll', '']]) {
+for (const [name, content] of [['.nojekyll', '']]) {
   const target = resolve(dist, name);
   if (!existsSync(target)) {
     const src = resolve(ROOT, 'public', name);

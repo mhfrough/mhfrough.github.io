@@ -40,7 +40,7 @@ p{margin-top:22px;font-size:21px;color:#33403d;line-height:1.45}
   <h1>One API for the office,<br><span>the depot and the driver.</span></h1>
   <p>An Angular admin, two Flutter apps and a multi-tenant NestJS API for a UK vehicle hire fleet.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/fleet/admin-dashboard.webp')}"></div>
 </body></html>`;
 

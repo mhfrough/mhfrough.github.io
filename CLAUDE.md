@@ -2,7 +2,8 @@
 
 Personal brand site for **Mohammad Hamza (@mhfrough)**, software architect (Angular, NestJS, multi-tenant SaaS).
 Frontend only (no backend yet). Angular 21, standalone, zoneless, signals, static prerender (SSG) of every route.
-English only. Dark mode only. Deployed as static files (target: GitHub Pages or Cloudflare Pages on `mhfrough.dev`).
+English only. Dark mode only. Deployed as static files to GitHub Pages at **https://mhfrough.github.io** (owner, 2026-11-24): `SITE.origin`,
+`scripts/_env.mjs` ORIGIN and `tests/routes.ts` use it; there is no custom domain and no CNAME.
 
 ## Disk rule (C: is full)
 
@@ -101,7 +102,7 @@ system** in black and white: never describe it as "Quorum's system" or "ported f
 Wherever a project gets an icon (home bento, home work explorer, /work cards, and any new place that lists
 projects), use the product's own favicon/mark if we have one, else a Phosphor icon. Data: `favicon?: string` next
 to `icon` in `home.data.ts` / `work.data.ts`; markup: `.icon-tile.icon-tile--fav > img` (light tile, image contained).
-Current favicons: Quorum `/images/quorum/favicon.svg`, Befiler `befiler/befiler-icon.webp`, Emlaak
+Current favicons: Little Surprises `little-surprises/little-surprises-mark.webp`, Jot `jot/jot-mark.svg`, Quorum `/images/quorum/favicon.svg`, Befiler `befiler/befiler-icon.webp`, Emlaak
 `emlaak/emlaak-mark.webp`, Bloomstone `bloomstone/bloomstone-mark.webp`, KPMC `kpmc/kpmc-logo.webp`,
 Asaan Hisab `asaan-hisab/asaan-hisab-mark.webp`, Finclore `finclore/finclore-mark.svg` (owner drew the Finclore logo),
 Arittek `arittek/arittek-mark.svg`, O2Chat `o2chat/o2chat-mark.webp`, DMAX `dmax/dmax-mark.webp`, ePractise
@@ -118,7 +119,8 @@ Nearby Cars / Nearby Group, Malik Tech) or client banks. Exception (owner, 2026-
 and its partner banks and shows their logos, as befiler.com does publicly. The employer behind it stays unnamed.
 Exception (owner, 2026-10-11): /work/arittek names Arittek as the client of its own company site and shows its
 logo and public pages. Never call Arittek an employer there, never link it next to Befiler, Finclore or Asaan Hisab
-(their "Next" links avoid it), and keep it unnamed everywhere else.
+(their "Next" links avoid it), and keep it unnamed everywhere else, except Zingoo (owner, 2026-11-24): the Zingoo
+ERP card on /work reads "Built with Arittek"; its food-maker client stays unnamed.
 Named products (owner, 2026-10-11), each on its own case study: O2Chat, DMAX, ePractise, LLC SAVVY, Asaan Hisab,
 Finclore, EthicalNode, and the client Thardeep Microfinance Foundation (TMF, /work/tmf). Never name the employer behind
 them; DMAX's client banks and the core banking vendor stay unnamed. Live epractise.com and asaanhisab.com pages carry
@@ -148,3 +150,19 @@ hire info "Hire me", contact "Get in touch", form submit "Send message".
 
 Owner's CV (5 pages) summarized in `docs/content.md`. Quorum reference project: `D:\workspace-personal\quorum`
 (live at https://mhfrough.github.io/quorum/, repo https://github.com/mhfrough/quorum).
+
+## Little Surprises, role and hero (owner, 2026-11-24)
+
+- **Little Surprises** (https://littlesurprises.shop, repo `D:\workspace-personal\littlesurprises.shop`) is the owner's
+  startup, run with his wife (never name her). It is the featured project in Quorum's old place: the /work featured
+  card (`FEATURED` in `work.data.ts`), the home bento feature cell and the home hero card. Case study:
+  `/work/little-surprises` (screens from `scripts/little-surprises-shots.mjs`, OG from `little-surprises-og.mjs`).
+  The old Gift Wrap thesis build was its first version; `/work/gift-wrap` was removed for good.
+- Originals ("private by default") on /work, in `TOOL_ORDER`: Quorum, Jot, Flick, Pinch, Scrawl, Sizzle, Swoop.
+  Jot has no case study yet; its tile links to https://mhfrough.github.io/jot/.
+- Role: **Software Architect and Lead Developer, AI-first with agentic workflows** (`SITE.role`). He is no longer a
+  frontend lead; never write "lead frontend developer" for the present (Befiler's history may still say it).
+- Home hero right column is `mh-hero-card` (`src/app/pages/home/hero-card.ts`): identity + Karāchi clock, "Now
+  building" Little Surprises, three roles, a still dock of Originals. The owner rejected the rotating 5-project
+  shelf: no carousels or auto-rotation in the hero.
+

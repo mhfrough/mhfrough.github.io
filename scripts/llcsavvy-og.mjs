@@ -43,7 +43,7 @@ p b{color:#13753c;font-weight:600}
   <h1>A US company,<br><span>paid for in rupees.</span></h1>
   <p>Finclore's sister on the same Angular base: <b>dollars and rupees</b> in one checkout, a direct debit and promo prices.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/llcsavvy/site-home.webp')}"></div>
 </body></html>`;
 

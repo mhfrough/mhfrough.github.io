@@ -1,24 +1,24 @@
-<mh-gift-wrap-theme />
+<mh-little-surprises-theme />
 
 <!-- Hero: copy left, the working build studio right -->
-<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="gw-title">
+<section class="page-head glow hero hero-anim" [class.ready]="ready()" aria-labelledby="ls-title">
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="pill rise">
         <b>{{ c.hero.tag }}</b>
         <span>{{ c.hero.pill }}</span>
       </p>
-      <h1 id="gw-title" class="display">
+      <h1 id="ls-title" class="display">
         <span class="line"><span>{{ c.hero.line1 }}</span></span>
         <span class="line"><span class="soft">{{ c.hero.line2 }}</span></span>
       </h1>
       <p class="lede rise d2">{{ c.hero.lede }}</p>
       <div class="actions rise d4">
         <a class="btn btn-solid" routerLink="/hire">{{ c.next.hire }} <ng-icon name="phosphorArrowRight" aria-hidden="true" /></a>
-        <a class="btn btn-ghost" routerLink="/work">{{ c.hero.back }}</a>
+        <a class="btn btn-ghost" [href]="c.hero.liveUrl" target="_blank" rel="noopener">{{ c.hero.live }} <ng-icon name="phosphorArrowUpRight" aria-hidden="true" /></a>
       </div>
     </div>
-    <mh-gw-builder class="rise d2" />
+    <mh-ls-builder class="rise d2" />
   </div>
 
   <div class="wrap">
@@ -34,9 +34,9 @@
 </section>
 
 <!-- Numbers -->
-<section class="numbers" aria-labelledby="gw-numbers">
+<section class="numbers" aria-labelledby="ls-numbers">
   <div class="wrap">
-    <h2 id="gw-numbers" class="sr-only">In numbers</h2>
+    <h2 id="ls-numbers" class="sr-only">In numbers</h2>
     <dl class="nums">
       @for (n of c.numbers; track n.label; let i = $index) {
         <div class="num" mhReveal [revealIndex]="i">
@@ -48,12 +48,12 @@
   </div>
 </section>
 
-<!-- The storefront, rendered from the original build -->
+<!-- The storefront, captured from the live shop -->
 @defer (hydrate on viewport) {
-<section class="section" aria-labelledby="gw-screens">
+<section class="section" aria-labelledby="ls-screens">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-screens" class="title">{{ c.screens.title }}</h2>
+      <h2 id="ls-screens" class="title">{{ c.screens.title }}</h2>
       <p class="sub">{{ c.screens.sub }}</p>
     </header>
 
@@ -63,10 +63,10 @@
           <span class="dots"><i></i><i></i><i></i></span>
           <span class="url">{{ c.screens.url }}</span>
         </div>
-        <img src="/images/gift-wrap/site-home.webp" width="1600" height="1000" [alt]="c.screens.homeAlt" loading="lazy" decoding="async" />
+        <img src="/images/little-surprises/site-home.webp" width="1600" height="1000" [alt]="c.screens.homeAlt" loading="lazy" decoding="async" />
       </figure>
       <figure class="mobile">
-        <img src="/images/gift-wrap/site-mobile-studio.webp" width="780" height="1688" [alt]="c.screens.mobileAlt" loading="lazy" decoding="async" />
+        <img src="/images/little-surprises/site-mobile-home.webp" width="780" height="1688" [alt]="c.screens.mobileAlt" loading="lazy" decoding="async" />
       </figure>
     </div>
 
@@ -83,25 +83,25 @@
 </section>
 }
 
-<!-- The build studio -->
+<!-- Ordering -->
 @defer (hydrate on viewport) {
-<section class="section alt" aria-labelledby="gw-studio">
+<section class="section alt" aria-labelledby="ls-studio">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-studio" class="title">{{ c.studio.title }}</h2>
+      <h2 id="ls-studio" class="title">{{ c.studio.title }}</h2>
       <p class="sub">{{ c.studio.sub }}</p>
     </header>
 
     <div class="studio-shots" mhReveal>
-      <figure class="browser tall">
+      <figure class="browser">
         <div class="browser-bar" aria-hidden="true">
           <span class="dots"><i></i><i></i><i></i></span>
           <span class="url">{{ c.screens.url }}</span>
         </div>
-        <img src="/images/gift-wrap/site-studio.webp" width="1600" height="2336" [alt]="c.studio.alt" loading="lazy" decoding="async" />
+        <img src="/images/little-surprises/site-build.webp" width="1600" height="1000" [alt]="c.studio.alt" loading="lazy" decoding="async" />
       </figure>
       <figure class="mobile">
-        <img src="/images/gift-wrap/site-mobile-cart.webp" width="780" height="1688" [alt]="c.studio.cartAlt" loading="lazy" decoding="async" />
+        <img src="/images/little-surprises/site-mobile-product.webp" width="780" height="1688" [alt]="c.studio.cartAlt" loading="lazy" decoding="async" />
       </figure>
     </div>
   </div>
@@ -110,10 +110,10 @@
 
 <!-- Problem and approach -->
 @defer (hydrate on viewport) {
-<section class="section" aria-labelledby="gw-problem">
+<section class="section" aria-labelledby="ls-problem">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-problem" class="title">{{ c.problem.title }}</h2>
+      <h2 id="ls-problem" class="title">{{ c.problem.title }}</h2>
       <p class="sub">{{ c.problem.sub }}</p>
     </header>
     <ul class="approach" role="list">
@@ -131,10 +131,10 @@
 
 <!-- Flow -->
 @defer (hydrate on viewport) {
-<section class="section alt" aria-labelledby="gw-flow">
+<section class="section alt" aria-labelledby="ls-flow">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-flow" class="title">{{ c.flow.title }}</h2>
+      <h2 id="ls-flow" class="title">{{ c.flow.title }}</h2>
       <p class="sub">{{ c.flow.sub }}</p>
     </header>
 
@@ -162,12 +162,12 @@
 </section>
 }
 
-<!-- Architecture: built storefront, planned backend -->
+<!-- Architecture -->
 @defer (hydrate on viewport) {
-<section class="section" aria-labelledby="gw-arch">
+<section class="section" aria-labelledby="ls-arch">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-arch" class="title">{{ c.arch.title }}</h2>
+      <h2 id="ls-arch" class="title">{{ c.arch.title }}</h2>
       <p class="sub">{{ c.arch.sub }}</p>
     </header>
 
@@ -185,16 +185,16 @@
       </div>
       <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="core">
-        <img src="/images/gift-wrap/gift-wrap-logo.webp" width="72" height="72" alt="" />
+        <img src="/images/little-surprises/little-surprises-mark.webp" width="72" height="72" alt="" />
         <b>{{ c.arch.core }}</b>
         <small>{{ c.arch.coreSub }}</small>
       </div>
-      <div class="wire planned" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="wire" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="col">
         <p class="col-label">{{ c.arch.right }}</p>
         <ul role="list">
           @for (d of c.arch.planned; track d.t) {
-            <li class="node planned">
+            <li class="node">
               <span class="node-ic"><ng-icon [name]="d.icon" aria-hidden="true" /></span>
               <span><b>{{ d.t }}</b><small>{{ d.s }}</small></span>
             </li>
@@ -208,10 +208,10 @@
 
 <!-- Stack -->
 @defer (hydrate on viewport) {
-<section class="section alt" aria-labelledby="gw-stack">
+<section class="section alt" aria-labelledby="ls-stack">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-stack" class="title">{{ c.stack.title }}</h2>
+      <h2 id="ls-stack" class="title">{{ c.stack.title }}</h2>
       <p class="sub">{{ c.stack.sub }}</p>
     </header>
     <ul class="stack" role="list">
@@ -227,12 +227,12 @@
 </section>
 }
 
-<!-- What I'd do differently -->
+<!-- What running it taught me -->
 @defer (hydrate on viewport) {
-<section class="section" aria-labelledby="gw-dec">
+<section class="section" aria-labelledby="ls-dec">
   <div class="wrap">
     <header class="split-head" mhReveal>
-      <h2 id="gw-dec" class="title">{{ c.decisions.title }}</h2>
+      <h2 id="ls-dec" class="title">{{ c.decisions.title }}</h2>
       <p class="sub">{{ c.decisions.sub }}</p>
     </header>
     <ol class="dec" role="list">
@@ -252,11 +252,11 @@
 
 <!-- Next -->
 @defer (hydrate on viewport) {
-<section class="section next" aria-labelledby="gw-next">
+<section class="section next" aria-labelledby="ls-next">
   <div class="wrap">
     <div class="card cta-band" mhReveal>
       <div>
-        <h2 id="gw-next" class="title">{{ c.next.title }}</h2>
+        <h2 id="ls-next" class="title">{{ c.next.title }}</h2>
         <p class="sub">{{ c.next.sub }}</p>
       </div>
       <div class="cta-acts">

@@ -47,7 +47,7 @@ p{margin-top:22px;font-size:21px;color:#c8ccbf;line-height:1.45}
   <h1>Files to the next screen,<br><span>with no server.</span></h1>
   <p>Encrypted signalling over public MQTT brokers, then a direct WebRTC channel from browser to browser.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/flick/app.webp')}"></div>
 </body></html>`;
 

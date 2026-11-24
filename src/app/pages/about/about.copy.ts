@@ -1,11 +1,13 @@
 // /about copy. Facts from docs/content.md plus the owner's own answers (2026-10-11). No employer names.
+// Role updated by the owner (2026-11-24): Software Architect and Lead Developer, AI-first with agentic workflows; no
+// longer a frontend lead. Little Surprises is the startup he runs with his wife (she is never named).
 
 export const ABOUT_COPY = {
   seo: {
     title: 'About',
     description:
-      'Mohammad Hamza (@mhfrough), a soft-spoken software architect from Karāchi. From tech blogging and teaching SEO in 2011 to leading Angular teams, plus the anime, films and games he loves.',
-    imageAlt: 'About Mohammad Hamza, software architect in Karāchi',
+      'Mohammad Hamza (@mhfrough), a soft-spoken software architect and lead developer from Karāchi who builds AI-first with agentic workflows. From tech blogging in 2011 to leading teams and running Little Surprises, a gift shop, with his wife.',
+    imageAlt: 'About Mohammad Hamza, software architect and lead developer in Karāchi',
   },
 
   hero: {
@@ -13,7 +15,7 @@ export const ABOUT_COPY = {
     tagText: 'The person behind the code',
     line1: 'Soft-spoken.',
     line2: 'Pixel perfect.',
-    lede: "I'm Mohammad Hamza, a software architect from Karāchi. I started out writing about tech and teaching SEO in 2011. Today I lead Angular teams, and I still check every pixel twice.",
+    lede: "I'm Mohammad Hamza, a software architect and lead developer from Karāchi. I started out writing about tech and teaching SEO in 2011. Today I lead a team, build AI-first with agents, and still check every pixel twice.",
     primary: 'View work',
     secondary: 'Get in touch',
   },
@@ -21,7 +23,7 @@ export const ABOUT_COPY = {
   profile: {
     name: 'Mohammad Hamza',
     handle: '@mhfrough',
-    role: 'Software Architect',
+    role: 'Software Architect and Lead Developer',
     traits: ['Friendly', 'Soft-spoken', 'Introvert'],
     facts: [
       { k: 'Based in', v: 'Karāchi, Pakistan' },
@@ -44,15 +46,16 @@ export const ABOUT_COPY = {
   story: {
     title: 'In my own words',
     sub: 'Who I am, how I work and what I care about, in a few minutes of reading.',
-    lead: "I'm Mohammad Hamza, a software architect and product designer in Karāchi. Since 2020, 7+ years, I have built SaaS, fintech and enterprise products that people use every day. More than 30 of them so far.",
+    lead: "I'm Mohammad Hamza, a software architect and lead developer in Karāchi. Since 2020, 7+ years, I have built SaaS, fintech and enterprise products that people use every day. More than 30 of them so far.",
     paragraphs: [
       'I think in systems, not screens. When I pick up a product I look at how the pieces fit together: tenants and roles, payments, real-time events, the design system, and the person who has to use all of it at the end. Most of my work is Angular on the front and NestJS with PostgreSQL behind it, with Flutter when the product needs to live on a phone.',
       'Design is part of the build for me, not a coat of paint on top. I started out drawing icons and interfaces for Dribbble, and I still design most of what I build before I write the first line of code. Spacing, type and consistency matter to me as much as the code underneath them.',
+      'I work AI-first. Agents plan, write and test alongside me in Claude Code, with multi-agent skills I build myself, and I stay the architect: I set the boundaries, review every change and own what ships. It makes a small team move like a bigger one, without lowering the bar.',
       'I like the hard parts. Money moving through a fintech flow. A tax-filing widget that runs inside 6 banking apps. A slow frontend that has to load faster. When something breaks, I look for the real cause instead of hiding the symptom, and I check that the fix actually reaches production.',
     ],
     quote: "I'd rather own a problem from the first sketch to production than ship a ticket and walk away.",
     closing:
-      'Today I lead a frontend team. I set conventions, review pull requests and own deployment decisions, and I try to write standards that help people get it right the first time. Outside work I build my own products, like Quorum, where seven AI personalities debate a decision and vote on it.',
+      'Today I lead a team of 7+ developers across three production platforms. I set the architecture and conventions, review pull requests and own deployment decisions. Outside work my wife and I run Little Surprises, a gift-basket shop I built end to end, and I make my own tools, like Quorum, where seven AI personalities debate a decision and vote on it.',
     sign: { name: 'Mohammad Hamza', meta: '@mhfrough · Karāchi' },
     card: {
       title: 'At a glance',
@@ -60,16 +63,17 @@ export const ABOUT_COPY = {
         { icon: 'phosphorTreeStructure', k: 'Architecture', v: 'Multi-tenant SaaS, micro-frontends, real-time systems, embeddable widgets' },
         { icon: 'phosphorBrowser', k: 'Frontend', v: 'Angular, TypeScript, RxJS, SSR, performance and accessibility' },
         { icon: 'phosphorDatabase', k: 'Backend', v: 'NestJS, Node.js, PostgreSQL, Firebase, Stripe, WebSockets' },
+        { icon: 'phosphorRobot', k: 'AI and agents', v: 'Claude Code, multi-agent skills, agentic workflows from plan to test' },
         { icon: 'phosphorPenNib', k: 'Design', v: 'UI and UX, design systems, icons, mockups in Adobe XD' },
       ],
       nowLabel: 'Right now',
-      now: 'Leading a frontend team, building Quorum and HRM Suite, and taking on select freelance work.',
+      now: 'Leading a team of 7+, growing Little Surprises with my wife, building HRM Suite, and taking on select freelance work.',
     },
   },
 
   journey: {
     title: 'How I got here',
-    sub: 'From a blog about HTML and SEO to leading a frontend team. The thread through all of it: learning something new and sharing it.',
+    sub: 'From a blog about HTML and SEO to leading a team and running a shop. The thread through all of it: learning something new and sharing it.',
     /** Accessible name prefix for the case-study pills under a step. */
     casesLabel: 'Case studies',
     steps: [
@@ -108,9 +112,9 @@ export const ABOUT_COPY = {
       },
       {
         when: '2025',
-        title: 'Lead frontend developer',
+        title: 'Software architect and lead developer',
         icon: 'phosphorUsersThree',
-        body: 'Leading a frontend team: conventions, code reviews and deployment decisions across 3 production platforms.',
+        body: 'Leading a team of 7+: architecture, conventions, code reviews and deployment decisions across 3 production platforms, built AI-first with agentic workflows.',
       },
       {
         when: '2026',
@@ -124,6 +128,13 @@ export const ABOUT_COPY = {
           { label: 'Whiteboard', href: '/work/whiteboard', icon: 'phosphorPencilSimpleLine' },
           { label: 'HRM Suite', href: '/work/hrm', mark: '/images/hrm/hrm-mark.svg' },
         ],
+      },
+      {
+        when: 'Oct 2026',
+        title: 'Little Surprises',
+        icon: 'phosphorGift',
+        body: 'Started a gift-basket shop with my wife. I built the storefront, the API, the admin and the marketing kit; she runs the shop. Live and delivering across Pakistan.',
+        links: [{ label: 'Little Surprises', href: '/work/little-surprises', mark: '/images/little-surprises/little-surprises-mark.webp' }],
       },
     ],
   },

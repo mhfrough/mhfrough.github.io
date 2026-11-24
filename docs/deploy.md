@@ -1,4 +1,9 @@
-# Deploying mhfrough.dev
+# Deploying the site
+
+> **Current setup (2026-11-24):** GitHub Pages user site at **https://mhfrough.github.io**, from the
+> `mhfrough/mhfrough.github.io` repo (git remote `pages`). `.github/workflows/deploy.yml` builds and publishes on every
+> push to `main` when the repo's Pages source is set to GitHub Actions (that repo also has an older `gh-pages` branch). No custom domain, so there is no `CNAME`; `SITE.origin` is the github.io URL. The `mhfrough.dev`
+> notes below only apply if a custom domain is added later (then restore `public/CNAME` and the origin).
 
 The site is fully static: `npm run build` prerenders every route to `dist/mhfrough/browser` and then runs
 `scripts/postbuild.mjs`, which adds what static hosts need:
@@ -7,7 +12,7 @@ The site is fully static: `npm run build` prerenders every route to `dist/mhfrou
 | --- | --- |
 | `404.html` | copy of `404/index.html`; both hosts serve it for unknown URLs |
 | `<route>.html` (e.g. `hire.html`, `work/quorum.html`) | canonical URLs have no trailing slash (`/hire`). With the flat copy both hosts answer `/hire` with 200 instead of a 301 to `/hire/`. Disable with `--no-flat`. |
-| `CNAME`, `.nojekyll` | GitHub Pages custom domain; skip Jekyll processing |
+| `.nojekyll` | skip Jekyll processing on GitHub Pages |
 | `sitemap.xml` | every indexable page (404 and `noindex` pages skipped), lastmod = build date |
 | `_headers` | security + cache headers; the CSP `script-src` gets the sha256 of Angular's inline scripts filled in |
 

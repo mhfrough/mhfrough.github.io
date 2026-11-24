@@ -62,7 +62,7 @@ p{margin-top:22px;font-size:21px;color:#3a3a6a;line-height:1.45}
   <h1>Phone orders,<br><span>typed once.</span></h1>
   <p>A call center taking orders for several restaurants: callers found by number, items priced by size, receipts as PDF.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="card">
   <div class="head"><b>Order <span class="mono">#1046</span></b><span class="st">Pending</span></div>
   <div class="lbl">Phone</div>

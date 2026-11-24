@@ -38,7 +38,7 @@ p{margin-top:22px;font-size:21px;color:#3d5166;line-height:1.45}
   <h1>Bookkeeping,<br><span>in plain words.</span></h1>
   <p>Free accounting and invoicing for small businesses: income, expenses, invoices with sales tax and four reports.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/asaan-hisab/site-home.webp')}"></div>
 </body></html>`;
 

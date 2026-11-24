@@ -3,7 +3,7 @@ export const SITEMAP_COPY = {
   seo: {
     title: 'Sitemap',
     description:
-      'Every page on mhfrough.dev in one list: work and case studies, hiring, contact and the legal pages, read from the same sitemap.xml search engines use.',
+      'Every page on mhfrough.github.io in one list: work and case studies, hiring, contact and the legal pages, read from the same sitemap.xml search engines use.',
   },
   crumb: 'Sitemap',
   kicker: 'Sitemap',
@@ -67,7 +67,7 @@ export const SITEMAP_COPY = {
     '/work/arittek': 'Arittek case study',
     '/work/hrm': 'HRM Suite case study',
     '/work/whiteboard': 'Whiteboard case study',
-    '/work/gift-wrap': 'Gift Wrap case study',
+    '/work/little-surprises': 'Little Surprises case study',
     '/work/ethical-node': 'EthicalNode case study',
     '/work/flick': 'Flick case study',
     '/work/scrawl': 'Scrawl case study',

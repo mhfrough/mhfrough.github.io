@@ -42,7 +42,7 @@ p{margin-top:22px;font-size:21px;color:#3b4559;line-height:1.45}
   <h1>A US company,<br><span>formed from anywhere</span><i>.</i></h1>
   <p>The logo, and the Angular app behind a US company formation service.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/finclore/site-home.webp')}"></div>
 </body></html>`;
 

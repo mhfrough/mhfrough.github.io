@@ -1,6 +1,6 @@
 import type { ConsoleMessage, Page } from '@playwright/test';
 
-export const ORIGIN = 'https://mhfrough.dev';
+export const ORIGIN = 'https://mhfrough.github.io';
 
 /** Every indexable route (English only). Keep in sync with src/app/app.routes.ts. */
 export const ROUTES = [

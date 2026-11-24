@@ -17,10 +17,9 @@ export interface HomeProject {
 }
 
 /**
- * Home bento (below the hero), in order. Quorum is the feature cell before these; the second cell is solid and the
+ * Home bento (below the hero), in order. Little Surprises is the feature cell before these; the second cell is solid and the
  * third spans two columns, so six cells fill three rows. Every entry links to its case study and uses the product's
  * own favicon when there is one (CLAUDE.md, Project icons). Facts mirror src/app/pages/work/work.data.ts.
- * The hero tool shelf (tool-shelf.ts) keeps its own list of my five Originals.
  */
 export const BENTO: HomeProject[] = [
   {
@@ -106,6 +105,8 @@ export const FILTERS: { id: 'all' | Domain; label: string; icon: string }[] = [
 
 export const STACK = [
   'Angular',
+  'Claude Code',
+  'Agentic workflows',
   'TypeScript',
   'RxJS',
   'Angular SSR',
@@ -152,7 +153,8 @@ export const HOW = [
 ];
 
 export const EXPERIENCE = [
-  { role: 'Lead frontend developer', years: '2025 to now', focus: 'Architecture and standards across three production platforms; leads and mentors the team.' },
+  { role: 'Co-founder, Little Surprises', years: '2026 to now', focus: 'A gift-basket shop with my wife: I built the storefront, the API, the admin and the marketing kit.' },
+  { role: 'Software architect and lead developer', years: '2025 to now', focus: 'Leads a team of 7+ across three production platforms; architecture, reviews and releases, AI-first with agentic workflows.' },
   { role: 'Contract and freelance', years: '2023 to now', focus: 'Full-stack SaaS for UK and EU clients: fleet, ordering, courier, booking.' },
   { role: 'Senior frontend developer', years: '2021 to 2024', focus: 'Fintech and B2B SaaS delivery; mockups in Adobe XD; legacy Angular and PHP.' },
   { role: 'Junior frontend developer', years: '2020 to 2021', focus: 'SEO-friendly Angular and PHP apps, including a first public filing portal.' },

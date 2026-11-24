@@ -33,6 +33,8 @@ import {
   phosphorTreeStructure,
   phosphorTruck,
   phosphorUsersThree,
+  phosphorGift,
+  phosphorRobot,
 } from '@ng-icons/phosphor-icons/regular';
 import { PERSON_ID, Seo, abs } from '../../core/seo/seo.service';
 import { SITE } from '../../core/site.config';
@@ -84,6 +86,8 @@ const PATH = '/about';
       phosphorTreeStructure,
       phosphorTruck,
       phosphorUsersThree,
+      phosphorGift,
+      phosphorRobot,
     }),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

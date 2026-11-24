@@ -46,7 +46,7 @@ p{margin-top:22px;font-size:21px;color:#cfcfcb;line-height:1.45}
   <h1>Felt-tip diagrams<br><span>on dotted paper.</span></h1>
   <p>Marker strokes, risograph fills and local saving, in plain JavaScript with no dependencies.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/scrawl/board-dark.webp')}"></div>
 </body></html>`;
 

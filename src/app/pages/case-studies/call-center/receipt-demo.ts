@@ -297,7 +297,7 @@ function receiptPdf(o: Order): string {
     [pad('', 'PAID'), true],
     ['Thank you!', false],
     ['', false],
-    ['Sample data, mhfrough.dev', false],
+    ['Sample data, mhfrough.github.io', false],
   ];
 
   const lead = 14;

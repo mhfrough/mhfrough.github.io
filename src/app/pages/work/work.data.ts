@@ -2,7 +2,8 @@
 // except Befiler and its partner banks, which the owner approved naming for its case study (2026-10-10), and
 // Bloomstone, Emlaak Financials, the pizzeria brands, SOS24, AK Heating and Plumbing and Khairpur Municipal
 // Committee, Asaan Hisab, Finclore and Arittek, named for their case studies at the owner's request (2026-10-11).
-// Arittek is named only as the client of its own site, never as an employer.
+// Arittek is named only as the client of its own site and next to Zingoo (owner, 2026-11-24), never as an employer.
+// Little Surprises is my own startup, run with my wife, and is the featured project (owner, 2026-11-24).
 // The Home page may import PROJECTS / FEATURED from here.
 
 export type WorkCategory = 'fintech' | 'saas' | 'commerce' | 'public' | 'own' | 'design';
@@ -59,7 +60,8 @@ export interface FeaturedProject {
   path: string;
   cover: { src: string; width: number; height: number; alt: string };
   liveUrl: string;
-  repoUrl: string;
+  /** Public repo, when there is one. */
+  repoUrl?: string;
 }
 
 export const CATEGORIES: { id: 'all' | WorkCategory; label: string }[] = [
@@ -73,29 +75,28 @@ export const CATEGORIES: { id: 'all' | WorkCategory; label: string }[] = [
 ];
 
 export const FEATURED: FeaturedProject = {
-  id: 'quorum',
-  title: 'Quorum',
-  domain: 'Own product',
-  years: '2026',
+  id: 'little-surprises',
+  title: 'Little Surprises',
+  domain: 'My startup',
+  years: '2026 to now',
   startYear: 2026,
   oneLiner:
-    'A Claude Code skill for hard decisions: seven personality sub-agents debate, vote and return a clear YES or NO with next steps.',
-  stack: ['Claude Code', 'Multi-agent', 'Vanilla JS', 'Playwright', 'MIT'],
-  categories: ['own'],
-  path: '/work/quorum',
+    'The gift shop I run with my wife: buyers build their own basket online and we wrap it by hand in Karāchi and deliver across Pakistan. I built the storefront, the API, the admin and the marketing kit.',
+  stack: ['Angular 21', 'SSR', 'NestJS', 'PostgreSQL', 'Cloudflare'],
+  categories: ['own', 'commerce'],
+  path: '/work/little-surprises',
   cover: {
-    src: '/images/quorum/og-cover.webp',
+    src: '/images/little-surprises/cover.webp',
     width: 1200,
     height: 630,
-    alt: 'Quorum cover: "One decision. Seven minds." above the seven council members and a /quorum command.',
+    alt: 'Little Surprises case study cover: "Gift baskets, wrapped by hand." beside the littlesurprises.shop home page.',
   },
-  liveUrl: 'https://mhfrough.github.io/quorum/',
-  repoUrl: 'https://github.com/mhfrough/quorum',
+  liveUrl: 'https://littlesurprises.shop',
 };
 
 // Order matters: the bento layout gives wide cells to positions 0, 6 and 10 in the "All" view.
 /** The tools group on /work runs in this order. */
-export const TOOL_ORDER = ['flick', 'pinch', 'scrawl', 'sizzle', 'swoop'];
+export const TOOL_ORDER = ['quorum', 'jot', 'flick', 'pinch', 'scrawl', 'sizzle', 'swoop'];
 
 export const PROJECTS: WorkProject[] = [
   {
@@ -475,6 +476,24 @@ export const PROJECTS: WorkProject[] = [
     },
   },
   {
+    id: 'zingoo',
+    title: 'Zingoo, ERP and distributor portal',
+    domain: 'ERP and distribution',
+    years: '2026',
+    startYear: 2026,
+    where: 'Built with Arittek',
+    role: 'Architecture and full stack',
+    outcome:
+      'A food maker’s ERP rebuilt from a one-file prototype: manufacturing, distribution, exports in any currency, a double-entry ledger every document posts to, two-signature spend approvals and a self-service portal for distributors.',
+    stack: ['Angular 21', 'NestJS', 'PostgreSQL', 'TypeORM'],
+    categories: ['saas'],
+    icon: 'phosphorFactory',
+    stats: [
+      { value: '29', label: 'tables in one ledger' },
+      { value: '193', label: 'API rule checks' },
+    ],
+  },
+  {
     id: 'property-listing',
     title: 'Property listing site',
     domain: 'Real estate',
@@ -545,6 +564,46 @@ export const PROJECTS: WorkProject[] = [
       height: 630,
       alt: 'Arittek case study cover: the Arittek mark above "A company site with its own back office." beside the arittek.com home page.',
     },
+  },
+  {
+    id: 'quorum',
+    title: 'Quorum, a council for hard decisions',
+    domain: 'AI agents',
+    years: '2026',
+    startYear: 2026,
+    role: 'Own product, design and build',
+    outcome:
+      'A Claude Code skill where seven personality sub-agents debate a decision, vote, and hand back one clear YES or NO with next steps. Runs inside your own agent, MIT licensed.',
+    stack: ['Claude Code', 'Multi-agent', 'Vanilla JS', 'Playwright'],
+    categories: ['own'],
+    icon: 'phosphorUsersThree',
+    favicon: '/images/quorum/favicon.svg',
+    caseStudy: '/work/quorum',
+    tool: true,
+    runs: 'Inside your AI agent',
+    cover: {
+      src: '/images/quorum/og-cover.webp',
+      width: 1200,
+      height: 630,
+      alt: 'Quorum cover: "One decision. Seven minds." above the seven council members and a /quorum command.',
+    },
+  },
+  {
+    id: 'jot',
+    title: 'Jot, plain notes',
+    domain: 'Notes app',
+    years: '2026',
+    startYear: 2026,
+    role: 'Own product, design and build',
+    outcome:
+      'A quiet notes app that installs from the browser and opens offline: pins, checklists, search and a Locked tab sealed with AES-256-GCM. No sign-in, no server; Windows and Android apps built with Tauri 2.',
+    stack: ['JavaScript', 'IndexedDB', 'Web Crypto', 'Tauri 2'],
+    categories: ['own'],
+    icon: 'phosphorNotePencil',
+    favicon: '/images/jot/jot-mark.svg',
+    link: { label: 'Open Jot', href: 'https://mhfrough.github.io/jot/' },
+    tool: true,
+    runs: 'Browser, Windows, Android',
   },
   {
     id: 'flick',
@@ -757,28 +816,6 @@ export const PROJECTS: WorkProject[] = [
     },
   },
   {
-    id: 'gift-wrap',
-    title: 'Gift Wrap, a build-your-own gift basket store',
-    domain: 'Thesis project',
-    role: 'Frontend, design and build',
-    outcome:
-      'A thesis storefront where buyers build their own gift basket: base, wrap, ribbon, treats and a note, with a live price. Angular 17 with signals, mobile first, installable, on Netlify.',
-    stack: ['Angular', 'Signals', 'Bootstrap', 'PWA'],
-    categories: ['commerce'],
-    icon: 'phosphorGift',
-    stats: [
-      { value: '5', label: 'build steps' },
-      { value: '60', label: 'basket looks' },
-    ],
-    caseStudy: '/work/gift-wrap',
-    cover: {
-      src: '/images/gift-wrap/cover.webp',
-      width: 1200,
-      height: 630,
-      alt: 'Gift Wrap case study cover: "Build the basket, not just buy one." beside the storefront home page.',
-    },
-  },
-  {
     id: 'icon-ui-design',
     title: 'Icon and UI design',
     domain: 'Design',
@@ -979,14 +1016,6 @@ export const CARD_SHOTS: Readonly<Record<string, readonly string[]>> = {
     '/images/swoop/overlay.webp',
     '/images/swoop/chrome.webp',
     '/images/swoop/tools.webp',
-  ],
-  'gift-wrap': [
-    '/images/gift-wrap/site-home.webp',
-    '/images/gift-wrap/site-shop.webp',
-    '/images/work/gift-wrap-app.webp',
-    '/images/gift-wrap/site-product.webp',
-    '/images/gift-wrap/site-cart.webp',
-    '/images/gift-wrap/site-studio.webp',
   ],
   courier: [
     '/images/malik-transport/site-home.webp',

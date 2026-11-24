@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { phosphorCheck, phosphorMinus, phosphorPlus, phosphorTruck } from '@ng-icons/phosphor-icons/regular';
-import { COPY } from './gift-wrap.copy';
+import { phosphorBasket, phosphorCheck, phosphorMinus, phosphorPlus } from '@ng-icons/phosphor-icons/regular';
+import { COPY } from './little-surprises.copy';
 
 interface Base {
   id: 'kraft' | 'box' | 'hamper';
@@ -30,47 +30,47 @@ interface Treat {
   price: number;
 }
 
-// Options and prices are the build's own sample catalogue (data.service.ts): every base and wrap, every ribbon,
-// and four of its basket-eligible treats. Swatch colours are the storefront's own wrap gradients.
+// Options and prices are the live shop's own (littlesurprises.shop, 24 Nov 2026): three of its baskets, its wraps,
+// ribbon colours from its palette and four treats that fit a basket. Every basket holds up to 6 items.
 const BASES: Base[] = [
-  { id: 'kraft', name: 'Kraft Weave Basket', short: 'Kraft basket', price: 14 },
-  { id: 'box', name: 'Signature Gift Box', short: 'Gift box', price: 18 },
-  { id: 'hamper', name: 'Keepsake Hamper', short: 'Hamper', price: 26 },
+  { id: 'kraft', name: 'Wooden basket with handle', short: 'Wooden basket', price: 799 },
+  { id: 'box', name: 'Cardboard gift box', short: 'Gift box', price: 499 },
+  { id: 'hamper', name: 'Clear gift box', short: 'Clear box', price: 1150 },
 ];
 
 const WRAPS: Wrap[] = [
-  { id: 'blush', name: 'Blush Tissue', from: '#f7e8ec', to: '#e89cb3', price: 0 },
-  { id: 'kraft', name: 'Kraft and Twine', from: '#e8d6c3', to: '#c9a37a', price: 4 },
-  { id: 'satin', name: 'Rose Satin', from: '#e89cb3', to: '#d86b8a', price: 6 },
-  { id: 'velvet', name: 'Velvet Wine', from: '#a13a5e', to: '#7a0f3d', price: 8 },
+  { id: 'kraft', name: 'Kraft paper', from: '#e8d6c3', to: '#c9a37a', price: 100 },
+  { id: 'shred', name: 'Coloured paper shred', from: '#f7e8ec', to: '#e89cb3', price: 100 },
+  { id: 'satin', name: 'Coloured kraft sheets', from: '#e89cb3', to: '#d86b8a', price: 100 },
+  { id: 'net', name: 'Wrapping net', from: '#a13a5e', to: '#7a0f3d', price: 150 },
 ];
 
 const RIBBONS: Ribbon[] = [
   { id: 'rose', name: 'Rose Pink', hex: '#d86b8a' },
-  { id: 'wine', name: 'Wine', hex: '#7a0f3d' },
+  { id: 'wine', name: 'Plum', hex: '#7a0f3d' },
   { id: 'blush', name: 'Blush', hex: '#e89cb3' },
   { id: 'sage', name: 'Sage', hex: '#7b7a5c' },
   { id: 'cream', name: 'Cream', hex: '#f2e7d8' },
 ];
 
 const TREATS: Treat[] = [
-  { id: 'truffle', name: 'Belgian Truffle Box', price: 32 },
-  { id: 'candle', name: 'Vanilla Amber Soy Candle', price: 22 },
-  { id: 'tea', name: 'Botanical Tea Collection', price: 25 },
-  { id: 'macaron', name: 'French Macaron Tin', price: 28 },
+  { id: 'dairy', name: 'Cadbury Dairy Milk Bubbly', price: 500 },
+  { id: 'roses', name: 'Forever red roses', price: 999 },
+  { id: 'keychain', name: 'Pink lily keychain', price: 299 },
+  { id: 'card', name: 'Saalgirah Mubarak card', price: 299 },
 ];
 
-const usd = (n: number) => '$' + n.toFixed(2);
+const usd = (n: number) => 'Rs ' + n.toLocaleString('en-US');
 
 /**
- * The Gift Wrap build studio, redrawn small as my own working component: base, wrap, ribbon and treats, with the
- * same pricing rules as the storefront (base + wrap + treats; free shipping from $75, else a flat $6.95) and a
- * drawn preview that takes the wrap and ribbon colours. Nothing is sent anywhere.
+ * The Little Surprises basket builder, redrawn small as my own working component: basket, wrap, ribbon and treats,
+ * priced like the shop (basket + wrap + treats, whole rupees) with the basket's 6-item limit, and a drawn preview
+ * that takes the wrap and ribbon colours. Nothing is sent anywhere.
  */
 @Component({
-  selector: 'mh-gw-builder',
+  selector: 'mh-ls-builder',
   imports: [NgIcon],
-  viewProviders: [provideIcons({ phosphorCheck, phosphorMinus, phosphorPlus, phosphorTruck })],
+  viewProviders: [provideIcons({ phosphorBasket, phosphorCheck, phosphorMinus, phosphorPlus })],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card card--lift studio" role="group" [attr.aria-label]="d.label">
@@ -82,7 +82,7 @@ const usd = (n: number) => '$' + n.toFixed(2);
       <div class="stage">
         <svg class="art" viewBox="0 0 200 170" role="img" [attr.aria-label]="artLabel()">
           <defs>
-            <linearGradient id="gw-wrap-fill" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="ls-wrap-fill" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" [attr.stop-color]="wrap().from" />
               <stop offset="1" [attr.stop-color]="wrap().to" />
             </linearGradient>
@@ -91,7 +91,7 @@ const usd = (n: number) => '$' + n.toFixed(2);
           @switch (base().id) {
             @case ('kraft') {
               <path d="M52 92 Q100 14 148 92" class="handle" fill="none" />
-              <path d="M34 90 H166 L150 160 H50 Z" fill="url(#gw-wrap-fill)" class="body" />
+              <path d="M34 90 H166 L150 160 H50 Z" fill="url(#ls-wrap-fill)" class="body" />
               <path d="M40 112 H160 M44 134 H156" class="weave" fill="none" />
               <rect x="93" y="90" width="14" height="70" [attr.fill]="ribbon().hex" class="band" />
               <g [attr.fill]="ribbon().hex" class="bow" transform="translate(100 88)">
@@ -102,8 +102,8 @@ const usd = (n: number) => '$' + n.toFixed(2);
             }
             @default {
               @let wide = base().id === 'hamper';
-              <rect [attr.x]="wide ? 26 : 42" y="84" [attr.width]="wide ? 148 : 116" height="76" rx="5" fill="url(#gw-wrap-fill)" class="body" />
-              <rect [attr.x]="wide ? 18 : 34" y="64" [attr.width]="wide ? 164 : 132" height="24" rx="5" fill="url(#gw-wrap-fill)" class="lid" />
+              <rect [attr.x]="wide ? 26 : 42" y="84" [attr.width]="wide ? 148 : 116" height="76" rx="5" fill="url(#ls-wrap-fill)" class="body" />
+              <rect [attr.x]="wide ? 18 : 34" y="64" [attr.width]="wide ? 164 : 132" height="24" rx="5" fill="url(#ls-wrap-fill)" class="lid" />
               <rect x="93" y="64" width="14" height="96" [attr.fill]="ribbon().hex" class="band" />
               <rect [attr.x]="wide ? 26 : 42" y="114" [attr.width]="wide ? 148 : 116" height="12" [attr.fill]="ribbon().hex" class="band" />
               <g [attr.fill]="ribbon().hex" class="bow" transform="translate(100 62)">
@@ -193,7 +193,7 @@ const usd = (n: number) => '$' + n.toFixed(2);
                   <ng-icon name="phosphorMinus" aria-hidden="true" />
                 </button>
                 <span class="mono q" aria-live="polite">{{ qty(t.id) }}</span>
-                <button type="button" class="icon-btn sm" [disabled]="qty(t.id) >= 5" (click)="change(t.id, 1)" [attr.aria-label]="'Add one ' + t.name">
+                <button type="button" class="icon-btn sm" [disabled]="qty(t.id) >= 5 || room() === 0" (click)="change(t.id, 1)" [attr.aria-label]="'Add one ' + t.name">
                   <ng-icon name="phosphorPlus" aria-hidden="true" />
                 </button>
               </span>
@@ -202,13 +202,13 @@ const usd = (n: number) => '$' + n.toFixed(2);
         </ul>
       </div>
 
-      <div class="ship" [class.free]="freeLeft() === 0">
+      <div class="ship" [class.free]="room() === 0">
         <p>
-          <ng-icon name="phosphorTruck" aria-hidden="true" />
-          @if (freeLeft() === 0) {
-            Free shipping unlocked
+          <ng-icon name="phosphorBasket" aria-hidden="true" />
+          @if (room() === 0) {
+            Basket full, {{ d.capacity }} of {{ d.capacity }} items
           } @else {
-            {{ usd(freeLeft()) }} away from free shipping, else {{ usd(d.shipping) }}
+            {{ count() }} of {{ d.capacity }} items, room for {{ room() }} more
           }
         </p>
         <span class="bar" aria-hidden="true"><i [style.transform]="'scaleX(' + progress() + ')'"></i></span>
@@ -580,7 +580,7 @@ const usd = (n: number) => '$' + n.toFixed(2);
     }
   `,
 })
-export class GiftWrapBuilderDemo {
+export class LittleSurprisesBuilderDemo {
   protected readonly d = COPY.demo;
   protected readonly bases = BASES;
   protected readonly wraps = WRAPS;
@@ -591,7 +591,7 @@ export class GiftWrapBuilderDemo {
   protected readonly baseId = signal<Base['id']>('box');
   protected readonly wrapId = signal('satin');
   protected readonly ribbonId = signal('wine');
-  private readonly qtys = signal<Record<string, number>>({ truffle: 1, macaron: 1 });
+  private readonly qtys = signal<Record<string, number>>({ dairy: 2, keychain: 1 });
   protected readonly added = signal<string | null>(null);
 
   protected readonly base = computed(() => BASES.find((b) => b.id === this.baseId())!);
@@ -600,8 +600,8 @@ export class GiftWrapBuilderDemo {
   protected readonly count = computed(() => Object.values(this.qtys()).reduce((n, q) => n + q, 0));
   protected readonly treatsTotal = computed(() => TREATS.reduce((s, t) => s + t.price * (this.qtys()[t.id] ?? 0), 0));
   protected readonly total = computed(() => this.base().price + this.wrap().price + this.treatsTotal());
-  protected readonly freeLeft = computed(() => Math.max(0, this.d.freeAt - this.total()));
-  protected readonly progress = computed(() => Math.min(1, this.total() / this.d.freeAt));
+  protected readonly room = computed(() => Math.max(0, this.d.capacity - this.count()));
+  protected readonly progress = computed(() => Math.min(1, this.count() / this.d.capacity));
   protected readonly artLabel = computed(
     () => `${this.base().name} in ${this.wrap().name} with a ${this.ribbon().name} ribbon, ${this.count()} treats`,
   );
@@ -611,11 +611,11 @@ export class GiftWrapBuilderDemo {
   }
 
   protected change(id: string, by: number): void {
-    this.qtys.update((q) => ({ ...q, [id]: Math.max(0, Math.min(5, (q[id] ?? 0) + by)) }));
+    this.qtys.update((q) => ({ ...q, [id]: Math.max(0, Math.min(5, (q[id] ?? 0) + (by > 0 && this.room() === 0 ? 0 : by))) }));
     this.added.set(null);
   }
 
-  /** Same summary line the storefront writes on the cart line: base, wrap, ribbon, item count, price. */
+  /** Same summary line the shop writes on the bag line: base, wrap, ribbon, item count, price. */
   protected addToCart(): void {
     if (!this.count()) return;
     const n = this.count();

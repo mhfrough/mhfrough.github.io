@@ -44,7 +44,7 @@ p{margin-top:22px;font-size:21px;color:#3a4660;line-height:1.45}
   <h1>A price before the call,<br><span>a driver after it.</span></h1>
   <p>A public fare calculator and one portal for customers, office and drivers, built in Angular.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/malik-transport/site-calculator.webp')}"></div>
 <div class="phone"><img src="${img('public/images/malik-transport/site-mobile.webp')}"></div>
 </body></html>`;

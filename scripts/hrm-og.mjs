@@ -40,7 +40,7 @@ p{margin-top:22px;font-size:21px;color:#b3bfd1;line-height:1.45}
   <h1>HR, attendance and payroll<br><span>on one record.</span></h1>
   <p>My multi-tenant HR platform: web app, phone check-ins, API and design system.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/hrm/app-dashboard-dark.webp')}"></div>
 </body></html>`;
 

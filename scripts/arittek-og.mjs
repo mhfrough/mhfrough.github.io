@@ -42,7 +42,7 @@ p{margin-top:22px;font-size:21px;color:#47525f;line-height:1.45}
   <h1>A company site<br><span>with its own back office.</span></h1>
   <p>20 prerendered pages and a PHP back office for the blog, campaigns, inquiries and roles.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${webp('public/images/arittek/site-home.webp')}"></div>
 </body></html>`;
 

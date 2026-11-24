@@ -1,7 +1,7 @@
-// Gift Wrap case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
-// storefront's palette: rose #d86b8a, wine #7a0f3d, blush #e89cb3, sage #7b7a5c on the pale blush #fdf6f8 it used
-// for section grounds. Colour tokens only, like the other case-study themes (the storefront's Cinzel and Montserrat
-// stay in its screenshots). Applied by <html data-theme="gift-wrap"> (route data on /work/gift-wrap). Every rule is
+// Little Surprises case-study theme: the site's own design system (Geist, pills, 16px cards, Quorum patterns) in the
+// storefront's palette: rose #d86b8a, plum #7a0f3d, blush #f7e8ec, sage #7b7a5c on its warm paper #fbfaf8.
+// Colour tokens only, like the other case-study themes (the storefront's Cormorant and Manrope
+// stay in its screenshots). Applied by <html data-theme="little-surprises"> (route data on /work/little-surprises). Every rule is
 // scoped to that attribute, so nothing leaks once the router removes it.
 //
 // Contrast (WCAG 2.1): ink 13.5:1 on --bg, ink-2 9.2:1, muted 5.6:1 on --bg and 5.1:1 on --surface-2, white on the
@@ -9,8 +9,8 @@
 // --surface-2, --g-sage-text 6.2:1 on --bg. The storefront's rose #d86b8a is a fill for large shapes only (white
 // on it is 3.3:1). Night blocks: --n-ink 16.8:1, --n-muted 9.5:1.
 
-:root[data-theme='gift-wrap'] {
-  --bg: #fdf6f8;
+:root[data-theme='little-surprises'] {
+  --bg: #fbfaf8;
   --bg-2: #f7e8ec;
   --bg-raise: #f7e8ec;
   --surface: #ffffff;

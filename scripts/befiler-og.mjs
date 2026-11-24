@@ -39,7 +39,7 @@ p{margin-top:22px;font-size:21px;color:#444;line-height:1.45}
   <h1>Tax returns, filed <span>from any app.</span></h1>
   <p>A customer dashboard, a staff portal and a filing widget inside six banking apps and a wallet.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/befiler/site-hero.webp')}"></div>
 </body></html>`;
 

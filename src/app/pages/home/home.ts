@@ -36,11 +36,11 @@ import { Pattern } from '../../shared/ui/pattern';
 import { Skeleton } from '../../shared/ui/skeleton';
 import { BENTO, EXPERIENCE, HOW, REELS, STACK } from './home.data';
 import { HomeMore } from './home-more';
-import { ToolShelf } from './tool-shelf';
+import { HeroCard } from './hero-card';
 
 @Component({
   selector: 'mh-page-home',
-  imports: [RouterLink, NgIcon, Pattern, Skeleton, Reveal, ToolShelf, HomeMore],
+  imports: [RouterLink, NgIcon, Pattern, Skeleton, Reveal, HeroCard, HomeMore],
   viewProviders: [
     provideIcons({
       phosphorArrowRight,
@@ -83,7 +83,7 @@ export class Home {
   protected readonly how = HOW;
   protected readonly experience = EXPERIENCE;
   protected readonly reels = REELS;
-  // Bento: six client case studies after Quorum (the feature cell). Order and count live in BENTO.
+  // Bento: six case studies after Little Surprises (the feature cell). Order and count live in BENTO.
   protected readonly bento = BENTO;
   /** Case studies on the site, counted from the router so the number cannot drift. */
   protected readonly caseStudies = routes.filter((r) => r.path?.startsWith('work/')).length;
@@ -92,14 +92,15 @@ export class Home {
   protected readonly credentials = [
     { k: 'Since 2020', v: '7+ years of experience in production software' },
     { k: '30+ products', v: 'Shipped across banking, tax, investment, fleet and SaaS' },
-    { k: 'Software architecture', v: 'Designs the system, sets conventions, reviews code' },
-    { k: 'All live platforms', v: 'Owns AWS releases for UAT and production' },
+    { k: 'Architect and lead', v: 'Leads a team of 7+, sets the architecture, owns AWS releases' },
+    { k: 'AI-first', v: 'Agentic workflows in Claude Code, from plan to test' },
   ];
 
   protected readonly kit = [
     { group: 'Frontend', items: ['Angular', 'React', 'TypeScript', 'JavaScript', 'RxJS', 'SCSS', 'Angular SSR', 'PWA'] },
     { group: 'Architecture', items: ['Micro-frontends', 'Multi-tenant SaaS', 'Fintech', 'Real-time', 'Widgets'] },
-    { group: 'Backend and data', items: ['NestJS', 'Node.js', 'PHP', 'WordPress', 'PostgreSQL', 'MySQL', 'phpMyAdmin', 'MongoDB', 'Firebase', 'Supabase'] },
+    { group: 'AI and agents', items: ['Claude Code', 'Multi-agent skills', 'Agentic workflows'] },
+    { group: 'Backend and data', items: ['NestJS', 'Node.js', 'Java Spring Boot', '.NET', 'PHP', 'WordPress', 'PostgreSQL', 'MySQL', 'phpMyAdmin', 'MongoDB', 'Firebase', 'Supabase'] },
     { group: 'Mobile', items: ['Flutter', 'Ionic', 'Android Studio'] },
     { group: 'Cloud and DevOps', items: ['AWS', 'Cloudflare', 'Netlify', 'Render', 'Nginx', 'cPanel', 'Coolify'] },
     { group: 'Quality and design', items: ['Playwright', 'Karma', 'WCAG 2.1 AA', 'SEO', 'Adobe XD'] },
@@ -133,6 +134,7 @@ export class Home {
     { k: 'widget', v: 'Widgets that embed in other people’s sites and apps' },
     { k: 'a11y', v: 'WCAG 2.1 AA and technical SEO passes' },
     { k: 'api', v: 'NestJS and PostgreSQL APIs behind it all' },
+    { k: 'agents', v: 'Setting up AI-first, agentic delivery for a team' },
   ];
 
   protected readonly ready = signal(false);
@@ -141,7 +143,7 @@ export class Home {
   constructor() {
     inject(Seo).set({
       description:
-        'Mohammad Hamza (@mhfrough) is a software architect in Karāchi building Angular platforms, multi-tenant SaaS and design systems. Available for freelance and contract work.',
+        'Mohammad Hamza (@mhfrough) is a software architect and lead developer in Karāchi building Angular platforms and multi-tenant SaaS, AI-first with agentic workflows, and co-founder of Little Surprises. Available for freelance and contract work.',
       path: '/',
       type: 'profile',
       jsonLd: [

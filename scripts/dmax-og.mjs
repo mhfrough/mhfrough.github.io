@@ -63,7 +63,7 @@ p{margin-top:22px;font-size:21px;color:#b6c3d4;line-height:1.45}
   <h1>Core banking data,<br><span>extracted and accounted for.</span></h1>
   <p>Four Angular apps: extraction consoles that count every row, and statements on demand.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="job">
   <div class="head"><b class="mono">Job 1047</b><span class="state">Running</span></div>
   <div class="sub">Incremental on DB2 · sample data</div>

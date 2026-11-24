@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const CACHE = resolve(ROOT, '.devcache');
 export const DEFAULT_DIST = resolve(ROOT, 'dist/mhfrough/browser');
-export const ORIGIN = 'https://mhfrough.dev';
+export const ORIGIN = 'https://mhfrough.github.io';
 
 process.env.PLAYWRIGHT_BROWSERS_PATH ??= resolve(CACHE, 'playwright');
 if (!process.env.CI) {

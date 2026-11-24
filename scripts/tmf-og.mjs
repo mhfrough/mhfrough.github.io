@@ -70,7 +70,7 @@ td{padding:7px 8px;border-bottom:1px solid #e8dfcf}
   <h1>Nine desks between<br><span>a loan and its cheque.</span></h1>
   <p>TMF's loan-management platform: approvals with limits per role, a loan calculator and repayment schedules.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="card">
   <div class="head"><b>Loan <span class="mono">L-2317</span></b><span class="mono">Rs 90,000</span></div>
   <ol>${rail}</ol>

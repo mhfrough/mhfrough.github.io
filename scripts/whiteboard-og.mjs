@@ -49,7 +49,7 @@ p{margin-top:22px;font-size:21px;color:#c7c2b9;line-height:1.45}
   <h1>An infinite canvas,<br><span>built on signals.</span></h1>
   <p>One SVG scene, fifteen signal services, snapshot undo, five export formats and live editing over socket.io.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/whiteboard/board.webp')}"></div>
 </body></html>`;
 

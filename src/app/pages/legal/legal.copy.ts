@@ -20,7 +20,7 @@ export const PRIVACY: LegalDoc = {
   crumb: 'Privacy',
   seoTitle: 'Privacy policy',
   description:
-    'How mhfrough.dev handles personal data: no cookies, no analytics, no trackers, a contact form that opens your own email app, and your rights.',
+    'How mhfrough.github.io handles personal data: no cookies, no analytics, no trackers, a contact form that opens your own email app, and your rights.',
   title: 'Privacy policy',
   soft: 'Short, because little is collected.',
   updated: UPDATED,
@@ -75,7 +75,7 @@ export const PRIVACY: LegalDoc = {
       title: 'Hosting and server logs',
       blocks: [
         {
-          p: 'Like every website, the pages are delivered by a hosting provider. To keep the service running and secure, the provider may keep standard request logs: your IP address, browser type, the page requested and the time. I do not use these logs to identify or profile visitors. The provider handles them under its own privacy policy and keeps them for as long as its own policy says.',
+          p: 'The pages are delivered by GitHub Pages, run by GitHub. To keep the service running and secure, the provider may keep standard request logs: your IP address, browser type, the page requested and the time. I do not use these logs to identify or profile visitors. The provider handles them under its own privacy policy and keeps them for as long as its own policy says.',
         },
       ],
     },
@@ -154,7 +154,7 @@ export const PRIVACY: LegalDoc = {
         },
         {
           ul: [
-            'the hosting provider that serves these pages and keeps request logs',
+            'GitHub Pages, which serves these pages and keeps request logs',
             'the email provider that stores my inbox',
             'GitHub, only for the Quorum videos and only when you press play',
           ],
@@ -263,7 +263,7 @@ export const TERMS: LegalDoc = {
   crumb: 'Terms',
   seoTitle: 'Terms of use',
   description:
-    'Terms of use for mhfrough.dev: content and downloads are owned by the author, the site is provided as is, no advice and no client relationship, and the laws of Pakistan apply.',
+    'Terms of use for mhfrough.github.io: content and downloads are owned by the author, the site is provided as is, no advice and no client relationship, and the laws of Pakistan apply.',
   title: 'Terms of use',
   soft: 'The ground rules for this site.',
   updated: UPDATED,
@@ -525,7 +525,7 @@ export const COOKIES: LegalDoc = {
   crumb: 'Cookies',
   seoTitle: 'Cookie policy',
   description:
-    'mhfrough.dev sets no cookies: no analytics, no ads, no trackers. What the site does store, and what would change that.',
+    'mhfrough.github.io sets no cookies: no analytics, no ads, no trackers. What the site does store, and what would change that.',
   title: 'Cookie policy',
   soft: 'There are none. Here is the detail.',
   updated: UPDATED,
@@ -618,7 +618,7 @@ export const ACCESSIBILITY: LegalDoc = {
   crumb: 'Accessibility',
   seoTitle: 'Accessibility statement',
   description:
-    'Accessibility statement for mhfrough.dev: the WCAG 2.1 AA target, what has been done to meet it, known limits, and how to report a problem.',
+    'Accessibility statement for mhfrough.github.io: the WCAG 2.1 AA target, what has been done to meet it, known limits, and how to report a problem.',
   title: 'Accessibility',
   soft: 'Built for every visitor.',
   updated: UPDATED,

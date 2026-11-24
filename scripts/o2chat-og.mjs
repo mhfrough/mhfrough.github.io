@@ -44,7 +44,7 @@ p{margin-top:22px;font-size:21px;color:#34405a;line-height:1.45}
   <p>The real-time agent portal, an embeddable chat widget and the multi-tenant Angular frontend.</p>
   <div class="chans"><i>Web</i><i>WhatsApp</i><i>Messenger</i><i>Instagram</i></div>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/o2chat/site-pricing.webp')}"></div>
 </body></html>`;
 

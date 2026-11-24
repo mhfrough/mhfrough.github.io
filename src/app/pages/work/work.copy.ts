@@ -4,11 +4,11 @@ export const COPY = {
   seo: {
     title: 'Work',
     description:
-      'Selected work by Mohammad Hamza: 30+ products since 2020 across tax, banking, investment, multi-tenant SaaS, commerce and the public sector, plus Quorum.',
+      'Selected work by Mohammad Hamza: 30+ products since 2020 across tax, banking, investment, multi-tenant SaaS, commerce and the public sector, plus Little Surprises, my own gift shop.',
   },
   head: {
     title: 'Selected work',
-    sub: '30+ products delivered since 2020 across tax, banking, investment, multi-tenant SaaS and commerce, plus products and products of my own.',
+    sub: '30+ products delivered since 2020 across tax, banking, investment, multi-tenant SaaS and commerce, plus a startup and products of my own.',
   },
   filter: {
     label: 'Filter projects by domain',
@@ -17,13 +17,14 @@ export const COPY = {
       label === 'All' ? `Showing all ${count} projects.` : `Showing ${count} ${count === 1 ? 'project' : 'projects'} in ${label}.`,
   },
   featured: {
-    eyebrow: 'Own product',
-    badge: 'Full case study',
+    eyebrow: 'My startup',
+    badge: 'Live',
     cta: 'Read the case study',
+    live: 'Visit the shop',
   },
   tools: {
     title: 'Originals, private by default',
-    note: 'Products I design, build and ship on my own. Each runs entirely on your device, with no server behind it and nothing to sign up for.',
+    note: 'Products I design, build and ship on my own. Each runs on your device or inside your own agent, with no server of mine behind it and nothing to sign up for.',
     traits: ['Runs on your device', 'No sign-up', 'Open source'],
     prev: 'Scroll apps back',
     next: 'Scroll apps forward',

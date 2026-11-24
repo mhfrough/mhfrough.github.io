@@ -5,15 +5,15 @@ export const SITE = {
   name: 'Mohammad Hamza',
   handle: 'mhfrough',
   at: '@mhfrough',
-  domain: 'mhfrough.dev',
-  origin: 'https://mhfrough.dev',
-  role: 'Software Architect',
+  domain: 'mhfrough.github.io',
+  origin: 'https://mhfrough.github.io',
+  role: 'Software Architect and Lead Developer',
   locality: 'Karachi',
   localityLabel: 'Karāchi',
   country: 'Pakistan',
   countryCode: 'PK',
   timeZone: 'Asia/Karachi',
-  // Public contact address. Suggested: route hello@mhfrough.dev to this inbox (e.g. Cloudflare Email Routing).
+  // Public contact address.
   email: 'mhfrough@yahoo.com',
   // Shown in the footer status link and on /hire. Keep honest.
   availableForWork: true,

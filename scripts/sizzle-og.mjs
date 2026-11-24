@@ -51,7 +51,7 @@ p{margin-top:22px;font-size:21px;color:#cfcfcf;line-height:1.45}
   <h1>Promo reels,<br><span>cut by your agent.</span></h1>
   <p>A skill for AI agents: an HTML reel from your real interface, approved by you, rendered to 4K with music.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;<span class="mono">@mhfrough</span> &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/sizzle/site.webp')}"></div>
 <div class="reel"><img src="${img('public/images/sizzle/still-reveal.webp')}"></div>
 </body></html>`;

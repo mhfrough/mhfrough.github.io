@@ -1,7 +1,7 @@
-// Open Graph card for /work/gift-wrap, 1200 x 630 JPG: the site's own type (Geist) in the storefront's rose and
-// wine, with the Gift Wrap logo and the home page from scripts/gift-wrap-shots.mjs.
-//   node scripts/gift-wrap-og.mjs
-// Output: public/og/og-gift-wrap.jpg (< 150 KB) and public/images/gift-wrap/cover.webp.
+// Open Graph card for /work/little-surprises, 1200 x 630 JPG: the site's own type (Geist) in the shop's rose and
+// plum, with the Little Surprises mark and the home page from scripts/little-surprises-shots.mjs.
+//   node scripts/little-surprises-og.mjs
+// Output: public/og/og-little-surprises.jpg (< 150 KB) and public/images/little-surprises/cover.webp.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
@@ -17,10 +17,10 @@ const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 ${face('Geist', 'node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2')}
 *{box-sizing:border-box;margin:0}
 body{width:1200px;height:630px;overflow:hidden;font-family:Geist,sans-serif;color:#3a2330;
-  background:radial-gradient(70% 90% at 95% 10%,rgba(216,107,138,.18),transparent 60%),radial-gradient(50% 60% at 0% 100%,rgba(123,122,92,.1),transparent 60%),linear-gradient(170deg,#fdf6f8,#f7e8ec)}
+  background:radial-gradient(70% 90% at 95% 10%,rgba(216,107,138,.18),transparent 60%),radial-gradient(50% 60% at 0% 100%,rgba(123,122,92,.1),transparent 60%),linear-gradient(170deg,#fbfaf8,#f7e8ec)}
 .copy{position:absolute;left:72px;top:60px;width:540px}
 .brand{display:flex;align-items:center;gap:14px}
-.brand img{width:64px;height:64px;border-radius:14px;box-shadow:0 0 0 1px #f0d9e1}
+.brand img{width:64px;height:64px;border-radius:14px;background:#fff;padding:6px;box-shadow:0 0 0 1px #f0d9e1}
 .brand b{font-weight:600;font-size:24px;letter-spacing:-.02em}
 .tag{display:inline-block;margin-top:40px;padding:6px 16px;border-radius:999px;background:#7a0f3d;color:#fff;font-weight:500;font-size:17px}
 h1{margin-top:18px;font-weight:600;font-size:50px;line-height:1.06;letter-spacing:-.04em}
@@ -35,13 +35,13 @@ p{margin-top:22px;font-size:21px;color:#5b3a4a;line-height:1.45}
 .shot img{display:block;width:100%}
 </style></head><body>
 <div class="copy">
-  <div class="brand"><img src="${img('public/images/gift-wrap/gift-wrap-logo.webp')}"><b>Gift Wrap</b></div>
-  <span class="tag">Thesis project</span>
-  <h1>Build the basket,<br><span>not just buy one.</span></h1>
-  <p>An Angular storefront where buyers choose the base, wrap, ribbon and treats, and the price follows.</p>
+  <div class="brand"><img src="${img('public/images/little-surprises/little-surprises-mark.webp')}"><b>Little Surprises</b></div>
+  <span class="tag">My startup &middot; live</span>
+  <h1>Gift baskets,<br><span>wrapped by hand.</span></h1>
+  <p>An Angular storefront, NestJS API and admin for the gift shop I run with my wife, delivering across Pakistan.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
-<div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/gift-wrap/site-home.webp')}"></div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
+<div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/little-surprises/site-home.webp')}"></div>
 </body></html>`;
 
 const browser = await chromium.launch();
@@ -51,6 +51,6 @@ await page.evaluate(() => document.fonts.ready);
 const png = await page.screenshot({ type: 'png' });
 await browser.close();
 
-const og = await sharp(png).jpeg({ quality: 82, mozjpeg: true }).toFile(resolve(ROOT, 'public/og/og-gift-wrap.jpg'));
-const cover = await sharp(png).webp({ quality: 82 }).toFile(resolve(ROOT, 'public/images/gift-wrap/cover.webp'));
-console.log(`og-gift-wrap.jpg ${(og.size / 1024).toFixed(0)} KB, cover.webp ${(cover.size / 1024).toFixed(0)} KB`);
+const og = await sharp(png).jpeg({ quality: 82, mozjpeg: true }).toFile(resolve(ROOT, 'public/og/og-little-surprises.jpg'));
+const cover = await sharp(png).webp({ quality: 82 }).toFile(resolve(ROOT, 'public/images/little-surprises/cover.webp'));
+console.log(`og-little-surprises.jpg ${(og.size / 1024).toFixed(0)} KB, cover.webp ${(cover.size / 1024).toFixed(0)} KB`);

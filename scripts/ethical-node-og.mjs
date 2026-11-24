@@ -60,7 +60,7 @@ p{margin-top:22px;font-size:21px;color:#0a3161;line-height:1.45}
   <h1>Shariah-screened staking,<br><span>run on chain.</span></h1>
   <p>The admin portal and the investor staking flows over smart contracts, in React and TypeScript.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="mock"><img src="data:image/png;base64,${mock}"></div>
 </body></html>`;
 

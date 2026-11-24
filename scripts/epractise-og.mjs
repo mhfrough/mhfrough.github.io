@@ -38,7 +38,7 @@ p{margin-top:22px;font-size:21px;color:#303437;line-height:1.45}
   <h1>A tax firm,<br><span>run from one workspace.</span></h1>
   <p>Practice-management SaaS: the sign-up that sets up each firm, its workspace and the client portal, in Angular.</p>
 </div>
-<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.dev</div>
+<div class="by"><b>Mohammad Hamza</b> &nbsp;@mhfrough &middot; mhfrough.github.io</div>
 <div class="shot"><div class="bar"><i></i><i></i><i></i></div><img src="${img('public/images/epractise/site-home.webp')}"></div>
 </body></html>`;
 

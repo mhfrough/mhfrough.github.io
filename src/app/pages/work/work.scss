@@ -113,8 +113,20 @@
   margin-bottom: 30px;
 }
 
-// Whole card is clickable through the one real link (stretched), focus ring stays on the button.
-.featured__cta::after {
+.featured__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  // The live-site link sits above the stretched case-study link.
+  .btn-ghost {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Whole card is clickable through the case-study link (stretched), focus ring stays on the button.
+.featured__cta:first-child::after {
   content: '';
   position: absolute;
   inset: 0;

@@ -97,9 +97,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/case-studies/fleet/fleet').then((m) => m.FleetCaseStudy),
   },
   {
-    path: 'work/gift-wrap',
-    data: { theme: 'gift-wrap' },
-    loadComponent: () => import('./pages/case-studies/gift-wrap/gift-wrap').then((m) => m.GiftWrapCaseStudy),
+    path: 'work/little-surprises',
+    data: { theme: 'little-surprises' },
+    loadComponent: () => import('./pages/case-studies/little-surprises/little-surprises').then((m) => m.LittleSurprisesCaseStudy),
   },
   {
     path: 'work/hrm',
