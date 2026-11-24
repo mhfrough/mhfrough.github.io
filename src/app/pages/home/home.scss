@@ -551,48 +551,50 @@
 }
 
 // ---------- Reels ----------
-.reels-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 48px;
-  align-items: center;
-
-  header {
-    display: grid;
-    gap: 4px;
-    justify-items: start;
-  }
-
-  .more {
-    margin-top: 16px;
-  }
+.reels-nav {
+  display: flex;
+  gap: 8px;
+  align-self: end;
 }
 
-.reels {
-  grid-auto-columns: min(42vw, 230px);
+// One row that scrolls sideways at every width; the arrows in the head move it about a screen at a time.
+.reels-row {
+  grid-auto-columns: min(60vw, 220px);
   gap: 12px;
+  justify-content: start;
+  margin: 0;
+  padding: 0 0 4px;
+  list-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > li {
+    scroll-snap-align: start;
+  }
 }
 
 .reel figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
   padding: 10px 12px;
   font-size: 13px;
+
+  a {
+    color: var(--ink);
+  }
 }
 
 .reel-media mh-skeleton {
   position: absolute;
   inset: 0;
   border-radius: 0;
-}
-
-@media (max-width: 780px) {
-  .reels-split {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .reels {
-    justify-content: start;
-  }
 }
 
 // ---------- Hire ----------

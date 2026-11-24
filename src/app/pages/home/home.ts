@@ -4,6 +4,8 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   phosphorArrowRight,
   phosphorBriefcase,
+  phosphorCaretLeft,
+  phosphorCaretRight,
   phosphorChartLineUp,
   phosphorChatsCircle,
   phosphorCheck,
@@ -45,6 +47,8 @@ import { HeroCard } from './hero-card';
     provideIcons({
       phosphorArrowRight,
       phosphorBriefcase,
+      phosphorCaretLeft,
+      phosphorCaretRight,
       phosphorChartLineUp,
       phosphorChatsCircle,
       phosphorCheck,
@@ -148,14 +152,14 @@ export class Home {
       type: 'profile',
       jsonLd: [
         { '@type': 'ProfilePage', '@id': `${SITE.origin}/#profile`, url: SITE.origin + '/', mainEntity: { '@id': PERSON_ID } },
-        ...REELS.map((r, i) => ({
+        ...REELS.map((r) => ({
           '@type': 'VideoObject',
           name: r.title,
-          description: i === 0 ? 'A 23-second intro to Quorum, a Claude Code skill for hard decisions.' : 'The seven Quorum council members on a 3D board.',
+          description: r.description,
           thumbnailUrl: abs(r.poster),
-          contentUrl: r.src,
-          uploadDate: '2026-10-08T12:00:00+05:00',
-          duration: i === 0 ? 'PT23S' : 'PT26S',
+          contentUrl: r.src.startsWith('http') ? r.src : abs(r.src),
+          uploadDate: r.uploadDate,
+          duration: r.duration,
           creator: { '@id': PERSON_ID },
         })),
       ],
@@ -174,6 +178,12 @@ export class Home {
   }
 
   private resetCopied: () => void = () => {};
+
+  /** Reels row arrows: about one screen of reels at a time, instant when the visitor prefers reduced motion. */
+  protected scrollReels(row: HTMLElement, dir: 1 | -1): void {
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    row.scrollBy({ left: dir * row.clientWidth * 0.8, behavior: still ? 'auto' : 'smooth' });
+  }
 
   protected async copyEmail(): Promise<void> {
     try {

@@ -161,19 +161,117 @@ export const EXPERIENCE = [
   { role: 'Blogger and writer', years: '2011 to 2014', focus: 'Tech news, HTML and CSS tutorials, and the SEO for my own blog.' },
 ];
 
-export const REELS = [
+export interface Reel {
+  title: string;
+  /** Duration as shown, m:ss. */
+  meta: string;
+  /** ISO 8601 duration for JSON-LD. */
+  duration: string;
+  uploadDate: string;
+  description: string;
+  poster: string;
+  src: string;
+  /** Captions, where the reel has them. */
+  captions?: string;
+  /** The product's case study, or its site when there is none. */
+  href: string;
+}
+
+/**
+ * Promo reels for my own products, in this order on the home page. The Quorum reels stream from the Quorum site;
+ * the rest are the owner's finished files, copied unchanged into public/videos/reels (owner, 2026-11-24).
+ */
+export const REELS: Reel[] = [
   {
     title: 'Meet the Quorum',
     meta: '0:23',
+    duration: 'PT23S',
+    uploadDate: '2026-10-08T12:00:00+05:00',
+    description: 'A 23-second intro to Quorum, a Claude Code skill for hard decisions.',
     poster: '/images/quorum/quorum-reel.webp',
     src: 'https://mhfrough.github.io/quorum/videos/quorum-reel.mp4',
     captions: '/media/quorum/quorum-reel.en.vtt',
+    href: '/work/quorum',
   },
   {
     title: 'The board',
     meta: '0:26',
+    duration: 'PT26S',
+    uploadDate: '2026-10-08T12:00:00+05:00',
+    description: 'The seven Quorum council members on a 3D board.',
     poster: '/images/quorum/quorum-board-reel.webp',
     src: 'https://mhfrough.github.io/quorum/videos/quorum-board-reel.mp4',
     captions: '/media/quorum/quorum-board-reel.en.vtt',
+    href: '/work/quorum',
+  },
+  {
+    title: 'Jot',
+    meta: '0:25',
+    duration: 'PT25S',
+    uploadDate: '2026-10-25T12:00:00+05:00',
+    description: 'Jot, plain notes and nothing else: saved as you type, locked notes encrypted on the device, works offline.',
+    poster: '/videos/reels/jot-reel.webp',
+    src: '/videos/reels/jot-reel.mp4',
+    href: 'https://mhfrough.github.io/jot/',
+  },
+  {
+    title: 'Swoop for Chrome',
+    meta: '0:29',
+    duration: 'PT29S',
+    uploadDate: '2026-10-26T12:00:00+05:00',
+    description: 'Swoop captures the whole page as one image and marks it up, with nothing leaving your computer.',
+    poster: '/videos/reels/swoop-chrome-reel-2.webp',
+    src: '/videos/reels/swoop-chrome-reel-2.mp4',
+    href: '/work/swoop',
+  },
+  {
+    title: 'Swoop for Windows',
+    meta: '0:22',
+    duration: 'PT22S',
+    uploadDate: '2026-10-25T12:00:00+05:00',
+    description: 'Press Print Screen, drag over anything, mark it up and copy: Swoop for Windows.',
+    poster: '/videos/reels/swoop-windows-reel.webp',
+    src: '/videos/reels/swoop-windows-reel.mp4',
+    href: '/work/swoop',
+  },
+  {
+    title: 'Flick',
+    meta: '0:25',
+    duration: 'PT25S',
+    uploadDate: '2026-10-15T12:00:00+05:00',
+    description: 'Flick sends files between nearby devices straight from the browser, with no server of its own.',
+    poster: '/videos/reels/flick-reel.webp',
+    src: '/videos/reels/flick-reel.mp4',
+    href: '/work/flick',
+  },
+  {
+    title: 'Pinch',
+    meta: '0:25',
+    duration: 'PT25S',
+    uploadDate: '2026-10-16T12:00:00+05:00',
+    description: 'Pinch compresses, converts and upscales images on your device, with nothing uploaded.',
+    poster: '/videos/reels/pinch-reel.webp',
+    src: '/videos/reels/pinch-reel.mp4',
+    href: '/work/pinch',
+  },
+  {
+    title: 'Scrawl',
+    meta: '0:25',
+    duration: 'PT25S',
+    uploadDate: '2026-10-15T12:00:00+05:00',
+    description: 'Scrawl, a felt-tip sketchbook in the browser, saved on the device.',
+    poster: '/videos/reels/scrawl-reel.webp',
+    src: '/videos/reels/scrawl-reel.mp4',
+    href: '/work/scrawl',
+  },
+  {
+    title: 'Sizzle',
+    meta: '0:25',
+    duration: 'PT25S',
+    uploadDate: '2026-10-15T12:00:00+05:00',
+    description: 'Sizzle, a skill for AI agents that cuts promo reels for software.',
+    poster: '/videos/reels/sizzle-poster.webp',
+    src: '/videos/reels/sizzle-reel.mp4',
+    href: '/work/sizzle',
   },
 ];
