@@ -2,7 +2,7 @@
 Designer and developer: Mohammad Hamza
 Handle: @mhfrough
 Role: Software Architect
-Site: https://mhfrough.dev
+Site: https://mhfrough.github.io
 GitHub: https://github.com/mhfrough
 LinkedIn: https://www.linkedin.com/in/mhfrough
 From: Karachi, Pakistan
